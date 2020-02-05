@@ -12,7 +12,7 @@ const routes: Routes = [
     loadChildren: () => import('./sessions/sessions.module').then( m => m.SessionsPageModule)
   },
   {
-    path: 'sessiondetails/:sectionname',
+    path: 'sessiondetails/:sessionid',
     loadChildren: () => import('./sessiondetails/sessiondetails.module').then( m => m.SessiondetailsPageModule)
   },
   {
@@ -20,7 +20,7 @@ const routes: Routes = [
     loadChildren: () => import('./createsessions/createsessions.module').then( m => m.CreatesessionsPageModule)
   },
   {
-    path: 'sessionrecordingpage/:sectionname/:sectionid',
+    path: 'sessionrecordingpage/:sessionid/:topicname',
     loadChildren: () => import('./session-recording-page/session-recording-page.module').then( m => m.SessionRecordingPagePageModule)
   },
 ];

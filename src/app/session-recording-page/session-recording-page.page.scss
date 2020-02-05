@@ -1,13 +1,21 @@
 .recordingbuttons {
     margin: auto;
     text-align: center;
+    justify-content: space-evenly;
+    display: flex;
 }
 
 .recordingcont {
+    display: flex;
+    align-items: center;
     margin: 2em auto;
-    height: 100px;
     width: 90%;
+    height: 250px;
     border: 1px solid #ccc;
+    text-align: center;
+    img{
+        margin-top:5em;
+    }
 }
 
 .sessioncategory {
@@ -33,10 +41,56 @@ text-align: center
     font-size: 64px;
 }
 
+.circleborder {
+    display: flex;
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    border: solid;
+    border-color: red;
+    justify-content: center;
+    margin: auto;
+}
+
 .dot {
-  height: 40px;
-  width: 40px;
-  border-radius: 20px;
-  border: solid;
-  border-color: red;
+    margin: auto;
+  height: 35px;
+  width: 35px;
+  background-color: red;
+  border-radius: 50%;
+  line-height: 2;
+}
+
+.spantext {
+    text-align: center;
+    font-size: 12px;
+    color: white;
+}
+.startrecording {
+    width: 70px;
+}
+
+.startrecording p {
+    font-size: 12px;
+}
+
+.stoprecording {
+    width: 70px;
+}
+.stoprecording p {
+    font-size: 12px;
+}
+
+.square {
+    margin: auto;
+  height: 22px;
+  width: 22px;
+  background-color: red;
+}
+
+.recordText {
+    // line-height: 9;
+    
+    width: 100%;
+
 }

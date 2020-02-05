@@ -16,23 +16,34 @@
 </ion-toolbar>
 
 <ion-content padding>
-  <h1>{{sectiontitle}}</h1>
-    <p class="sessioncategory">{{sessioncategory}}</p>
-<div class="recordingcont">
-    </div>
+  <h1>{{sessionData.name}}</h1>
+  <p class="sessioncategory">{{topicName}}</p>
+  <div class="recordingcont" >
+    <img src="/assets/images/record.gif" *ngIf="recordStarted" />
+    <h3 class="recordText" *ngIf="!recordStarted">Please start Recording ...</h3>
+  </div>
   <div class="recordingbuttons">
-      <div class="startrecording">
-<ion-icon class="playbutton ion-padding dot" name="mic" color="primary"></ion-icon>
+      <div class="startrecording" (click)="startRecording()">
+        <span class="circleborder">
+          <span class="dot">
+            <span class="spantext">REC</span>
+          </span>
+        </span>
+      <p>Start Recording</p>
       </div>
-            <div class="stoprecording">
-<ion-icon name="square" size="large" color="danger" class="ion-padding"></ion-icon>
+      <div class="stoprecording"  (click)="saveRecording()">
+        <span class="circleborder">
+          <span class="square">
+          </span>
+        </span>
+      <p>Stop Recording</p>
 </div>
   </div>
-     <div class="savebtn">
+     <!-- <div class="savebtn">
           <ion-button
             class="custombtn"
             [routerLink]='["/sessiondetails",sectiontitle]'
           >Save
           </ion-button>
-        </div>
+        </div> -->
 </ion-content>

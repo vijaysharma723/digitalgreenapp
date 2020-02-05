@@ -16,15 +16,15 @@
     <div
       *ngFor="let session of sessionlist"
       class="session ion-padding"
-      (click)="navigateToDetail()"
-      [routerLink]='["/sessiondetails",session.name]'
+      (click)="navigateToDetail(session)"
+      [routerLink]='["/sessiondetails",session.sessionid]'
     >
       <div class="sessionname">
         <p>{{ session.name }}</p>
-        <div class="date">{{ session.timestamp | date: fullDate }}</div>
+        <div class="date">{{ session.created | date: fullDate }}</div>
       </div>
       <div class="upload">
-        <ion-button>
+        <ion-button *ngIf="!session.isUploaded">
           <ion-icon slot="icon-only" name="cloud-upload"></ion-icon>
         </ion-button>
       </div>
