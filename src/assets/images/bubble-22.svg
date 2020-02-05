@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="118px" height="254px" viewBox="0 0 118 254" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 52.6 (67491) - http://www.bohemiancoding.com/sketch -->
+    <title>0760369A-494A-429A-B3C3-BA3ADAAF59F7</title>
+    <desc>Created with sketchtool.</desc>
+    <defs>
+        <linearGradient x1="-15.8102092%" y1="50%" x2="131.128727%" y2="65.0413389%" id="linearGradient-1">
+            <stop stop-color="#8FDB08" offset="0%"></stop>
+            <stop stop-color="#01A3FF" offset="100%"></stop>
+        </linearGradient>
+        <path d="M259.552983,73.4043497 C298.017208,125.679648 238.933642,141.251485 224.026416,212.490746 C209.11919,283.730008 36.3506115,251.943128 36.3506115,162.611487 C36.3506115,73.2798463 221.088757,21.129051 259.552983,73.4043497 Z" id="path-2"></path>
+        <filter x="-20.1%" y="-13.8%" width="140.3%" height="147.7%" filterUnits="objectBoundingBox" id="filter-3">
+            <feOffset dx="0" dy="20" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="12.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.00392156863   0 0 0 0 0.635294118   0 0 0 0 1  0 0 0 0.2 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="linearGradient-4">
+            <stop stop-color="#01FFB0" offset="0%"></stop>
+            <stop stop-color="#F70D76" offset="100%"></stop>
+        </linearGradient>
+        <path d="M32.0368511,208.324745 C21.0908039,252.020347 100.259032,279.750249 107.489208,239.415847 C114.719383,199.081444 42.9828983,164.629142 32.0368511,208.324745 Z" id="path-5"></path>
+        <filter x="-61.7%" y="-38.7%" width="223.4%" height="233.8%" filterUnits="objectBoundingBox" id="filter-6">
+            <feOffset dx="0" dy="20" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="12.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.839215686   0 0 0 0 0.176470588   0 0 0 0 0.490196078  0 0 0 0.2 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="5.0-Thoughts" transform="translate(-1282.000000, -2138.000000)">
+            <g id="bubble22" transform="translate(1279.000000, 2089.000000)">
+                <g id="Path-10" style="mix-blend-mode: multiply;" transform="translate(154.350611, 152.070360) rotate(40.000000) translate(-154.350611, -152.070360) ">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-3)" xlink:href="#path-2"></use>
+                    <use fill="url(#linearGradient-1)" fill-rule="evenodd" xlink:href="#path-2"></use>
+                </g>
+                <g id="Path-14">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-6)" xlink:href="#path-5"></use>
+                    <use fill="url(#linearGradient-4)" fill-rule="evenodd" xlink:href="#path-5"></use>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

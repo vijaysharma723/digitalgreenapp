@@ -1,0 +1,42 @@
+.recordingbuttons {
+    margin: auto;
+    text-align: center;
+}
+
+.recordingcont {
+    margin: 2em auto;
+    height: 100px;
+    width: 90%;
+    border: 1px solid #ccc;
+}
+
+.sessioncategory {
+    margin: auto;
+    font-size: 18px;
+}
+
+.savebtn{
+margin:auto;
+text-align: center
+}
+
+.textcenter{
+    text-align: center;
+    margin:auto;
+}
+.backbutton{
+    left:36px;
+    position: absolute;
+    // z-index: 999
+}
+.playbutton {
+    font-size: 64px;
+}
+
+.dot {
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
+  border: solid;
+  border-color: red;
+}

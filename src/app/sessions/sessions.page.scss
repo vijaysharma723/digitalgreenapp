@@ -1,0 +1,22 @@
+ion-item{
+    border-radius: 10px;
+}
+.session {
+    /* padding: 1em; */
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #ccc;
+    align-items: center
+}
+
+.sessionname {
+    font-size: 1em;
+     padding: 1em;
+     width: 180px;
+}
+
+.date {background: #ccc;padding: 5px;border-radius: 25px;text-align:center}
+.textcenter{
+    text-align: center;
+    margin:auto;
+}

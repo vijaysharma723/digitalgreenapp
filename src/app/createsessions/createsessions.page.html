@@ -1,0 +1,51 @@
+<ion-toolbar color="primary">
+  <!-- <ion-buttons slot="secondary">
+    <ion-button>
+      <ion-icon slot="icon-only" name="contact"></ion-icon>
+    </ion-button>
+  </ion-buttons> -->
+  <!-- <ion-buttons slot="start">
+      <ion-back-button
+          defaultHref="/sessions">
+      </ion-back-button>
+    </ion-buttons> -->
+  <ion-buttons class="backbutton" slot="start">
+    <ion-back-button defaultHref="/sessions"></ion-back-button>
+  </ion-buttons>
+
+  <ion-title class="textcenter">Create Session</ion-title>
+</ion-toolbar>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>New Session</ion-card-title>
+      <h5>{{ sessionDate | date: fullDate }}</h5>
+    </ion-card-header>
+    <form class="ion-padding" (ngSubmit)="logForm()">
+      <!-- <ion-item> -->
+
+        <!-- <ion-input
+          value="{{ sessionDate | date: longDate }}"
+          disabled
+        ></ion-input> -->
+      <!-- </ion-item> -->
+      <br />
+      <ion-label class="ion-padding">Name</ion-label>
+      <ion-item>
+        <ion-input
+          class="custominput"
+          placeholder=" Enter Session Name"
+          type="text"
+          [(ngModel)]="name"
+          [ngModelOptions]="{standalone: true}"
+        ></ion-input>
+      </ion-item>
+      <div class="createbtn">
+        <ion-button class="custombtn" type="submit">
+          Proceed
+        </ion-button>
+      </div>
+    </form>
+  </ion-card>
+</ion-content>

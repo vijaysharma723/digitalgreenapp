@@ -1,0 +1,73 @@
+<ion-toolbar color="primary">
+  <!-- <ion-buttons slot="secondary">
+    <ion-button>
+      <ion-icon slot="icon-only" name="contact"></ion-icon>
+    </ion-button>
+  </ion-buttons> -->
+  <ion-buttons class="backbutton" slot="start">
+    <ion-back-button defaultHref="/sessions"></ion-back-button>
+  </ion-buttons>
+  <ion-title class="textcenter">Session Details</ion-title>
+</ion-toolbar>
+
+<ion-content class="ion-padding">
+  <h1>{{sessiontitle}}</h1>
+
+  <!-- <p>
+    Watering harvesting means capturing rain water, where it falls and capture
+    the runoff from, catchment and streams etc. Generally, water harvesting is
+    direct rainwater collection.
+  </p> -->
+  <div class="sessionlist">
+    <div class="sessiondetails">
+      <div class="sections">
+        <div class="sectionname"><p>Challenges</p></div>
+        <div class="actions">
+          <ion-button  size="small"  [routerLink]='["/sessionrecordingpage",sessiontitle,"Challenges"]'>
+            <ion-icon slot="icon-only"  size="small" name="microphone"></ion-icon>
+          </ion-button>
+          <ion-button  size="small" color="primary">
+            <ion-icon  size="small" slot="icon-only" name="play"></ion-icon>
+          </ion-button>
+          <ion-button  size="small" >
+            <ion-icon  size="small" slot="icon-only" name="cloud-upload"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+      <div class="sections">
+        <div class="sectionname"><p>Expectation</p></div>
+        <div class="actions">
+          <ion-button size="small"  [routerLink]='["/sessionrecordingpage",sessiontitle,"Expectation"]'>
+            <ion-icon size="small"  slot="icon-only" name="microphone"></ion-icon>
+          </ion-button>
+          <ion-button size="small" >
+            <ion-icon size="small"  slot="icon-only" name="play"></ion-icon>
+          </ion-button>
+                    <ion-button  size="small" >
+            <ion-icon  size="small" slot="icon-only" name="cloud-upload"></ion-icon>
+          </ion-button>
+          <!-- <ion-button>
+            <ion-icon slot="icon-only" name="pause"></ion-icon>
+          </ion-button> -->
+        </div>
+      </div>
+      <div class="sections">
+        <div class="sectionname"><p>Action</p></div>
+        <div class="actions">
+          <ion-button size="small"  [routerLink]='["/sessionrecordingpage",sessiontitle,"Action"]'>
+            <ion-icon size="small"  slot="icon-only" name="microphone"></ion-icon>
+          </ion-button>
+          <ion-button size="small" >
+            <ion-icon size="small"  slot="icon-only" name="play"></ion-icon>
+          </ion-button>
+                    <ion-button  size="small" >
+            <ion-icon  size="small" slot="icon-only" name="cloud-upload"></ion-icon>
+          </ion-button>
+          <!-- <ion-button>
+            <ion-icon slot="icon-only" name="pause"></ion-icon>
+          </ion-button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

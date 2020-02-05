@@ -1,0 +1,33 @@
+
+<ion-toolbar color="primary">
+  <!-- <ion-buttons slot="secondary">
+    <ion-button>
+      <ion-icon slot="icon-only" name="contact"></ion-icon>
+    </ion-button>
+  </ion-buttons> -->
+
+  <div class="textcenter">
+    <ion-title>Session List</ion-title>
+  </div>
+</ion-toolbar>
+
+<ion-content>
+  <div class="sessionlist">
+    <div
+      *ngFor="let session of sessionlist"
+      class="session ion-padding"
+      (click)="navigateToDetail()"
+      [routerLink]='["/sessiondetails",session.name]'
+    >
+      <div class="sessionname">
+        <p>{{ session.name }}</p>
+        <div class="date">{{ session.timestamp | date: fullDate }}</div>
+      </div>
+      <div class="upload">
+        <ion-button>
+          <ion-icon slot="icon-only" name="cloud-upload"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>

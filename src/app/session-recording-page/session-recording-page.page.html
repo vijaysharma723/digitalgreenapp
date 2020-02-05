@@ -1,0 +1,38 @@
+<ion-toolbar color="primary">
+  <!-- <ion-buttons slot="secondary">
+    <ion-button>
+      <ion-icon slot="icon-only" name="contact"></ion-icon>
+    </ion-button>
+  </ion-buttons> -->
+        <!-- <ion-buttons slot="start">
+      <ion-back-button
+          defaultHref="/sessiondetails">
+      </ion-back-button>
+    </ion-buttons> -->
+      <ion-buttons class="backbutton" slot="start">
+    <ion-back-button defaultHref="/sessiondetails"></ion-back-button>
+  </ion-buttons>
+  <ion-title class="textcenter">Recording</ion-title>
+</ion-toolbar>
+
+<ion-content padding>
+  <h1>{{sectiontitle}}</h1>
+    <p class="sessioncategory">{{sessioncategory}}</p>
+<div class="recordingcont">
+    </div>
+  <div class="recordingbuttons">
+      <div class="startrecording">
+<ion-icon class="playbutton ion-padding dot" name="mic" color="primary"></ion-icon>
+      </div>
+            <div class="stoprecording">
+<ion-icon name="square" size="large" color="danger" class="ion-padding"></ion-icon>
+</div>
+  </div>
+     <div class="savebtn">
+          <ion-button
+            class="custombtn"
+            [routerLink]='["/sessiondetails",sectiontitle]'
+          >Save
+          </ion-button>
+        </div>
+</ion-content>

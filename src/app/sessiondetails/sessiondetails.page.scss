@@ -1,0 +1,25 @@
+.sections{
+    display: flex;
+    justify-content: space-between;
+    min-height: 80px;
+    align-items: center;
+    border-bottom: 1px solid #ccc
+
+}
+.sectionname{
+    font-size:1.3em;
+width:50%
+}
+
+.textcenter{
+    text-align: center;
+    margin:auto;
+}
+.backbutton{
+    left:36px;
+    position: absolute;
+    // z-index: 999
+}
+ion-title{
+    width:50%
+}

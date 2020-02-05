@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="147px" height="189px" viewBox="0 0 147 189" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 52.6 (67491) - http://www.bohemiancoding.com/sketch -->
+    <title>0EA66A31-8FC7-4A8E-947E-A92A023F820F</title>
+    <desc>Created with sketchtool.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="97.4665824%" id="linearGradient-1">
+            <stop stop-color="#08FDA7" offset="0%"></stop>
+            <stop stop-color="#93DB04" offset="100%"></stop>
+        </linearGradient>
+        <path d="M1367.49296,5333.01828 C1316.46762,5332.37443 1278,5348.63434 1278,5399.03156 C1278,5449.42878 1315.13624,5424.84242 1354.40378,5452.16112 C1393.67133,5479.47983 1453,5485.38569 1453,5436.25086 C1453,5387.11602 1418.51831,5333.66212 1367.49296,5333.01828 Z" id="path-2"></path>
+        <filter x="-27.1%" y="-19.6%" width="154.3%" height="167.9%" filterUnits="objectBoundingBox" id="filter-3">
+            <feOffset dx="0" dy="20" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="12.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.576470588   0 0 0 0 0.858823529   0 0 0 0 0.0156862745  0 0 0 0.2 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="4.0-About-us" transform="translate(-1253.000000, -5328.000000)">
+            <g id="bubble15">
+                <use fill="black" fill-opacity="1" filter="url(#filter-3)" xlink:href="#path-2"></use>
+                <use fill="url(#linearGradient-1)" fill-rule="evenodd" xlink:href="#path-2"></use>
+            </g>
+        </g>
+    </g>
+</svg>
