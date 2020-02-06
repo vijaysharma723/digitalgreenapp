@@ -4,12 +4,12 @@
       <ion-icon slot="icon-only" name="contact"></ion-icon>
     </ion-button>
   </ion-buttons> -->
-        <!-- <ion-buttons slot="start">
+  <!-- <ion-buttons slot="start">
       <ion-back-button
           defaultHref="/sessiondetails">
       </ion-back-button>
     </ion-buttons> -->
-      <ion-buttons class="backbutton" slot="start">
+  <ion-buttons class="backbutton" slot="start">
     <ion-back-button defaultHref="/sessiondetails"></ion-back-button>
   </ion-buttons>
   <ion-title class="textcenter">Recording</ion-title>
@@ -18,28 +18,29 @@
 <ion-content padding>
   <h1>{{sessionData.name}}</h1>
   <p class="sessioncategory">{{topicName}}</p>
-  <div class="recordingcont" >
+  <div class="recordingcont">
     <img src="/assets/images/record.gif" *ngIf="recordStarted" />
-    <h3 class="recordText" *ngIf="!recordStarted">Please start Recording ...</h3>
+    <h3 class="recordText" *ngIf="!recordStarted">
+      Please start Recording ...
+    </h3>
   </div>
   <div class="recordingbuttons">
-      <div class="startrecording" (click)="startRecording()">
-        <span class="circleborder">
-          <span class="dot">
-            <span class="spantext">REC</span>
-          </span>
+    <div class="startrecording" tappable (click)="startRecording()">
+      <span class="circleborder">
+        <span class="dot">
+          <span class="spantext">REC</span>
         </span>
+      </span>
       <p>Start Recording</p>
-      </div>
-      <div class="stoprecording"  (click)="saveRecording()">
-        <span class="circleborder">
-          <span class="square">
-          </span>
-        </span>
+    </div>
+    <div class="stoprecording" tappable (click)="stopRecording()">
+      <span class="circleborder">
+        <span class="square"> </span>
+      </span>
       <p>Stop Recording</p>
-</div>
+    </div>
   </div>
-     <!-- <div class="savebtn">
+  <!-- <div class="savebtn">
           <ion-button
             class="custombtn"
             [routerLink]='["/sessiondetails",sectiontitle]'
