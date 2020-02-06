@@ -11,7 +11,7 @@ private sessionlist=[{
         "sessionid":"1580896310513",
         "name": "Water Harvesting",
         "created": "Mon Feb 03 2020 19:01:11 GMT+0530 (India Standard Time)",
-        "isUploaded": false,
+        "isUploaded": true,
         "topics": [{
                 "topic_name": "What needs to be improved in the video.",
                 "file_data": {
@@ -40,7 +40,7 @@ private sessionlist=[{
                     "file_url": "Challenges faced/mono_mono_Cucumber cucumber farming _ खीरा ककड़ी की खेती _ Preparation & management _ बांस के मंडप वाली खेती -8_kqqXQNFM,U.wav",
                     "ismono": false
                 },
-                "isUploaded": false
+                "isUploaded": true
             }
         ]
     },
@@ -312,6 +312,13 @@ return this.sessionlist;
       });
        topicData= topicData[0];
        topicData['isUploaded'] = true;
+
+        let topicDataUploadStatus: any = sessionData['topics'].filter((element)=>{
+      return element.isUploaded===false;
+  });
+        if (topicDataUploadStatus.length > 0) {
+          sessionData['isUploaded'] = true;
+      }
   }
 
 }
