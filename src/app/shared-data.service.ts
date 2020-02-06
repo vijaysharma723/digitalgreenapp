@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Subject, Observable} from 'rxjs';
+import { UUID } from 'angular2-uuid';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ private sessionlist=[{
         "created": "Mon Feb 03 2020 19:01:11 GMT+0530 (India Standard Time)",
         "isUploaded": false,
         "topics": [{
-                "topic_name": "Challenges",
+                "topic_name": "What needs to be improved in the video.",
                 "file_data": {
                     "bucketname": "app-blob-storage",
                     "foldername": "Agricultural problems in haryana uuid-1234567890-client",
@@ -22,7 +23,7 @@ private sessionlist=[{
                 "isUploaded": true
             },
             {
-                "topic_name": "Expectation",
+                "topic_name": "What do you want to learn more.",
                 "file_data": {
                     "bucketname": "app-blob-storage",
                     "foldername": "Agricultural problems in haryana uuid-1234567890-client",
@@ -32,7 +33,13 @@ private sessionlist=[{
                 "isUploaded": true
             },
             {
-                "topic_name": "Actions",
+                "topic_name": "What are the challenges in general.",
+                "file_data": {
+                    "bucketname": "app-blob-storage",
+                    "foldername": "Agricultural problems in haryana uuid-1234567890-client",
+                    "file_url": "Challenges faced/mono_mono_Cucumber cucumber farming _ खीरा ककड़ी की खेती _ Preparation & management _ बांस के मंडप वाली खेती -8_kqqXQNFM,U.wav",
+                    "ismono": false
+                },
                 "isUploaded": false
             }
         ]
@@ -42,7 +49,7 @@ private sessionlist=[{
         "created": "Mon Feb 01 2020 19:01:11 GMT+0530 (India Standard Time)",
         "isUploaded": true,
         "topics": [{
-                "topic_name": "Challenges",
+                "topic_name": "What needs to be improved in the video.",
                 "file_data": {
                     "bucketname": "app-blob-storage",
                     "foldername": "Agricultural problems in haryana uuid-1234567890-client",
@@ -52,7 +59,7 @@ private sessionlist=[{
                 "isUploaded": true
             },
             {
-                "topic_name": "Expectation",
+                "topic_name": "What do you want to learn more.",
                 "file_data": {
                     "bucketname": "app-blob-storage",
                     "foldername": "Agricultural problems in haryana uuid-1234567890-client",
@@ -62,8 +69,14 @@ private sessionlist=[{
                 "isUploaded": true
             },
             {
-                "topic_name": "Actions",
-                "isUploaded": false
+                "topic_name": "What are the challenges in general.",
+                "file_data": {
+                    "bucketname": "app-blob-storage",
+                    "foldername": "Agricultural problems in haryana uuid-1234567890-client",
+                    "file_url": "Challenges faced/mono_mono_Cucumber cucumber farming _ खीरा ककड़ी की खेती _ Preparation & management _ बांस के मंडप वाली खेती -8_kqqXQNFM,U.wav",
+                    "ismono": false
+                },
+                "isUploaded": true
             }
         ]
     }, {
@@ -72,7 +85,7 @@ private sessionlist=[{
         "created": "Mon Feb 01 2020 19:01:11 GMT+0530 (India Standard Time)",
         "isUploaded": false,
         "topics": [{
-                "topic_name": "Challenges",
+                "topic_name": "What needs to be improved in the video.",
                 "file_data": {
                     "bucketname": "app-blob-storage",
                     "foldername": "Agricultural problems in haryana uuid-1234567890-client",
@@ -82,7 +95,7 @@ private sessionlist=[{
                 "isUploaded": true
             },
             {
-                "topic_name": "Expectation",
+                "topic_name": "What do you want to learn more.",
                 "file_data": {
                     "bucketname": "app-blob-storage",
                     "foldername": "Agricultural problems in haryana uuid-1234567890-client",
@@ -92,7 +105,7 @@ private sessionlist=[{
                 "isUploaded": true
             },
             {
-                "topic_name": "Actions",
+                "topic_name": "What are the challenges in general.",
                 "isUploaded": false
             }
         ]
@@ -102,7 +115,7 @@ private sessionlist=[{
         "created": "Mon Feb 01 2020 19:01:11 GMT+0530 (India Standard Time)",
         "isUploaded": false,
         "topics": [{
-                "topic_name": "Challenges",
+                "topic_name": "What needs to be improved in the video.",
                 "file_data": {
                     "bucketname": "app-blob-storage",
                     "foldername": "Agricultural problems in haryana uuid-1234567890-client",
@@ -112,7 +125,7 @@ private sessionlist=[{
                 "isUploaded": true
             },
             {
-                "topic_name": "Expectation",
+                "topic_name": "What do you want to learn more.",
                 "file_data": {
                     "bucketname": "app-blob-storage",
                     "foldername": "Agricultural problems in haryana uuid-1234567890-client",
@@ -122,7 +135,7 @@ private sessionlist=[{
                 "isUploaded": true
             },
             {
-                "topic_name": "Actions",
+                "topic_name": "What are the challenges in general.",
                 "isUploaded": false
             }
         ]
@@ -131,7 +144,7 @@ private sessionlist=[{
         "created": "Mon Feb 01 2020 19:01:11 GMT+0530 (India Standard Time)",
         "isUploaded": false,
         "topics": [{
-                "topic_name": "Challenges",
+                "topic_name": "What needs to be improved in the video.",
                 "file_data": {
                     "bucketname": "app-blob-storage",
                     "foldername": "Agricultural problems in haryana uuid-1234567890-client",
@@ -141,7 +154,7 @@ private sessionlist=[{
                 "isUploaded": true
             },
             {
-                "topic_name": "Expectation",
+                "topic_name": "What do you want to learn more.",
                 "file_data": {
                     "bucketname": "app-blob-storage",
                     "foldername": "Agricultural problems in haryana uuid-1234567890-client",
@@ -151,7 +164,7 @@ private sessionlist=[{
                 "isUploaded": true
             },
             {
-                "topic_name": "Actions",
+                "topic_name": "What are the challenges in general.",
                 "isUploaded": false
             }
         ]
@@ -161,7 +174,7 @@ private sessionlist=[{
         "created": "Mon Feb 01 2020 19:01:11 GMT+0530 (India Standard Time)",
         "isUploaded": false,
         "topics": [{
-                "topic_name": "Challenges",
+                "topic_name": "What needs to be improved in the video.",
                 "file_data": {
                     "bucketname": "app-blob-storage",
                     "foldername": "Agricultural problems in haryana uuid-1234567890-client",
@@ -171,7 +184,7 @@ private sessionlist=[{
                 "isUploaded": true
             },
             {
-                "topic_name": "Expectation",
+                "topic_name": "What do you want to learn more.",
                 "file_data": {
                     "bucketname": "app-blob-storage",
                     "foldername": "Agricultural problems in haryana uuid-1234567890-client",
@@ -181,7 +194,7 @@ private sessionlist=[{
                 "isUploaded": true
             },
             {
-                "topic_name": "Actions",
+                "topic_name": "What are the challenges in general.",
                 "isUploaded": false
             }
         ]
@@ -191,7 +204,7 @@ private sessionlist=[{
         "created": "Mon Feb 01 2020 19:01:11 GMT+0530 (India Standard Time)",
         "isUploaded": false,
         "topics": [{
-                "topic_name": "Challenges",
+                "topic_name": "What needs to be improved in the video.",
                 "file_data": {
                     "bucketname": "app-blob-storage",
                     "foldername": "Agricultural problems in haryana uuid-1234567890-client",
@@ -201,7 +214,7 @@ private sessionlist=[{
                 "isUploaded": true
             },
             {
-                "topic_name": "Expectation",
+                "topic_name": "What do you want to learn more.",
                 "file_data": {
                     "bucketname": "app-blob-storage",
                     "foldername": "Agricultural problems in haryana uuid-1234567890-client",
@@ -211,7 +224,7 @@ private sessionlist=[{
                 "isUploaded": true
             },
             {
-                "topic_name": "Actions",
+                "topic_name": "What are the challenges in general.",
                 "isUploaded": false
             }
         ]
@@ -221,7 +234,7 @@ private sessionlist=[{
         "created": "Mon Feb 01 2020 19:01:11 GMT+0530 (India Standard Time)",
         "isUploaded": false,
         "topics": [{
-                "topic_name": "Challenges",
+                "topic_name": "What needs to be improved in the video.",
                 "file_data": {
                     "bucketname": "app-blob-storage",
                     "foldername": "Agricultural problems in haryana uuid-1234567890-client",
@@ -231,7 +244,7 @@ private sessionlist=[{
                 "isUploaded": true
             },
             {
-                "topic_name": "Expectation",
+                "topic_name": "What do you want to learn more.",
                 "file_data": {
                     "bucketname": "app-blob-storage",
                     "foldername": "Agricultural problems in haryana uuid-1234567890-client",
@@ -241,7 +254,7 @@ private sessionlist=[{
                 "isUploaded": true
             },
             {
-                "topic_name": "Actions",
+                "topic_name": "What are the challenges in general.",
                 "isUploaded": false
             }
         ]
@@ -251,14 +264,14 @@ private sessionlist=[{
   }
 
 getSessionList() {
-  return this.sessionlist;
+return this.sessionlist;
 }
 
   getSharedData() {
     return this.sharedData;
   }
-  createId(){
-    return (""+new Date().getTime());
+  createUniqueId(){
+      return UUID.UUID();
   }
   getSessionById(id) {
     const sessionData = this.sessionlist.filter((el)=>{
@@ -268,7 +281,7 @@ getSessionList() {
   }
 
   addNewSession(sessionData) {
-    this.sessionlist.push(sessionData);
+    this.sessionlist.unshift(sessionData);
   }
 
   setSharedData(sessionData: object) {
@@ -283,7 +296,7 @@ getSessionList() {
       return element.topic_name===topicName;
       });
        topicData= topicData[0];
-       topicData['isUploaded'] = true;
+       topicData['isUploaded'] = false;
       topicData['file_data'] = {};
       topicData['file_data']['bucketname'] = "app-blob-storage";
       topicData['file_data']['foldername'] = file;
@@ -291,4 +304,14 @@ getSessionList() {
       topicData['file_data']['ismono'] = false;
       console.log("New Session Data : ",sessionData);
   }
+
+  uploadTopicDataToCloud(sessionId, topicId) {
+      const sessionData = this.getSessionById(sessionId)[0];
+          let topicData:any = sessionData['topics'].filter((element)=>{
+      return element.topic_name===topicId;
+      });
+       topicData= topicData[0];
+       topicData['isUploaded'] = true;
+  }
+
 }

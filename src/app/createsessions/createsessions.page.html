@@ -25,7 +25,7 @@
     <form class="ion-padding" (ngSubmit)="logForm()">
       <!-- <ion-item> -->
 
-        <!-- <ion-input
+      <!-- <ion-input
           value="{{ sessionDate | date: longDate }}"
           disabled
         ></ion-input> -->
@@ -38,7 +38,8 @@
           placeholder=" Enter Session Name"
           type="text"
           [(ngModel)]="name"
-          [ngModelOptions]="{standalone: true}"
+          [ngModelOptions]="{ standalone: true }"
+          #sessionInput
         ></ion-input>
       </ion-item>
       <div class="createbtn">

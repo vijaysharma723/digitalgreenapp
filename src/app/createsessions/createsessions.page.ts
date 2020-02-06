@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {SharedDataService} from '../shared-data.service';
 
@@ -8,12 +8,16 @@ import {SharedDataService} from '../shared-data.service';
   styleUrls: ['./createsessions.page.scss'],
 })
 export class CreatesessionsPage implements OnInit {
-sessionDate=new Date();
-name: string;
-  constructor(public router: Router, private sharedDataSevice: SharedDataService) { }
 
+  @ViewChild('sessionInput',{static: false}) sessionInput
+
+sessionDate=new Date();
+name: string = "farming_" + new Date().getTime();
+  constructor(public router: Router, private sharedDataSevice: SharedDataService) { }
   ngOnInit() {
-  }
+    setTimeout(() => {
+      this.sessionInput.setFocus();
+    },0);  }
 
   logForm() {
     console.log('Name entered : ',this.name);
@@ -33,13 +37,13 @@ name: string;
 createNewSession(name) {
         const newSessionDetails = {};
       newSessionDetails['name'] = name;
-      newSessionDetails['sessionid'] = this.sharedDataSevice.createId();
+      newSessionDetails['sessionid'] = this.sharedDataSevice.createUniqueId();
       newSessionDetails['created'] = new Date();
       newSessionDetails['isUploaded'] = false;
       newSessionDetails['topics'] = 
-      [{"topic_name": "Challenges","isUploaded": false},
-      {"topic_name": "Expectation","isUploaded": false},
-      {"topic_name": "Actions","isUploaded": false}];
+      [{"topic_name": "What needs to be improved in the video.","isUploaded": false},
+      {"topic_name": "What do you want to learn more.","isUploaded": false},
+      {"topic_name": "What are the challenges in general.","isUploaded": false}];
 
       return newSessionDetails;
 }

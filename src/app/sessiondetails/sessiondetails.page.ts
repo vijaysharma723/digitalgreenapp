@@ -23,4 +23,7 @@ sessdata;
     });  
     }
 
+UploadTopicFile(topicName) {
+  this.sharedDataSevice.uploadTopicDataToCloud(this.sessdata.sessionid, topicName);
+}
 }

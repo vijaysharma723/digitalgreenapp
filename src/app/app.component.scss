@@ -17,4 +17,14 @@ p.footericontext {
 }
 .footericon {
     text-align: center;
+        width: 50%;
+        outline:none;
+        cursor: pointer;
+}
+.active {
+    border-bottom: 8px solid #b7cc1a;
+}
+
+.menuactive {
+    border-left: 8px solid #b7cc1a;
 }
