@@ -32,5 +32,8 @@
         </ion-button>
       </div>
     </div>
+    <div *ngIf="!sessionlist.length>0">
+      <p class="noresults">No Results Found</p>
+    </div>
   </div>
 </ion-content>
