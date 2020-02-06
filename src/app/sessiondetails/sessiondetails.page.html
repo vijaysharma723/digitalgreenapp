@@ -10,8 +10,17 @@
   <ion-title class="textcenter">Session Details</ion-title>
 </ion-toolbar>
 
+<br/>
 <ion-content class="ion-padding">
-  <h1>{{sessdata.name}}</h1>
+  <div class="uploadstatus">
+    <h1>{{sessdata.name}}</h1>
+    <ion-button *ngIf="!sessdata.isUploaded" disabled size="small">
+        <ion-icon slot="icon-only" name="cloud-upload"></ion-icon>
+    </ion-button>
+    <ion-button *ngIf="sessdata.isUploaded" disabled size="small">
+        <ion-icon slot="icon-only" name="checkmark-circle"></ion-icon>
+    </ion-button>
+  </div>
 
   <h5>{{ sessdata.created | date: fullDate }}</h5>
 <br/>

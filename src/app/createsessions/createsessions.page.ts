@@ -17,7 +17,8 @@ name: string = "farming_" + new Date().getTime();
   ngOnInit() {
     setTimeout(() => {
       this.sessionInput.setFocus();
-    },0);  }
+    },0);  
+    }
 
   logForm() {
     console.log('Name entered : ',this.name);
