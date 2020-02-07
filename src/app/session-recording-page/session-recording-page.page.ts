@@ -2,17 +2,17 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { SharedDataService } from "../shared-data.service";
 import { Router } from "@angular/router";
-import { Media, MediaObject } from "@ionic-native/media/ngx";
-import { Storage } from "@ionic/storage";
+import { File , FileEntry} from "@ionic-native/File/ngx";
 import {
   MediaCapture,
   MediaFile,
   CaptureError,
   CaptureAudioOptions
 } from "@ionic-native/media-capture/ngx";
+import { Media, MediaObject } from "@ionic-native/media/ngx";
 import { Platform } from "@ionic/angular";
 
-const MEDIA_STORAGE_KEY = "mediafiles";
+const MEDIA_FOLDER_NAME = "digitalgreenmediafiles";
 @Component({
   selector: "app-session-recording-page",
   templateUrl: "./session-recording-page.page.html",
@@ -22,67 +22,82 @@ export class SessionRecordingPagePage implements OnInit {
   sessionData: object;
   sessionid: string;
   topicName: string;
-  recordStarted: boolean = false;
-  file: MediaObject;
+  recordStarted = false;
   filepath: string;
   storageDirectory: any;
+  files = [];
   constructor(
     public router: Router,
     private route: ActivatedRoute,
     private sharedDataSevice: SharedDataService,
-    private media: Media,
-    private platform: Platform,
-    private storage: Storage
+    private plt: Platform,
+    private file: File,
+    private mediacapture: MediaCapture,
+    private media: Media
   ) {}
 
   ngOnInit() {
+    const path = this.file.dataDirectory;
+    this.plt.ready().then(() => {
+      this.file.checkDir(path, MEDIA_FOLDER_NAME).then(
+        data => {
+          this.loadFiles();
+        },
+        err => {
+          this.file.createDir(path, MEDIA_FOLDER_NAME, false).then(() => {
+            this.loadFiles();
+          });
+        }
+      );
+    });
+
     this.route.params.subscribe(params => {
       console.log("params", params);
-      this.sessionid = params["sessionid"];
+      this.sessionid = params.sessionid;
       const filteredData = this.sharedDataSevice.getSessionById(this.sessionid);
       this.sessionData = filteredData.length > 0 ? filteredData[0] : null;
-      this.topicName = params["topicname"];
+      this.topicName = params.topicname;
     });
+  }
+  loadFiles() {
+    this.file.listDir(this.file.dataDirectory, MEDIA_FOLDER_NAME).then(res => {
+      this.files = res;
+      console.log("files: ", res);
+    });
+  }
+  copyFilesToLocal(fullpath) {
+    console.log("full path: ", fullpath);
+    let mediapath: string = fullpath;
+    if ( mediapath.indexOf("file://") < 0 ) {
+      mediapath = "file://" + fullpath;
+    }
+    const ext = mediapath.split(".").pop();
+    const newname = this.sessionid + "_" + this.topicName.split(" ").join("") + "." + ext;
+    const oldname = mediapath.substr(mediapath.lastIndexOf("/") + 1 );
+
+    const copyFrom = mediapath.substr(0, mediapath.lastIndexOf("/") + 1 );
+    const copyTo = this.file.dataDirectory + MEDIA_FOLDER_NAME;
+    this.file.copyFile(copyFrom, oldname, copyTo, newname);
+  }
+  playAudio(f: FileEntry) {
+    if (this.files[0].name.indexOf(".wav") > -1) {
+      const path = f.nativeURL.replace(/^file:\/\//, '');
+      const audiofile: MediaObject = this.media.create(path);
+      audiofile.play();
+    }
   }
   stopRecording() {
-    this.file.stopRecord();
-    this.saveRecording(this.filepath);
+    // this.file.stopRecord();
+    // this.saveRecording(this.filepath);
   }
-  startRecording(
-    data = {
-      username: "deepak",
-      sessionid: "1580986703204",
-      topicname: "improvement"
-    }
-  ) {
-    debugger;
-    this.recordStarted = true;
-    let key = data.username + "_" + data.sessionid + "_" + data.topicname;
-    this.filepath =
-      data.username + "_" + data.sessionid + "_" + data.topicname + ".m4a";
-    console.log("driver: ", this.storage.driver);
-    // set a key/value
-
-    this.storage.set(MEDIA_STORAGE_KEY, JSON.stringify(this.filepath));
-
-    // Or to get a key/value pair
-    this.storage.get(MEDIA_STORAGE_KEY).then(val => {
-      debugger;
-      console.log("Your age is", val);
+  startRecording() {
+    this.mediacapture.captureAudio({ limit: 3 }).then((data: MediaFile[]) => {
+      if ( data) {
+       this.copyFilesToLocal(data[0].fullPath);
+      }
+    }, (err: CaptureError) => {
+       console.log("error while start recording", err);
     });
-    this.file = this.media.create(this.filepath);
-    this.file.startRecord();
-    this.file.onStatusUpdate.subscribe(status => console.log(status)); // fires when file status changes
-
-    this.file.onSuccess.subscribe(() => console.log("Action is successful"));
-
-    this.file.onError.subscribe(error => console.log("Error!", error));
-
-    // let options: CaptureAudioOptions = { limit: 3, duration: 180 };
-    // this.mediaCapture.captureAudio(options).then(
-    //   (data: MediaFile[]) => console.log(data),
-    //   (err: CaptureError) => console.error(err)
-    // );
   }
   saveRecording(filename) {
     if (this.recordStarted) {

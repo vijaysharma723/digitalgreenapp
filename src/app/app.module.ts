@@ -9,6 +9,8 @@ import { StatusBar } from "@ionic-native/status-bar/ngx";
 import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app-routing.module";
 import { IonicStorageModule } from "@ionic/storage";
+import { File } from "@ionic-native/File/ngx";
+import { MediaCapture } from "@ionic-native/media-capture/ngx";
 import { Media } from "@ionic-native/media/ngx";
 
 @NgModule({
@@ -19,15 +21,16 @@ import { Media } from "@ionic-native/media/ngx";
     IonicModule.forRoot(),
     AppRoutingModule,
     IonicStorageModule.forRoot({
-      name: "digitalgreendb",
-      driverOrder: ["localstorage"]
+      name: "digitalgreendb"
     })
   ],
   providers: [
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    Media
+    Media,
+    File,
+    MediaCapture
   ],
   bootstrap: [AppComponent]
 })

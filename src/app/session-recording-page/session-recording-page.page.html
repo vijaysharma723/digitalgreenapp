@@ -33,6 +33,10 @@
       </span>
       <p>Start Recording</p>
     </div>
+    <div class="startrecording playrecording" tappable (click)="playAudio()">
+        <ion-icon name="play-circle" slot="start"  color="primary"></ion-icon>
+      <p>Play Recording</p>
+    </div>
     <div class="stoprecording" tappable (click)="stopRecording()">
       <span class="circleborder">
         <span class="square"> </span>
