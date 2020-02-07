@@ -62,17 +62,9 @@ private userlist = [{
 
 async validateUserDetails(username, password) {
 
-console.log(username);
-console.log(password);
 const users = await this.getUserList();
-console.log("users --> ", users);
-console.log("users length --> ", users.length);
-console.log("users of zero --> ", users[0]);
   for (let i=0; i< users.length; i++) {
     const user = users[i];
-    // console.log(user);
-    console.log(user['username']);
-console.log(user['password']);
     if(user.username===username.trim() && user.password===password) {
       const userdetails = { ...user };
       userdetails["sessiontoken"] = "" + this.masterToken;
