@@ -20,7 +20,7 @@ password: string;
 // submit() {
 //   console.log();
 // }
-userLogin() {
+async userLogin() {
   if(!this.username) {
     console.log("Please enter Username");
   }
@@ -28,9 +28,9 @@ userLogin() {
     console.log("Please enter Password");
   }
   else {
-  const status = this.userService.validateUserDetails(this.username, this.password);
+  const status = await this.userService.validateUserDetails(this.username, this.password);
+  console.log(status);
   if(status === 1) {
-    this.userService.createSession();
     console.log("User validated");
     this.username = "";
     this.password = "";

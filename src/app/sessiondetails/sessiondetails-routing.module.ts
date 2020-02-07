@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
 import { SessiondetailsPage } from './sessiondetails.page';
 
 const routes: Routes = [
