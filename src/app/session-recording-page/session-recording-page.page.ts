@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { SharedDataService } from "../shared-data.service";
 import { Router } from "@angular/router";
-import { File , FileEntry} from "@ionic-native/File/ngx";
+import { File, FileEntry } from "@ionic-native/File/ngx";
 import {
   MediaCapture,
   MediaFile,
@@ -11,7 +11,7 @@ import {
 } from "@ionic-native/media-capture/ngx";
 import { Media, MediaObject } from "@ionic-native/media/ngx";
 import { Platform } from "@ionic/angular";
-
+import { Storage } from "@ionic/storage";
 const MEDIA_FOLDER_NAME = "digitalgreenmediafiles";
 @Component({
   selector: "app-session-recording-page",
@@ -26,6 +26,10 @@ export class SessionRecordingPagePage implements OnInit {
   filepath: string;
   storageDirectory: any;
   files = [];
+  fileName: string;
+  audio: MediaObject;
+  recording: boolean;
+  audioList = [];
   constructor(
     public router: Router,
     private route: ActivatedRoute,
@@ -33,7 +37,8 @@ export class SessionRecordingPagePage implements OnInit {
     private plt: Platform,
     private file: File,
     private mediacapture: MediaCapture,
-    private media: Media
+    private media: Media,
+    private storage: Storage
   ) {}
 
   ngOnInit() {
@@ -66,22 +71,28 @@ export class SessionRecordingPagePage implements OnInit {
     });
   }
   copyFilesToLocal(fullpath) {
+    debugger;
+    // alert("this full path:");
+    // alert(fullpath);
+
     console.log("full path: ", fullpath);
     let mediapath: string = fullpath;
-    if ( mediapath.indexOf("file://") < 0 ) {
+    if (mediapath.indexOf("file://") < 0) {
       mediapath = "file://" + fullpath;
     }
     const ext = mediapath.split(".").pop();
-    const newname = this.sessionid + "_" + this.topicName.split(" ").join("") + "." + ext;
-    const oldname = mediapath.substr(mediapath.lastIndexOf("/") + 1 );
+    const newname =
+      this.sessionid + "_" + this.topicName.split(" ").join("") + "." + ext;
+    const oldname = mediapath.substr(mediapath.lastIndexOf("/") + 1);
 
-    const copyFrom = mediapath.substr(0, mediapath.lastIndexOf("/") + 1 );
+    const copyFrom = mediapath.substr(0, mediapath.lastIndexOf("/") + 1);
     const copyTo = this.file.dataDirectory + MEDIA_FOLDER_NAME;
     this.file.copyFile(copyFrom, oldname, copyTo, newname);
   }
   playAudio(f: FileEntry) {
+    // alert("this is playing");
     if (this.files[0].name.indexOf(".wav") > -1) {
-      const path = f.nativeURL.replace(/^file:\/\//, '');
+      const path = f.nativeURL.replace(/^file:\/\//, "");
       const audiofile: MediaObject = this.media.create(path);
       audiofile.play();
     }
@@ -90,14 +101,75 @@ export class SessionRecordingPagePage implements OnInit {
     // this.file.stopRecord();
     // this.saveRecording(this.filepath);
   }
-  startRecording() {
-    this.mediacapture.captureAudio({ limit: 3 }).then((data: MediaFile[]) => {
-      if ( data) {
-       this.copyFilesToLocal(data[0].fullPath);
+  stopMediaRecording() {
+    // alert("stopping");
+    this.audio.stopRecord();
+    this.recordStarted = false;
+    let data = { filename: this.fileName };
+    this.audioList.push(data);
+    this.storage.set("audiolist", JSON.stringify(this.audioList));
+    this.recording = false;
+    // alert(this.audioList);
+    this.getAudioList();
+  }
+  mediaPlayAudio(file, idx) {
+    // alert("media playing");
+    if (this.plt.is("ios")) {
+      this.filepath =
+        this.file.documentsDirectory.replace(/file:\/\//g, "") + file;
+      this.audio = this.media.create(this.filepath);
+    } else if (this.plt.is("android")) {
+      this.filepath =
+        this.file.externalDataDirectory.replace(/file:\/\//g, "") + file;
+      // alert("media file path:  - ");
+      // alert(this.filepath);
+
+      this.audio = this.media.create(this.filepath);
+    }
+    this.audio.play();
+    this.audio.setVolume(0.8);
+  }
+  getAudioList() {
+    this.storage.get("audiolist").then(res => {
+      if (res) {
+        this.audioList = JSON.parse(res);
+        // alert(" get data");
+        // alert(JSON.stringify(this.audioList));
+
+        console.log(this.audioList);
+      } else {
+        // alert("didn't get data");
       }
-    }, (err: CaptureError) => {
-       console.log("error while start recording", err);
     });
+  }
+  startMediaRecording() {
+    if (this.plt.is("ios")) {
+      this.fileName = "record" + new Date().getTime() + ".wav";
+      this.filepath =
+        this.file.documentsDirectory.replace(/file:\/\//g, "") + this.fileName;
+      this.audio = this.media.create(this.filepath);
+    } else if (this.plt.is("android")) {
+      this.fileName = "record" + new Date().getTime() + ".wav";
+      this.filepath =
+        this.file.externalDataDirectory.replace(/file:\/\//g, "") +
+        this.fileName;
+      this.audio = this.media.create(this.filepath);
+    }
+    this.recordStarted = true;
+    this.audio.startRecord();
+    this.recording = true;
+  }
+  startRecording() {
+    this.mediacapture.captureAudio({ limit: 3 }).then(
+      (data: MediaFile[]) => {
+        if (data) {
+          this.copyFilesToLocal(data[0].fullPath);
+        }
+      },
+      (err: CaptureError) => {
+        console.log("error while start recording", err);
+      }
+    );
   }
   saveRecording(filename) {
     if (this.recordStarted) {

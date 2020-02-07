@@ -25,25 +25,48 @@
     </h3>
   </div>
   <div class="recordingbuttons">
-    <div class="startrecording" tappable (click)="startRecording()">
+    <!-- <div class="startrecording" tappable (click)="startRecording()">
       <span class="circleborder">
         <span class="dot">
           <span class="spantext">REC</span>
         </span>
       </span>
       <p>Start Recording</p>
+    </div> -->
+    <div class="startrecording playrecording" tappable (click)="startMediaRecording()">
+      <ion-icon name="microphone" slot="start" color="primary"></ion-icon>
+      <p>Media Recording</p>
     </div>
-    <div class="startrecording playrecording" tappable (click)="playAudio()">
-        <ion-icon name="play-circle" slot="start"  color="primary"></ion-icon>
+    <div class="startrecording playrecording" tappable (click)="stopMediaRecording()">
+      <ion-icon name="hand" slot="start" color="primary"></ion-icon>
+      <p>Stop Media Recording</p>
+    </div>
+    <!-- <div class="startrecording playrecording" tappable (click)="playAudio()">
+      <ion-icon name="play-circle" slot="start" color="primary"></ion-icon>
       <p>Play Recording</p>
-    </div>
-    <div class="stoprecording" tappable (click)="stopRecording()">
+    </div> -->
+    <!-- <div class="stoprecording" tappable (click)="stopRecording()">
       <span class="circleborder">
         <span class="square"> </span>
       </span>
       <p>Stop Recording</p>
+    </div> -->
+  </div>
+  <div class="sessionlist">
+    <div class="sessiondetails">
+      <div class="sections" *ngFor="let audio of audioList; index as i;">
+        <div class="sectionname">
+          <p>{{audio.filename}}</p>
+        </div>
+        <div class="actions">
+          <ion-button size="small" color="primary" (click)="mediaPlayAudio(audio.filename, i)">
+            <ion-icon size="small" slot="icon-only" name="play"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
     </div>
   </div>
+
   <!-- <div class="savebtn">
           <ion-button
             class="custombtn"
