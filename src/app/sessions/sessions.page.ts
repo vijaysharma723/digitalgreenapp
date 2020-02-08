@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {SharedDataService} from '../shared-data.service';
+import {SessionService} from './../services/session/session.service';
 
 @Component({
   selector: 'app-sessions',
@@ -7,20 +7,14 @@ import {SharedDataService} from '../shared-data.service';
   styleUrls: ['./sessions.page.scss'],
 })
 export class SessionsPage implements OnInit {
-  constructor(private sharedDataService: SharedDataService){
+  constructor(private sessionService: SessionService){
 
   }
-sessionlist;
+sessionlist = [];
 
-  ngOnInit() {
-    this.sessionlist = this.sharedDataService.getSessionList();
+  async ngOnInit() {
+    const sessions = await this.sessionService.getSessionList();
+    if(!!sessions)
+    this.sessionlist = sessions;
   }
-  navigateToDetail(session) {
-    this.sharedDataService.setSharedData(session.sessionid);
-  }
-
-      openMenu() {
-      document.querySelector('ion-menu-controller')
-        .open();
-    }
 }

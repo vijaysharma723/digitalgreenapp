@@ -67,14 +67,12 @@ const users = await this.getUserList();
     const user = users[i];
     if(user.username===username.trim() && user.password===password) {
       const userdetails = { ...user };
-      userdetails["sessiontoken"] = "" + this.masterToken;
+      userdetails["sessiontoken"] = await this.getMasterToken();
       this.setLoggedInUser(userdetails);
       return 1;
-      break;
     }
     else if(user.username===username.trim()) {
       return 0;
-      break;
     }
     return -1;
   }
@@ -102,6 +100,10 @@ async getLoggedInUser() {
     }else{
       return false;
     }
+}
+
+async getMasterToken() {
+      return await this.storageService.get('mastertoken');
 }
 
 endSession() {

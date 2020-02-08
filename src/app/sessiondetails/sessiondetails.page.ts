@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {SharedDataService} from '../shared-data.service';
+import {SessionService} from './../services/session/session.service';
 
 @Component({
   selector: 'app-sessiondetails',
@@ -8,22 +8,18 @@ import {SharedDataService} from '../shared-data.service';
   styleUrls: ['./sessiondetails.page.scss'],
 })
 export class SessiondetailsPage implements OnInit {
-sessdata;
-  constructor(private route: ActivatedRoute, private sharedDataSevice: SharedDataService) {
-         this.sessdata = this.sharedDataSevice.getSharedData();
+  sessionData;
+  constructor(private route: ActivatedRoute, private sessionService: SessionService) {
    }
 
-  ngOnInit() {
-    this.route.params.subscribe((params)=>{
-      console.log("params",params);
+  async ngOnInit() {
+    await this.route.params.subscribe(async (params)=>{
       let sessionid = params['sessionid'];
-      const filteredData = this.sharedDataSevice.getSessionById(sessionid);
-      this.sessdata = (filteredData.length>0) ? filteredData[0] : null;
-      console.log('Session Data : ',this.sessdata);
+      this.sessionData = await this.sessionService.getSessionById(sessionid);
     });  
     }
 
-UploadTopicFile(topicName) {
-  this.sharedDataSevice.uploadTopicDataToCloud(this.sessdata.sessionid, topicName);
-}
+// UploadTopicFile(topicName) {
+//   this.sharedDataSevice.uploadTopicDataToCloud(this.sessdata.sessionid, topicName);
+// }
 }

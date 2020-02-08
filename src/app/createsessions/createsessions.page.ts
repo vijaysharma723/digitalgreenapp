@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
-import {SharedDataService} from '../shared-data.service';
+import {SessionService} from './../services/session/session.service';
+import {ToasterService} from './../services/toaster/toaster.service';
 
 @Component({
   selector: 'app-createsessions',
@@ -13,32 +14,34 @@ export class CreatesessionsPage implements OnInit {
 
 sessionDate=new Date();
 name: string = "farming_" + new Date().getTime();
-  constructor(public router: Router, private sharedDataSevice: SharedDataService) { }
+  constructor(public router: Router, private sessionService: SessionService, private toaster: ToasterService) { }
+  
   ngOnInit() {
     setTimeout(() => {
       this.sessionInput.setFocus();
     },0);  
     }
 
-  logForm() {
-    console.log('Name entered : ',this.name);
+  async logForm() {
     if(this.name) {
 
-      const newSession = this.createNewSession(this.name);
-      this.sharedDataSevice.addNewSession(newSession);
-
-      // console.log(this.sharedDataSevice.getSessionList());
-
-      this.router.navigate(['/sessiondetails', newSession['sessionid']]);
+      const newSession = await this.createNewSession(this.name);
+      const result = await this.sessionService.addNewSession(newSession);
+      if(result) {
+        this.toaster.present({text:"Session created successfully.", colour:"medium"});
+        this.router.navigate(['/sessiondetails', newSession['sessionid']]);
+      }
+      else {
+        this.toaster.present({text:"Unable to create Session.", colour:"danger"});
+      }
     } else {
-          console.log("Please enter a Name");
     }
   }
 
-createNewSession(name) {
+async createNewSession(name) {
         const newSessionDetails = {};
       newSessionDetails['name'] = name;
-      newSessionDetails['sessionid'] = this.sharedDataSevice.createUniqueId();
+      newSessionDetails['sessionid'] = await this.sessionService.createUniqueId();
       newSessionDetails['created'] = new Date();
       newSessionDetails['isUploaded'] = false;
       newSessionDetails['topics'] = 

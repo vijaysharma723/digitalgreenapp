@@ -35,11 +35,11 @@
       <ion-item>
         <ion-input
           class="custominput"
+          #sessionInput
           placeholder=" Enter Session Name"
           type="text"
           [(ngModel)]="name"
-          [ngModelOptions]="{ standalone: true }"
-          #sessionInput
+          name="name"
         ></ion-input>
       </ion-item>
       <div class="createbtn">

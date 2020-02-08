@@ -13,10 +13,12 @@ export class ToasterService {
     async present({text,place,colour}:
     {text:string,
     place?:'top'|'bottom'|'middle',
-    colour:"primary"|"secondary"|"tertiary"|"success"|"warning"|"danger"|"light"|"medium"|"dark"}) {
-    if(!!place) {
+    colour:"primary"|"secondary"|"tertiary"|"success"|"warning"|"danger"|"light"|"medium"|"dark"}) 
+  {
+    if(!!!place) {  
       place = 'top';
     }
+
     const toast = await this.toastController.create({
       message: text,
       position: place,

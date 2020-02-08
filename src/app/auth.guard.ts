@@ -15,7 +15,6 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Promise<boolean> {
-    debugger;
     const loggedInUserDetails = await this.userService.getLoggedInUser();
     console.log("Logged In Users : ", loggedInUserDetails);
     if(!!loggedInUserDetails)

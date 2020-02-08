@@ -18,36 +18,27 @@ password: string;
   ngOnInit() {
   }
 
-// submit() {
-//   console.log();
-// }
 async userLogin() {
   if(!this.username) {
     this.toaster.present({text:"Please enter Username.", colour:"danger"});
-    // console.log("Please enter Username");
   }
   else if(!this.password) {
     this.toaster.present({text:"Please enter Password.", colour:"danger"});
-    // console.log("Please enter Password");
   }
   else {
   const status = await this.userService.validateUserDetails(this.username, this.password);
-  console.log(status);
   if(status === 1) {
-    this.toaster.present({text:"Logged in Successfully.", colour:"primary"});
-    console.log("User validated");
+    this.toaster.present({text:"Logged in Successfully.", colour:"medium"});
     this.username = "";
     this.password = "";
     this.router.navigate(['/sessions']);
   }
   else if(status === 0) {
     this.toaster.present({text:"Please enter correct Password.", colour:"danger"});
-    // console.log("User Password incorrect");
     this.password = "";
   }
   else {
     this.toaster.present({text:"Please enter correct Username and Password.", colour:"danger"});
-    // console.log("Username and password incorrect");
     this.username = "";
     this.password = "";
   }
