@@ -16,7 +16,7 @@
 </ion-toolbar>
 
 <ion-content padding>
-  <h1>{{sessionData.name}}</h1>
+  <h1>{{sessionData?.name}}</h1>
   <p class="sessioncategory">{{topicName}}</p>
   <div class="recordingcont">
     <img src="/assets/images/record.gif" *ngIf="recordStarted" />
@@ -38,7 +38,7 @@
       <p>Media Recording</p>
     </div>
     <div class="startrecording playrecording" tappable (click)="stopMediaRecording()">
-      <ion-icon name="hand" slot="start" color="primary"></ion-icon>
+      <ion-icon name="hand" slot="start" color="danger"></ion-icon>
       <p>Stop Media Recording</p>
     </div>
     <!-- <div class="startrecording playrecording" tappable (click)="playAudio()">

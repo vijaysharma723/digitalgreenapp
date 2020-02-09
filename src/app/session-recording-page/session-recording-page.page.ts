@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { SharedDataService } from "../shared-data.service";
 import { Router } from "@angular/router";
@@ -12,14 +12,21 @@ import {
 import { Media, MediaObject } from "@ionic-native/media/ngx";
 import { Platform } from "@ionic/angular";
 import { Storage } from "@ionic/storage";
+import { ISession } from "../interfaces/ISession";
 const MEDIA_FOLDER_NAME = "digitalgreenmediafiles";
 @Component({
   selector: "app-session-recording-page",
   templateUrl: "./session-recording-page.page.html",
   styleUrls: ["./session-recording-page.page.scss"]
 })
-export class SessionRecordingPagePage implements OnInit {
-  sessionData: object;
+export class SessionRecordingPagePage implements OnInit, OnDestroy {
+  sessionData: ISession = {
+    sessionid: "",
+    name: "",
+    created: "",
+    isUploaded: false,
+    topics: []
+  };
   sessionid: string;
   topicName: string;
   recordStarted = false;
@@ -28,8 +35,8 @@ export class SessionRecordingPagePage implements OnInit {
   files = [];
   fileName: string;
   audio: MediaObject;
-  recording: boolean;
   audioList = [];
+  sessionname: any;
   constructor(
     public router: Router,
     private route: ActivatedRoute,
@@ -60,7 +67,9 @@ export class SessionRecordingPagePage implements OnInit {
       console.log("params", params);
       this.sessionid = params.sessionid;
       const filteredData = this.sharedDataSevice.getSessionById(this.sessionid);
-      this.sessionData = filteredData.length > 0 ? filteredData[0] : null;
+      this.sessionData =
+        filteredData.length > 0 ? filteredData[0] : this.sessionData;
+      this.sessionname = this.sessionData.name;
       this.topicName = params.topicname;
     });
   }
@@ -97,10 +106,6 @@ export class SessionRecordingPagePage implements OnInit {
       audiofile.play();
     }
   }
-  stopRecording() {
-    // this.file.stopRecord();
-    // this.saveRecording(this.filepath);
-  }
   stopMediaRecording() {
     // alert("stopping");
     this.audio.stopRecord();
@@ -108,7 +113,7 @@ export class SessionRecordingPagePage implements OnInit {
     let data = { filename: this.fileName };
     this.audioList.push(data);
     this.storage.set("audiolist", JSON.stringify(this.audioList));
-    this.recording = false;
+    this.updateFileUrl(this.fileName);
     // alert(this.audioList);
     this.getAudioList();
   }
@@ -157,28 +162,17 @@ export class SessionRecordingPagePage implements OnInit {
     }
     this.recordStarted = true;
     this.audio.startRecord();
-    this.recording = true;
   }
-  startRecording() {
-    this.mediacapture.captureAudio({ limit: 3 }).then(
-      (data: MediaFile[]) => {
-        if (data) {
-          this.copyFilesToLocal(data[0].fullPath);
-        }
-      },
-      (err: CaptureError) => {
-        console.log("error while start recording", err);
-      }
+
+  updateFileUrl(filename) {
+    this.sharedDataSevice.updateSessionTopicData(
+      this.sessionid,
+      this.topicName,
+      filename
     );
+    this.router.navigate(["/sessiondetails", this.sessionid]);
   }
-  saveRecording(filename) {
-    if (this.recordStarted) {
-      this.sharedDataSevice.updateSessionTopicData(
-        this.sessionid,
-        this.topicName,
-        filename
-      );
-      this.router.navigate(["/sessiondetails", this.sessionid]);
-    }
+  ngOnDestroy() {
+    this.stopMediaRecording();
   }
 }

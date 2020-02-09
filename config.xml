@@ -114,4 +114,5 @@
     <plugin name="cordova-plugin-media" spec="^5.0.3" />
     <plugin name="cordova-sqlite-storage" spec="^4.0.0" />
     <engine name="android" spec="8.1.0" />
+    <engine name="ios" spec="4.5.5" />
 </widget>

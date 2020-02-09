@@ -20,7 +20,7 @@
   <ion-card>
     <ion-card-header>
       <ion-card-title>New Session</ion-card-title>
-      <h5>{{ sessionDate | date: fullDate }}</h5>
+      <h5>{{ sessionDate | date: 'fullDate' }}</h5>
     </ion-card-header>
     <form class="ion-padding" (ngSubmit)="logForm()">
       <!-- <ion-item> -->
@@ -33,14 +33,8 @@
       <br />
       <ion-label class="ion-padding">Name</ion-label>
       <ion-item>
-        <ion-input
-          class="custominput"
-          placeholder=" Enter Session Name"
-          type="text"
-          [(ngModel)]="name"
-          [ngModelOptions]="{ standalone: true }"
-          #sessionInput
-        ></ion-input>
+        <ion-input class="custominput" placeholder=" Enter Session Name" type="text" [(ngModel)]="name"
+          [ngModelOptions]="{ standalone: true }" #sessionInput></ion-input>
       </ion-item>
       <div class="createbtn">
         <ion-button class="custombtn" type="submit">
