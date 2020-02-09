@@ -1,4 +1,4 @@
-import { NgModule, OnInit } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
@@ -11,6 +11,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { IonicStorageModule } from '@ionic/storage';
 import { Network } from '@ionic-native/network/ngx';
 import {Dialogs} from '@ionic-native/dialogs/ngx';
+import {File} from '@ionic-native/file/ngx';
+import {FileTransfer} from '@ionic-native/file-transfer/ngx';
+import { SyncService } from './services/sync/sync.service';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -21,6 +25,9 @@ import {Dialogs} from '@ionic-native/dialogs/ngx';
     Network,
     Dialogs,
     SplashScreen,
+    File,
+    FileTransfer,
+    SyncService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
