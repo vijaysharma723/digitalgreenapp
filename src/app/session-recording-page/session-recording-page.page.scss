@@ -5,6 +5,30 @@
     display: flex;
 }
 
+.recordedlist {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2em;
+
+    h1 {
+        margin-top: auto;
+    }
+}
+
+.sections {
+    display: flex;
+    justify-content: space-between;
+    min-height: 80px;
+    align-items: center;
+    border-bottom: 1px solid #ccc
+}
+
+.sectionname {
+    font-size: 0.9em;
+    width: 60%
+}
+
 .recordingcont {
     display: flex;
     align-items: center;
@@ -13,8 +37,9 @@
     height: 250px;
     border: 1px solid #ccc;
     text-align: center;
-    img{
-        margin-top:5em;
+
+    img {
+        margin-top: 5em;
     }
 }
 
@@ -23,20 +48,22 @@
     font-size: 18px;
 }
 
-.savebtn{
-margin:auto;
-text-align: center
+.savebtn {
+    margin: auto;
+    text-align: center
 }
 
-.textcenter{
+.textcenter {
     text-align: center;
-    margin:auto;
+    margin: auto;
 }
-.backbutton{
-    left:36px;
+
+.backbutton {
+    left: 36px;
     position: absolute;
     // z-index: 999
 }
+
 .playbutton {
     font-size: 64px;
 }
@@ -54,11 +81,11 @@ text-align: center
 
 .dot {
     margin: auto;
-  height: 35px;
-  width: 35px;
-  background-color: red;
-  border-radius: 50%;
-  line-height: 2;
+    height: 35px;
+    width: 35px;
+    background-color: red;
+    border-radius: 50%;
+    line-height: 2;
 }
 
 .spantext {
@@ -66,7 +93,13 @@ text-align: center
     font-size: 12px;
     color: white;
 }
+
 .startrecording {
+    width: 70px;
+}
+
+.playrecording ion-icon {
+    font-size: 52px !important;
     width: 70px;
 }
 
@@ -77,20 +110,32 @@ text-align: center
 .stoprecording {
     width: 70px;
 }
+
 .stoprecording p {
     font-size: 12px;
 }
 
 .square {
     margin: auto;
-  height: 22px;
-  width: 22px;
-  background-color: red;
+    height: 22px;
+    width: 22px;
+    background-color: red;
 }
 
 .recordText {
     // line-height: 9;
-    
+
     width: 100%;
 
+}
+
+.sessionlist {
+    padding: 1em 0;
+    height: auto;
+}
+
+.sessiondetails {
+    padding: 1em;
+    height: auto;
+    position: relative;
 }

@@ -31,14 +31,18 @@
   </p> -->
   <div class="sessionlist">
     <div class="sessiondetails">
-      <div class="sections" *ngFor="let topic of sessionData.topics">
-        <div class="sectionname"><p>{{topic.topic_name}}</p></div>
+      <div class="sections" *ngFor="let topic of sessdata.topics; let i=index">
+        <div class="sectionname">
+          <p>{{topic.topic_name}}</p>
+        </div>
         <div class="actions">
-          <ion-button  *ngIf="!topic.file_data" size="small"  [routerLink]='["/sessionrecordingpage",sessionData.sessionid,topic.topic_name]'>
-            <ion-icon slot="icon-only"  size="small"  name="microphone"></ion-icon>
+          <ion-button *ngIf="!topic.file_data" size="small"
+            [routerLink]='["/sessionrecordingpage",sessdata.sessionid,topic.topic_name]'>
+            <ion-icon slot="icon-only" size="small" name="microphone"></ion-icon>
           </ion-button>
-          <ion-button *ngIf="topic.file_data"  size="small" color="primary">
-            <ion-icon  size="small" slot="icon-only" name="play"></ion-icon>
+          <ion-button *ngIf="topic.file_data" size="small" color="primary"
+            (click)="mediaPlayAudio(topic.file_data.file_url, i)">
+            <ion-icon size="small" slot="icon-only" name="play"></ion-icon>
           </ion-button>
         </div>
       </div>
