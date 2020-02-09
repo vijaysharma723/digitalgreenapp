@@ -33,19 +33,11 @@
       </span>
       <p>Start Recording</p>
     </div> -->
-    <div
-      class="startrecording playrecording"
-      tappable
-      (click)="startMediaRecording()"
-    >
+    <div class="startrecording playrecording" tappable (click)="startMediaRecording()">
       <ion-icon name="microphone" slot="start" color="primary"></ion-icon>
       <p>Media Recording</p>
     </div>
-    <div
-      class="startrecording playrecording"
-      tappable
-      (click)="stopMediaRecording()"
-    >
+    <div class="startrecording playrecording" tappable (click)="stopMediaRecording()">
       <ion-icon name="hand" slot="start" color="danger"></ion-icon>
       <p>Stop Media Recording</p>
     </div>
@@ -67,11 +59,7 @@
           <p>{{audio.filename}}</p>
         </div>
         <div class="actions">
-          <ion-button
-            size="small"
-            color="primary"
-            (click)="mediaPlayAudio(audio.filename, i)"
-          >
+          <ion-button size="small" color="primary" (click)="mediaPlayAudio(audio.filename, i)">
             <ion-icon size="small" slot="icon-only" name="play"></ion-icon>
           </ion-button>
         </div>

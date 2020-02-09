@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import {SessionService} from './../services/session/session.service';
+import { SessionService } from "./../services/session/session.service";
 
 import { Router } from "@angular/router";
 import { File, FileEntry } from "@ionic-native/File/ngx";
@@ -38,6 +38,7 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
   audio: MediaObject;
   audioList = [];
   sessionname: any;
+  topicid: any;
   constructor(
     public router: Router,
     private route: ActivatedRoute,
@@ -63,13 +64,13 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
         }
       );
     });
-
-    this.route.params.subscribe(params => {
-      this.route.params.subscribe(async (params)=>{
-        this.sessionid = params['sessionid'];
-        this.topicName = params['topicname'];
-        this.sessionData = await this.sessionService.getSessionById(this.sessionid);
-      })
+    this.route.params.subscribe(async params => {
+      this.sessionid = params["sessionid"];
+      this.topicName = params["topicname"];
+      this.topicid = params["topic_id"];
+      this.sessionData = await this.sessionService.getSessionById(
+        this.sessionid
+      );
     });
   }
   loadFiles() {
@@ -105,16 +106,23 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
       audiofile.play();
     }
   }
-  stopMediaRecording() {
+  async stopMediaRecording() {
     // alert("stopping");
+    debugger;
     this.audio.stopRecord();
     this.recordStarted = false;
-    let data = { filename: this.fileName };
-    this.audioList.push(data);
-    this.storage.set("audiolist", JSON.stringify(this.audioList));
-    this.sessionService.updateSessionTopicData(this.sessionid, this.topicName, this.fileName);
+    this.audio.release();
+    // let data = { filename: this.fileName };
+    // this.audioList.push(data);
+    // this.storage.set("audiolist", JSON.stringify(this.audioList));
+    const updateddata = await this.sessionService.updateSessionTopicData(
+      this.sessionid,
+      this.topicid,
+      this.fileName
+    );
+    this.router.navigate(["/sessiondetails", this.sessionid]);
     // alert(this.audioList);
-    this.getAudioList();
+    // this.getAudioList();
   }
   mediaPlayAudio(file, idx) {
     // alert("media playing");
@@ -133,19 +141,19 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     this.audio.play();
     this.audio.setVolume(0.8);
   }
-  getAudioList() {
-    this.storage.get("audiolist").then(res => {
-      if (res) {
-        this.audioList = JSON.parse(res);
-        // alert(" get data");
-        // alert(JSON.stringify(this.audioList));
+  // getAudioList() {
+  //   this.storage.get("audiolist").then(res => {
+  //     if (res) {
+  //       this.audioList = JSON.parse(res);
+  //       // alert(" get data");
+  //       // alert(JSON.stringify(this.audioList));
 
-        console.log(this.audioList);
-      } else {
-        // alert("didn't get data");
-      }
-    });
-  }
+  //       console.log(this.audioList);
+  //     } else {
+  //       // alert("didn't get data");
+  //     }
+  //   });
+  // }
   startMediaRecording() {
     if (this.plt.is("ios")) {
       this.fileName = "record" + new Date().getTime() + ".wav";
@@ -163,6 +171,9 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     this.audio.startRecord();
   }
   ngOnDestroy() {
-    this.stopMediaRecording();
+    this.audio.stop();
+    this.audio.release();
+
+    // this.stopMediaRecording();
   }
 }

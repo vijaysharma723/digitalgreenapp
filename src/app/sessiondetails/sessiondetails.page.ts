@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { SessionService } from "./../services/session/session.service";
 import { SharedDataService } from "../shared-data.service";
@@ -11,11 +11,12 @@ import { Platform } from "@ionic/angular";
   templateUrl: "./sessiondetails.page.html",
   styleUrls: ["./sessiondetails.page.scss"]
 })
-export class SessiondetailsPage implements OnInit {
+export class SessiondetailsPage implements OnInit, OnDestroy {
   sessionData;
   sessdata;
   filepath: any;
   audio: any;
+  played = false;
   constructor(
     private route: ActivatedRoute,
     private sessionService: SessionService,
@@ -26,13 +27,17 @@ export class SessiondetailsPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe(async params => {
       console.log("params", params);
       let sessionid = params["sessionid"];
       this.sessionData = await this.sessionService.getSessionById(sessionid);
+      debugger;
     });
   }
-
+  mediaPauseAudio() {
+    this.audio.pause();
+    this.played = false;
+  }
   mediaPlayAudio(file, idx) {
     // alert("media playing");
     if (this.plt.is("ios")) {
@@ -48,9 +53,13 @@ export class SessiondetailsPage implements OnInit {
       this.audio = this.media.create(this.filepath);
     }
     this.audio.play();
+    this.played = true;
     this.audio.setVolume(0.8);
   }
-
+  ngOnDestroy() {
+    this.audio.stop();
+    // this.stopMediaRecording();
+  }
   // UploadTopicFile(topicName) {
   //   this.sharedDataSevice.uploadTopicDataToCloud(this.sessdata.sessionid, topicName);
   // }
