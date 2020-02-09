@@ -1,15 +1,10 @@
-<<<<<<< HEAD
-import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {SessionService} from './../services/session/session.service';
-=======
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
+import { SessionService } from "./../services/session/session.service";
 import { SharedDataService } from "../shared-data.service";
 import { File, FileEntry } from "@ionic-native/File/ngx";
 import { Media, MediaObject } from "@ionic-native/media/ngx";
 import { Platform } from "@ionic/angular";
->>>>>>> recordingfeature
 
 @Component({
   selector: "app-sessiondetails",
@@ -17,37 +12,24 @@ import { Platform } from "@ionic/angular";
   styleUrls: ["./sessiondetails.page.scss"]
 })
 export class SessiondetailsPage implements OnInit {
-<<<<<<< HEAD
   sessionData;
-  constructor(private route: ActivatedRoute, private sessionService: SessionService) {
-   }
-
-  async ngOnInit() {
-    await this.route.params.subscribe(async (params)=>{
-      let sessionid = params['sessionid'];
-      this.sessionData = await this.sessionService.getSessionById(sessionid);
-    });  
-=======
   sessdata;
   filepath: any;
   audio: any;
   constructor(
     private route: ActivatedRoute,
+    private sessionService: SessionService,
     private file: File,
     private sharedDataSevice: SharedDataService,
     private media: Media,
     private plt: Platform
-  ) {
-    this.sessdata = this.sharedDataSevice.getSharedData();
-  }
+  ) {}
 
   ngOnInit() {
     this.route.params.subscribe(params => {
       console.log("params", params);
       let sessionid = params["sessionid"];
-      const filteredData = this.sharedDataSevice.getSessionById(sessionid);
-      this.sessdata = filteredData.length > 0 ? filteredData[0] : null;
-      console.log("Session Data : ", this.sessdata);
+      this.sessionData = await this.sessionService.getSessionById(sessionid);
     });
   }
 
@@ -64,22 +46,12 @@ export class SessiondetailsPage implements OnInit {
       // alert(this.filepath);
 
       this.audio = this.media.create(this.filepath);
->>>>>>> recordingfeature
     }
     this.audio.play();
     this.audio.setVolume(0.8);
   }
 
-<<<<<<< HEAD
-// UploadTopicFile(topicName) {
-//   this.sharedDataSevice.uploadTopicDataToCloud(this.sessdata.sessionid, topicName);
-// }
-=======
-  UploadTopicFile(topicName) {
-    this.sharedDataSevice.uploadTopicDataToCloud(
-      this.sessdata.sessionid,
-      topicName
-    );
-  }
->>>>>>> recordingfeature
+  // UploadTopicFile(topicName) {
+  //   this.sharedDataSevice.uploadTopicDataToCloud(this.sessdata.sessionid, topicName);
+  // }
 }
