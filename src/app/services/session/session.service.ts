@@ -1,23 +1,31 @@
 import { Injectable } from "@angular/core";
-import { StorageService } from "./../storage/storage.service";
+import { Storage } from "@ionic/storage";
 import { UUID } from "angular2-uuid";
+import { UserService } from "./../user.service";
 
 @Injectable({
   providedIn: "root"
 })
 export class SessionService {
-  constructor(private storageService: StorageService) {}
+  sessionList = [];
+  constructor(private storage:Storage, private userService: UserService) {}
 
+  getParsedData(data) {
+    return JSON.parse(data);
+  }
   async getSessionList() {
-    const loggedinuser = await this.storageService.getObject("loggedinuser");
-    debugger;
-    if (!!loggedinuser) {
-      const sessionList = await this.storageService.getObject(
+    if(!(this.sessionList.length)) {
+      const loggedinuser = await this.userService.getLoggedInUser();
+      const sessionList = await this.storage.get(
         loggedinuser["username"]
       );
-      if (!!sessionList) return sessionList;
-      else return null;
+      if (!!sessionList && !!this.sessionList.length) {
+        this.sessionList = this.getParsedData(sessionList);
+      }
+
     }
+    return this.sessionList;
+
   }
 
   createUniqueId() {
@@ -25,51 +33,61 @@ export class SessionService {
   }
 
   async getSessionById(id) {
-    const sessionList = await this.getSessionList();
-    for (let i = 0; i < sessionList.length; i++) {
-      const session = sessionList[i];
-      if (session["sessionid"] === id) return session;
-    }
-    return null;
+    let session = await this.storage.get(id);
+    session = this.getParsedData(session);
+    return session;
   }
 
   async addNewSession(sessionData) {
     let sessionList = await this.getSessionList();
-    if (!!sessionList) {
+    if (!!sessionList && !!this.sessionList.length) {
       sessionList.unshift(sessionData);
     } else {
-      sessionList = [];
       sessionList.push(sessionData);
     }
     const updated = await this.setSessionList(sessionList);
-    return updated;
+    const uploadNewSession = await this.storage.set(
+      sessionData['sessionid'],
+      JSON.stringify(sessionData)
+    );
+    return uploadNewSession && updated;
   }
 
   async setSessionList(sessionList) {
-    const loggedinuser = await this.storageService.getObject("loggedinuser");
-    const status = await this.storageService.setObject(
+    const loggedinuser = await this.userService.getLoggedInUser();
+    const status = await this.storage.set(
       loggedinuser["username"],
-      sessionList
+      JSON.stringify(sessionList)
     );
+
+    this.sessionList = sessionList;
     return status;
   }
 
   async updateSessionTopicData(sessionId, topicId, filePath) {
-    const sessionList = await this.getSessionList();
-    for (let i = 0; i < sessionList.length; i++) {
-      const session = sessionList[i];
-      if (session["sessionid"] === sessionId) {
-        for (let j = 0; j < session["topics"].length; j++) {
-          const topic = session["topics"][j];
-          if (topic["topic_id"] === topicId) {
-            session["topics"][j]["file_url"] = filePath;
-            const updated = await this.setSessionList(sessionList);
-            return updated;
-          }
-        }
+    const session = await this.getSessionById(sessionId);
+    for (let j = 0; j < session["topics"].length; j++) {
+      const topic = session["topics"][j];
+      if (topic["topic_id"] === topicId) {
+        session["topics"][j]["file_url"] = filePath;
+        break;
+        // const updated = await this.setSessionList(sessionList);
       }
     }
-    return false;
+    const updateSpecificSessionStorage = await this.storage.set(
+      sessionId,
+      JSON.stringify(session)
+    );
+    const sessionList = await this.getSessionList();
+    for (let i = 0; i < sessionList.length; i++) {
+      const sessionEach = sessionList[i];
+      if (sessionEach["sessionid"] === sessionId) {
+        sessionList[i] = session;
+        break;
+      }
+    }
+    const updateAllSessionStorage = await this.setSessionList(sessionList);
+    return (updateSpecificSessionStorage & updateAllSessionStorage);
   }
 
   // uploadTopicDataToCloud(sessionId, topicId) {

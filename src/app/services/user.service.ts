@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
-import { StorageService } from "./storage/storage.service";
+import { Storage } from "@ionic/storage";
+
 export interface IUser {
   username: string;
   password: string;
@@ -99,93 +100,73 @@ export class UserService {
     }
   ];
   users: any;
+  loggedInUser = null;
 
-  constructor(private storageService: StorageService) {}
+  constructor(private storage: Storage) {}
 
   async validateUserDetails(username, password) {
-    const users = await this.getUserList();
-    if (!!users && !!users.length) {
+    const users = this.getUserList();
+    let userdetails;
       for (let i = 0; i < users.length; i++) {
         const user = users[i];
         if (user.username === username.trim() && user.password === password) {
-          const userdetails = { ...user };
+          console.log("inside if",i);
+          userdetails = { ...user };
           userdetails["sessiontoken"] = this.getMasterToken();
-          this.setLoggedInUser(userdetails);
+          var status = await this.setLoggedInUser(userdetails);
           return 1;
         } else if (user.username === username.trim()) {
+          console.log("inside else if",i);
+
           return 0;
         }
-        return -1;
+        console.log("outside if");
+
       }
-    }
+      return -1;
+
   }
 
-  async getUserTopics() {
-    const userDetails = await this.getLoggedInUser();
-    return userDetails["topics"];
+  getUserTopics() {
+    return this.loggedInUser["topics"];
   }
 
-  async getUserQuestions() {
-    const userDetails = await this.getLoggedInUser();
-    return userDetails["questions"];
+  getUserQuestions() {
+    return this.loggedInUser["questions"];
   }
 
   async setLoggedInUser(userdetails) {
-    const loggedinuser = await this.storageService.setObject(
+    const loggedinuser = await this.storage.set(
       "loggedinuser",
-      userdetails
+      JSON.stringify(userdetails)
     );
+    this.loggedInUser = userdetails;
     return loggedinuser;
   }
 
   async getLoggedInUser() {
-    const loggedinuser = await this.storageService.getObject("loggedinuser");
-    if (loggedinuser) {
-      return true;
-    } else {
-      return false;
+    if(!this.loggedInUser) {
+      let loggedinuser = await this.storage.get(
+        "loggedinuser");
+        this.loggedInUser = JSON.parse(loggedinuser);
     }
+    return this.loggedInUser;
   }
 
-  async getMasterToken() {
-    const mastertoken = await this.storageService.get("mastertoken");
-    return mastertoken;
+  getMasterToken() {
+    return this.masterToken;
   }
 
   endSession() {
-    this.storageService.remove("loggedinuser");
+    this.storage.remove("loggedinuser");
   }
 
-  async getUserList() {
-    // return { ...this.userlist };
-    this.users = await this.storageService.getObject("users");
-    if (!!this.users) {
-      return this.users;
-    } else {
-      const status = this.setUserList();
-      if (status) {
-        this.users = await this.storageService.getObject("users");
-        return this.users;
-      } else {
-        return null;
-      }
-    }
+  getUserList() {
+    return  [...this.userlist] ;
   }
 
-  async setUserList() {
-    const validateUserCreation = await this.storageService.setObject(
-      "users",
-      this.userlist
-    );
-    const validateTokenCreation = await this.storageService.set(
-      "mastertoken",
-      this.masterToken
-    );
-    if (validateUserCreation && validateTokenCreation) return true;
-    else return false;
-  }
 
   clearUserList() {
-    this.storageService.remove("users");
+    this.storage.remove("users");
   }
 }

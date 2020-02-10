@@ -24,16 +24,12 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Promise<boolean> {
-    debugger;
     const loggedInUserDetails = await this.userService.getLoggedInUser();
     console.log("Logged In Users : ", loggedInUserDetails);
-    const sessions = await this.sessionService.getSessionList();
-
-    if (!!loggedInUserDetails && sessions) return Promise.resolve(true);
-    else if (sessions) {
-      this.router.navigate(["/createsessions"]);
-    } else {
-      this.router.navigate(["/login"]);
+    if(!!loggedInUserDetails)
+      return Promise.resolve(true);
+    else {
+      this.router.navigate(['/login']);
       return Promise.resolve(false);
     }
   }

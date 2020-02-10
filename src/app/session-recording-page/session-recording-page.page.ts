@@ -80,7 +80,6 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     });
   }
   copyFilesToLocal(fullpath) {
-    debugger;
     // alert("this full path:");
     // alert(fullpath);
 
@@ -108,7 +107,6 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
   }
   async stopMediaRecording() {
     // alert("stopping");
-    debugger;
     this.audio.stopRecord();
     this.recordStarted = false;
     this.audio.release();
@@ -171,8 +169,10 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     this.audio.startRecord();
   }
   ngOnDestroy() {
+    if(!!this.audio) {
     this.audio.stop();
     this.audio.release();
+    }
 
     // this.stopMediaRecording();
   }
