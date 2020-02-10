@@ -51,7 +51,7 @@
             ></ion-icon>
           </ion-button>
           <ion-button
-            *ngIf="topic.file_url && !played"
+            *ngIf="topic.file_url && i!==stop"
             size="small"
             color="primary"
             (click)="mediaPlayAudio(topic.file_url, i)"
@@ -59,7 +59,7 @@
             <ion-icon size="small" slot="icon-only" name="play"></ion-icon>
           </ion-button>
           <ion-button
-            *ngIf="topic.file_url && played"
+            *ngIf="topic.file_url && i==stop"
             size="small"
             color="danger"
             class="stop"

@@ -21,8 +21,7 @@ import { Media } from "@ionic-native/media/ngx";
     IonicModule.forRoot(),
     AppRoutingModule,
     IonicStorageModule.forRoot({
-      name: "digitalgreendb",
-      driverOrder:["localstorage"]
+      name: "digitalgreendb"
     })
   ],
   providers: [

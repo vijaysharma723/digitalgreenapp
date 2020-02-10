@@ -15,7 +15,9 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
   sessdata;
   filepath: any;
   audio: any;
-  played = false;
+  playedicon = true;
+  stoppedicon = false;
+  stop: any;
   constructor(
     private route: ActivatedRoute,
     private sessionService: SessionService,
@@ -30,12 +32,13 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
       this.sessionData = await this.sessionService.getSessionById(sessionid);
     });
   }
-  mediaPauseAudio() {
+  mediaPauseAudio(i) {
     this.audio.pause();
-    this.played = false;
+    this.stop = i;
+    this.playedicon = true;
+    this.stoppedicon = false;
   }
   mediaPlayAudio(file, idx) {
-    // alert("media playing");
     if (this.plt.is("ios")) {
       this.filepath =
         this.file.documentsDirectory.replace(/file:\/\//g, "") + file;
@@ -43,21 +46,17 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
     } else if (this.plt.is("android")) {
       this.filepath =
         this.file.externalDataDirectory.replace(/file:\/\//g, "") + file;
-      // alert("media file path:  - ");
-      // alert(this.filepath);
 
       this.audio = this.media.create(this.filepath);
     }
     this.audio.play();
-    this.played = true;
+    this.stop = idx;
+    this.stoppedicon = true;
+    this.playedicon = false;
+
     this.audio.setVolume(0.8);
   }
   ngOnDestroy() {
-    if(!!this.audio)
-    this.audio.stop();
-    // this.stopMediaRecording();
+    if (!!this.audio) this.audio.stop();
   }
-  // UploadTopicFile(topicName) {
-  //   this.sharedDataSevice.uploadTopicDataToCloud(this.sessdata.sessionid, topicName);
-  // }
 }

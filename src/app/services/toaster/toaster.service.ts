@@ -1,17 +1,42 @@
-import { Injectable } from '@angular/core';
-import {ToastController} from '@ionic/angular';
+import { Injectable } from "@angular/core";
+import { ToastController } from "@ionic/angular";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class ToasterService {
+  colorValues = [
+    "primary",
+    "secondary",
+    "tertiary",
+    "success",
+    "warning",
+    "danger",
+    "light",
+    "medium",
+    "dark"
+  ];
 
-  constructor(private toastController: ToastController) { }
+  constructor(private toastController: ToastController) {}
 
-    async present({text, place, colour}:
-    {text: string,
-    place?: "top"|"bottom"|"middle",
-    colour: "primary"|"secondary"|"tertiary"|"success"|"warning"|"danger"|"light"|"medium"|"dark"}) {
+  async present({
+    text,
+    place,
+    colour
+  }: {
+    text: string;
+    place?: "top" | "bottom" | "middle";
+    colour:
+      | "primary"
+      | "secondary"
+      | "tertiary"
+      | "success"
+      | "warning"
+      | "danger"
+      | "light"
+      | "medium"
+      | "dark";
+  }) {
     if (!place) {
       place = "top";
     }
