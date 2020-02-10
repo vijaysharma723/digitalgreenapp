@@ -3,8 +3,8 @@ import { Component } from "@angular/core";
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import {Router} from '@angular/router';
-import {UserService} from './services/user.service';
+import { Router } from '@angular/router';
+import { UserService } from './services/user.service';
 
 @Component({
   selector: "app-root",
@@ -24,6 +24,10 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
+      const timeStamp = localStorage.getItem('statusTimeStamp');
+      if (!timeStamp) {
+        localStorage.setItem('statusTimeStamp', new Date().toISOString());
+      }
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
