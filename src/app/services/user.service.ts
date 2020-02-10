@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Storage } from "@ionic/storage";
+import { BehaviorSubject } from 'rxjs';
 
 export interface IUser {
   username: string;
@@ -137,6 +138,8 @@ export class UserService {
   ];
   users: any;
   loggedInUser = null;
+  public username = new BehaviorSubject<any>("");
+
 
   constructor(private storage: Storage) { }
 
@@ -149,6 +152,7 @@ export class UserService {
         userdetails = { ...user };
         userdetails["sessiontoken"] = this.getMasterToken();
         const status = await this.setLoggedInUser(userdetails);
+        this.username.next(username);
         if(status) {
           return 1;
         } else {
