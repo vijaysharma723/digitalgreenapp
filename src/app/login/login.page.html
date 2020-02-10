@@ -7,7 +7,7 @@
       <img src="/assets/images/logo.png" />
     </div>
     <div class="logincont">
-      <form>
+      <form (ngSubmit)="userLogin()">
         <ion-list lines="full" class="ion-no-margin ion-no-padding">
           <ion-item width-100>
             <ion-label>{{ 'Username' | translate }}</ion-label>
@@ -17,6 +17,9 @@
               class="custominput"
               placeholder="{{'Enter Username' |  translate}}"
               inputmode="md"
+              [(ngModel)]="username"
+              name="username"
+              required
             ></ion-input>
           </ion-item>
           <ion-item>
@@ -27,6 +30,9 @@
               class="custominput"
               placeholder="{{ 'Enter Password' | translate }}"
               type="password"
+              [(ngModel)]="password"
+              name="password"
+              required
             ></ion-input>
           </ion-item>
           <!-- <ion-item>

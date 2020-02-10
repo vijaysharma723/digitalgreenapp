@@ -19,5 +19,7 @@
   "Hi": "Hi",
   "Home": "Home",
   "Logout": "Logout",
-  "Select Language": "Select Language"
+  "Select Language": "Select Language",
+  "Media Recording": "Media Recording",
+  "Stop Media Recording": "Stop Media Recording"
 }
