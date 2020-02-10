@@ -12,7 +12,7 @@
       <ion-buttons class="backbutton" slot="start">
     <ion-back-button defaultHref="/sessiondetails"></ion-back-button>
   </ion-buttons>
-  <ion-title class="textcenter">Recording</ion-title>
+  <ion-title class="textcenter">{{ 'Recording' | translate }}</ion-title>
 </ion-toolbar>
 
 <ion-content padding>
@@ -20,7 +20,7 @@
   <p class="sessioncategory">{{topicName}}</p>
   <div class="recordingcont" >
     <img src="/assets/images/record.gif" *ngIf="recordStarted" />
-    <h3 class="recordText" *ngIf="!recordStarted">Please start Recording ...</h3>
+    <h3 class="recordText" *ngIf="!recordStarted">{{ 'Please start Recording' | translate }} ...</h3>
   </div>
   <div class="recordingbuttons">
       <div class="startrecording" (click)="startRecording()">
@@ -29,14 +29,14 @@
             <span class="spantext">REC</span>
           </span>
         </span>
-      <p>Start Recording</p>
+      <p>{{ 'Start Recording' | translate }}</p>
       </div>
       <div class="stoprecording"  (click)="saveRecording()">
         <span class="circleborder">
           <span class="square">
           </span>
         </span>
-      <p>Stop Recording</p>
+      <p>{{ 'Stop Recording' | translate }}</p>
 </div>
   </div>
      <!-- <div class="savebtn">

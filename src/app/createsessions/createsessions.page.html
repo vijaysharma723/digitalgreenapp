@@ -13,13 +13,13 @@
     <ion-back-button defaultHref="/sessions"></ion-back-button>
   </ion-buttons>
 
-  <ion-title class="textcenter">Create Session</ion-title>
+  <ion-title class="textcenter">{{ 'Create Session' | translate }}</ion-title>
 </ion-toolbar>
 
 <ion-content>
   <ion-card>
     <ion-card-header>
-      <ion-card-title>New Session</ion-card-title>
+      <ion-card-title>{{ 'New Session' | translate }}</ion-card-title>
       <h5>{{ sessionDate | date: fullDate }}</h5>
     </ion-card-header>
     <form class="ion-padding" (ngSubmit)="logForm()">
@@ -31,11 +31,11 @@
         ></ion-input> -->
       <!-- </ion-item> -->
       <br />
-      <ion-label class="ion-padding">Name</ion-label>
+      <ion-label class="ion-padding">{{ 'Name' | translate }}</ion-label>
       <ion-item>
         <ion-input
           class="custominput"
-          placeholder=" Enter Session Name"
+          placeholder="{{ 'Enter Session Name' | translate }}"
           type="text"
           [(ngModel)]="name"
           [ngModelOptions]="{ standalone: true }"
@@ -44,7 +44,7 @@
       </ion-item>
       <div class="createbtn">
         <ion-button class="custombtn" type="submit">
-          Proceed
+          {{ 'Proceed' | translate }}
         </ion-button>
       </div>
     </form>

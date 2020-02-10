@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {SharedDataService} from '../shared-data.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-createsessions',
@@ -13,7 +14,12 @@ export class CreatesessionsPage implements OnInit {
 
 sessionDate=new Date();
 name: string = "farming_" + new Date().getTime();
-  constructor(public router: Router, private sharedDataSevice: SharedDataService) { }
+  constructor(public router: Router, private sharedDataSevice: SharedDataService ,translate: TranslateService) { 
+    // this language will be used as a fallback when a translation isn't found in the current language
+    translate.setDefaultLang('en');
+    // the lang to use, if the lang isn't available, it will use the current loader to get them
+    translate.use('hi');
+  }
   ngOnInit() {
     setTimeout(() => {
       this.sessionInput.setFocus();
