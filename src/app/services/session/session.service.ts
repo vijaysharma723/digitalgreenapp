@@ -14,12 +14,12 @@ export class SessionService {
     return JSON.parse(data);
   }
   async getSessionList() {
-    if(!(this.sessionList.length)) {
+    if (!(this.sessionList.length)) {
       const loggedinuser = await this.userService.getLoggedInUser();
       const sessionList = await this.storage.get(
         loggedinuser["username"]
       );
-      if (!!sessionList && !!this.sessionList.length) {
+      if (!!sessionList && !!sessionList.length) {
         this.sessionList = this.getParsedData(sessionList);
       }
 
@@ -50,7 +50,7 @@ export class SessionService {
       sessionData['sessionid'],
       JSON.stringify(sessionData)
     );
-    return uploadNewSession && updated;
+    return (uploadNewSession && updated);
   }
 
   async setSessionList(sessionList) {
@@ -88,6 +88,10 @@ export class SessionService {
     }
     const updateAllSessionStorage = await this.setSessionList(sessionList);
     return (updateSpecificSessionStorage & updateAllSessionStorage);
+  }
+
+  clearSessionData() {
+    this.sessionList = [];
   }
 
   // uploadTopicDataToCloud(sessionId, topicId) {

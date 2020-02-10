@@ -1,8 +1,8 @@
+import { UserService } from './../services/user.service';
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
 import { SessionService } from "./../services/session/session.service";
 import { ToasterService } from "./../services/toaster/toaster.service";
-
 @Component({
   selector: "app-createsessions",
   templateUrl: "./createsessions.page.html",
@@ -12,27 +12,36 @@ export class CreatesessionsPage implements OnInit {
   @ViewChild("sessionInput", { static: false }) sessionInput;
 
   sessionDate = new Date();
-  name: string = "farming_" + new Date().getTime();
+  topic: string;
+  userSessions = [];
+  userRole: string;
+
   constructor(
     public router: Router,
     private sessionService: SessionService,
+    private userService: UserService,
     private toaster: ToasterService
   ) {}
 
-  ngOnInit() {
-    setTimeout(() => {
-      this.sessionInput.setFocus();
-    }, 0);
+  async ngOnInit() {
+    // setTimeout(() => {
+    //   this.sessionInput.setFocus();
+    // }, 0);
+    this.userRole = await this.userService.getUserRole();
+    this.userSessions = await this.userService.getUserTopics();
+    if (this.userRole !== "vrp") {
+      this.topic = "Untitled_" + new Date().getTime().toString();
+    }
   }
 
   async logForm() {
-    if (this.name) {
-      const newSession = await this.createNewSession(this.name);
+    if (this.topic) {
+      const newSession = await this.createNewSession(this.topic);
       const result = await this.sessionService.addNewSession(newSession);
       if (result) {
         this.toaster.present({
           text: "Session created successfully.",
-          colour: "medium"
+          colour: "light"
         });
         this.router.navigate(["/sessiondetails", newSession["sessionid"]]);
       } else {
@@ -42,6 +51,7 @@ export class CreatesessionsPage implements OnInit {
         });
       }
     } else {
+      this.toaster.present({text: "Please select Topic.", colour: "danger"});
     }
   }
 
@@ -49,25 +59,10 @@ export class CreatesessionsPage implements OnInit {
     const newSessionDetails = {};
     newSessionDetails["name"] = name;
     newSessionDetails["sessionid"] = await this.sessionService.createUniqueId();
-    newSessionDetails["created"] = new Date();
+    newSessionDetails["created"] = new Date().toISOString();
     newSessionDetails["isUploaded"] = false;
-    newSessionDetails["topics"] = [
-      {
-        topic_id: "1",
-        topic_name: "What needs to be improved in the video.",
-        isUploaded: false
-      },
-      {
-        topic_id: "2",
-        topic_name: "What do you want to learn more.",
-        isUploaded: false
-      },
-      {
-        topic_id: "3",
-        topic_name: "What are the challenges in general.",
-        isUploaded: false
-      }
-    ];
+    const userTopics = await this.userService.getUserQuestions();
+    newSessionDetails["topics"] = userTopics;
 
     return newSessionDetails;
   }

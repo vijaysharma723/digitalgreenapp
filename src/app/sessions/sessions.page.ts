@@ -12,9 +12,11 @@ export class SessionsPage implements OnInit {
   sessionlist = [];
 
   async ngOnInit() {
-    this.route.url.subscribe(async ()=>{
+    this.route.url.subscribe(async () => {
     const sessions = await this.sessionService.getSessionList();
-    if (!!sessions) this.sessionlist = sessions;
+    if (!!sessions) {
+      this.sessionlist = sessions;
+    }
     });
   }
 }

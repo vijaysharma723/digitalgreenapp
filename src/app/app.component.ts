@@ -1,3 +1,4 @@
+import { SessionService } from './services/session/session.service';
 import { Component } from "@angular/core";
 
 import { Platform } from '@ionic/angular';
@@ -17,6 +18,7 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private userService: UserService,
+    private sessionService: SessionService,
     public router: Router
   ) {
     this.initializeApp();
@@ -31,5 +33,7 @@ export class AppComponent {
 
   removeSessionToken() {
     this.userService.endSession();
+    this.userService.clearUserData();
+    this.sessionService.clearSessionData();
   }
 }

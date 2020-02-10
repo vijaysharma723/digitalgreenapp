@@ -22,26 +22,22 @@
       <ion-card-title>New Session</ion-card-title>
       <h5>{{ sessionDate | date: 'fullDate' }}</h5>
     </ion-card-header>
-    <form class="ion-padding" (ngSubmit)="logForm()">
-      <!-- <ion-item> -->
-
-      <!-- <ion-input
-          value="{{ sessionDate | date: longDate }}"
-          disabled
-        ></ion-input> -->
-      <!-- </ion-item> -->
+    <form class="ion-padding" *ngIf="!!userSessions" (ngSubmit)="logForm()">
       <br />
-      <ion-label class="ion-padding">Name</ion-label>
+
+      <ion-list *ngIf="userRole && userRole === 'vrp'">
       <ion-item>
-        <ion-input
-          class="custominput"
-          #sessionInput
-          placeholder=" Enter Session Name"
-          type="text"
-          [(ngModel)]="name"
-          name="name"
-        ></ion-input>
+        <ion-label>Topics</ion-label>
+        <ion-select placeholder=" Select Topic" interface="popover" [(ngModel)]="topic" name="topic">
+          <ion-select-option
+            *ngFor="let session of userSessions"
+            value="{{session}}">
+            {{session}}
+          </ion-select-option>
+        </ion-select>
       </ion-item>
+    </ion-list>
+
       <div class="createbtn">
         <ion-button class="custombtn" type="submit">
           Proceed

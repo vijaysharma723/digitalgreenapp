@@ -26,7 +26,6 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.route.params.subscribe(async params => {
-      console.log("params", params);
       let sessionid = params["sessionid"];
       this.sessionData = await this.sessionService.getSessionById(sessionid);
     });
