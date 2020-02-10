@@ -9,6 +9,7 @@ import { Platform } from '@ionic/angular';
 import { ISession } from '../interfaces/ISession';
 import { UserService } from '../services/user.service';
 import {Dialogs} from '@ionic-native/dialogs/ngx';
+import { SyncService } from '../services/sync/sync.service';
 
 const MEDIA_FOLDER_NAME = 'digitalgreenmediafiles';
 const parentDirFolder = 'session';
@@ -36,6 +37,7 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
   audioList = [];
   sessionname: any;
   topicid: any;
+  mediaParentFolder = 'session';
   constructor(
     public router: Router,
     private route: ActivatedRoute,
@@ -44,7 +46,7 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     private media: Media,
     private sessionService: SessionService,
     private readonly userSrvc: UserService,
-    private readonly dialogs: Dialogs,
+    private readonly syncSrvc: SyncService,
   ) {}
 
   ngOnInit() {
@@ -113,11 +115,14 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     const updateddata = await this.sessionService.updateSessionTopicData(
       this.sessionid,
       this.topicid,
-      this.fileName
+      this.fileName,
     );
-    this.router.navigate(['/sessiondetails', this.sessionid]);
-    // alert(this.audioList);
-    // this.getAudioList();
+    // trigger the sync api to send the files to the server
+    this.userSrvc.getLoggedInUser().then(user => {
+      const filePathFromRoot = `${this.mediaParentFolder}/${user.username}_${this.sessionid}_${this.topicid}.wav`;
+      this.syncSrvc.sendSessionFileUploadRequest(filePathFromRoot);
+      this.router.navigate(['/sessiondetails', this.sessionid]);
+    });
   }
   mediaPlayAudio(file, idx) {
     // alert("media playing");
@@ -163,7 +168,6 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
         } else if (this.plt.is('android')) {
             console.log('android device');
             this.filepath = this.file.externalDataDirectory.replace(/file:\/\//g, '') + parentDirFolder + '/' + this.fileName;
-            debugger;
             this.checkAndCreateSessionDir().then((created) => {
               console.log('saving recording as ', this.fileName);
               console.log('savnig in ', this.filepath);

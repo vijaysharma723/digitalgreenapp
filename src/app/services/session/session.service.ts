@@ -64,14 +64,13 @@ export class SessionService {
     return status;
   }
 
-  async updateSessionTopicData(sessionId, topicId, filePath) {
+  async updateSessionTopicData(sessionId, topicId, filePath, cb= null) {
     const session = await this.getSessionById(sessionId);
     for (let j = 0; j < session["topics"].length; j++) {
       const topic = session["topics"][j];
       if (topic["topic_id"] === topicId) {
         session["topics"][j]["file_url"] = filePath;
         break;
-        // const updated = await this.setSessionList(sessionList);
       }
     }
     const updateSpecificSessionStorage = await this.storage.set(
@@ -87,6 +86,10 @@ export class SessionService {
       }
     }
     const updateAllSessionStorage = await this.setSessionList(sessionList);
+    if (cb) {
+      // call the callback supplied
+      cb();
+    }
     return (updateSpecificSessionStorage & updateAllSessionStorage);
   }
 

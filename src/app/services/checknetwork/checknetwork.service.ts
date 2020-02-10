@@ -6,10 +6,13 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class ChecknetworkService {
   public isOnline = new BehaviorSubject<any>('');
+  public isOnlineStatic = null;
   constructor(public network: Network) {
     if (window.navigator.onLine) {
+      this.isOnlineStatic = true;
       this.isOnline.next('Connected');
     } else if (!window.navigator.onLine) {
+      this.isOnlineStatic = true;
       this.isOnline.next('Disonnected');
     }
     this.networkStatus();

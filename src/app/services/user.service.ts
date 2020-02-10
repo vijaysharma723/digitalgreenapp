@@ -17,7 +17,7 @@ export class UserService {
     "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJpc2hhYmhrYWxyYTk2IiwiZW1haWwiOiJyaXNoYWJoa2FscmE5NkBnbWFpbC5jb20iLCJpYXQiOjE1ODA4ODI1Nzl9.dxrWrjX3jaUe4t33Y9H0oLdSxenSaJA-EYaCNHIk8Ys";
   private userlist = [
     {
-      username: "12345",
+      username: "9971696729",
       password: "12345",
       role: "vrp",
       topics: [
@@ -102,28 +102,28 @@ export class UserService {
   users: any;
   loggedInUser = null;
 
-  constructor(private storage: Storage) {}
+  constructor(private storage: Storage) { }
 
   async validateUserDetails(username, password) {
     const users = this.getUserList();
     let userdetails;
-      for (let i = 0; i < users.length; i++) {
-        const user = users[i];
-        if (user.username === username.trim() && user.password === password) {
-          console.log("inside if",i);
-          userdetails = { ...user };
-          userdetails["sessiontoken"] = this.getMasterToken();
-          var status = await this.setLoggedInUser(userdetails);
-          return 1;
-        } else if (user.username === username.trim()) {
-          console.log("inside else if",i);
+    for (let i = 0; i < users.length; i++) {
+      const user = users[i];
+      if (user.username === username.trim() && user.password === password) {
+        console.log("inside if", i);
+        userdetails = { ...user };
+        userdetails["sessiontoken"] = this.getMasterToken();
+        var status = await this.setLoggedInUser(userdetails);
+        return 1;
+      } else if (user.username === username.trim()) {
+        console.log("inside else if", i);
 
-          return 0;
-        }
-        console.log("outside if");
-
+        return 0;
       }
-      return -1;
+      console.log("outside if");
+
+    }
+    return -1;
 
   }
 
@@ -145,10 +145,10 @@ export class UserService {
   }
 
   async getLoggedInUser() {
-    if(!this.loggedInUser) {
+    if (!this.loggedInUser) {
       let loggedinuser = await this.storage.get(
         "loggedinuser");
-        this.loggedInUser = JSON.parse(loggedinuser);
+      this.loggedInUser = JSON.parse(loggedinuser);
     }
     return this.loggedInUser;
   }
@@ -162,7 +162,7 @@ export class UserService {
   }
 
   getUserList() {
-    return  [...this.userlist] ;
+    return [...this.userlist];
   }
 
 

@@ -16,11 +16,13 @@ import { IonicStorageModule } from "@ionic/storage";
 import { File } from "@ionic-native/file/ngx";
 import { MediaCapture } from "@ionic-native/media-capture/ngx";
 import { Media } from "@ionic-native/media/ngx";
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
+    HttpClientModule,
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,

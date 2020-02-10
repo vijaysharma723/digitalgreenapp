@@ -49,7 +49,7 @@ export class CreatesessionsPage implements OnInit {
     const newSessionDetails = {};
     newSessionDetails["name"] = name;
     newSessionDetails["sessionid"] = await this.sessionService.createUniqueId();
-    newSessionDetails["created"] = new Date();
+    newSessionDetails["created"] = new Date().toISOString();
     newSessionDetails["isUploaded"] = false;
     newSessionDetails["topics"] = [
       {
