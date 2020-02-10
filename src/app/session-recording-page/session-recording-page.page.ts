@@ -110,13 +110,10 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     this.audio.stopRecord();
     this.recordStarted = false;
     this.audio.release();
-    let data = { filename: this.fileName };
-    this.audioList.push(data);
-    this.storage.set("audiolist", JSON.stringify(this.audioList));
     const updateddata = await this.sessionService.updateSessionTopicData(
       this.sessionid,
       this.topicid,
-      "record" + new Date().getTime()
+      this.fileName
     );
     this.router.navigate(["/sessiondetails", this.sessionid]);
     // alert(this.audioList);

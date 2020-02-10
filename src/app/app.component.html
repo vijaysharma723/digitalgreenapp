@@ -2,7 +2,7 @@
   <ion-menu class="sidemenu" side="start" menuId="first" contentId="content">
     <ion-header>
       <ion-toolbar class="textcenter">
-        <ion-title>Hello</ion-title>
+        <ion-title *ngIf="!!username">Hello {{ username }}</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content>

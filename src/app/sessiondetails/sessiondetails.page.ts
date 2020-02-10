@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { SessionService } from "./../services/session/session.service";
 import { File, FileEntry } from "@ionic-native/File/ngx";
 import { Media, MediaObject } from "@ionic-native/media/ngx";
@@ -15,15 +15,14 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
   sessdata;
   filepath: any;
   audio: any;
-  playedicon = true;
-  stoppedicon = false;
   stop: any;
   constructor(
     private route: ActivatedRoute,
     private sessionService: SessionService,
     private file: File,
     private media: Media,
-    private plt: Platform
+    private plt: Platform,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -32,11 +31,19 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
       this.sessionData = await this.sessionService.getSessionById(sessionid);
     });
   }
+  mediaRecording(topic, idx) {
+    this.stop = idx;
+
+    this.router.navigate([
+      "/sessionrecordingpage",
+      this.sessionData.sessionid,
+      topic.topic_id,
+      topic.topic_name
+    ]);
+  }
   mediaPauseAudio(i) {
     this.audio.pause();
     this.stop = i;
-    this.playedicon = true;
-    this.stoppedicon = false;
   }
   mediaPlayAudio(file, idx) {
     if (this.plt.is("ios")) {
@@ -51,8 +58,6 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
     }
     this.audio.play();
     this.stop = idx;
-    this.stoppedicon = true;
-    this.playedicon = false;
 
     this.audio.setVolume(0.8);
   }
