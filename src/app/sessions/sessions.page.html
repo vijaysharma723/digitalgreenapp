@@ -12,7 +12,7 @@
 
 <ion-content>
   <div class="sessionlist">
-    <div *ngFor="let session of sessionlist" class="session ion-padding" (click)="navigateToDetail(session)"
+    <div *ngFor="let session of sessionlist" class="session ion-padding"
       [routerLink]='["/sessiondetails",session.sessionid]'>
       <div class="sessionname">
         <p>{{ session.name }}</p>

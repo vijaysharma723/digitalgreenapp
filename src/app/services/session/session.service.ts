@@ -1,67 +1,70 @@
-import { Injectable } from '@angular/core';
-import {StorageService} from './../storage/storage.service';
-import { UUID } from 'angular2-uuid';
+import { Injectable } from "@angular/core";
+import { StorageService } from "./../storage/storage.service";
+import { UUID } from "angular2-uuid";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class SessionService {
-
-  constructor(private storageService: StorageService) { 
-  }
+  constructor(private storageService: StorageService) {}
 
   async getSessionList() {
-    const loggedinuser = await this.storageService.getObject('loggedinuser');
-    const sessionList = await this.storageService.getObject(loggedinuser['username']);
-    if(!!sessionList)
-      return sessionList;
-    else
-      return null;
-}
+    const loggedinuser = await this.storageService.getObject("loggedinuser");
+    debugger;
+    if (!!loggedinuser) {
+      const sessionList = await this.storageService.getObject(
+        loggedinuser["username"]
+      );
+      if (!!sessionList) return sessionList;
+      else return null;
+    }
+  }
 
-  createUniqueId(){
-      return UUID.UUID();
+  createUniqueId() {
+    return UUID.UUID();
   }
 
   async getSessionById(id) {
     const sessionList = await this.getSessionList();
-    for (let i=0; i< sessionList.length; i++) {
+    for (let i = 0; i < sessionList.length; i++) {
       const session = sessionList[i];
-      if(session['sessionid'] === id)
-      return session;
+      if (session["sessionid"] === id) return session;
     }
     return null;
   }
 
   async addNewSession(sessionData) {
     let sessionList = await this.getSessionList();
-    if(!!sessionList) {
+    if (!!sessionList) {
       sessionList.unshift(sessionData);
-    }
-    else {
+    } else {
       sessionList = [];
       sessionList.push(sessionData);
     }
-    return await this.setSessionList(sessionList);
+    const updated = await this.setSessionList(sessionList);
+    return updated;
   }
 
-    async setSessionList(sessionList) {
-    const loggedinuser = await this.storageService.getObject('loggedinuser');
-    const status = await this.storageService.setObject(loggedinuser['username'],sessionList);
+  async setSessionList(sessionList) {
+    const loggedinuser = await this.storageService.getObject("loggedinuser");
+    const status = await this.storageService.setObject(
+      loggedinuser["username"],
+      sessionList
+    );
     return status;
   }
 
-
   async updateSessionTopicData(sessionId, topicId, filePath) {
     const sessionList = await this.getSessionList();
-    for (let i=0; i< sessionList.length; i++) {
+    for (let i = 0; i < sessionList.length; i++) {
       const session = sessionList[i];
-      if(session['sessionid'] === sessionId) {
-        for (let j=0; j< session['topics'].length; j++) {
-          const topic = session['topics'][j];
-          if(session['topic_id'] === topicId) {
-            session['topic_id']['file_url'] = filePath;
-            return await this.setSessionList(sessionList);
+      if (session["sessionid"] === sessionId) {
+        for (let j = 0; j < session["topics"].length; j++) {
+          const topic = session["topics"][j];
+          if (topic["topic_id"] === topicId) {
+            session["topics"][j]["file_url"] = filePath;
+            const updated = await this.setSessionList(sessionList);
+            return updated;
           }
         }
       }
@@ -84,5 +87,4 @@ export class SessionService {
   //         sessionData['isUploaded'] = true;
   //     }
   // }
-
 }
