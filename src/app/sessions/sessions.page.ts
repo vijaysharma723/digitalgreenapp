@@ -34,7 +34,7 @@ export class SessionsPage implements OnInit {
     this.checknetwork.isOnline.subscribe((val) => {
       if (val === 'Connected') {
         // when online is detected on the sessions page, trigger sync api
-        this.syncUserSessions (true);
+        // this.syncUserSessions (true);
 
       } else if (val === 'Disconnected') {
         console.log('not ok');

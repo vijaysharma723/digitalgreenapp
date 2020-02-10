@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { SessionService } from "./../services/session/session.service";
-import { File, FileEntry } from "@ionic-native/File/ngx";
-import { Media, MediaObject } from "@ionic-native/media/ngx";
+import { File } from "@ionic-native/file/ngx";
+import { Media } from "@ionic-native/media/ngx";
 import { Platform } from "@ionic/angular";
 
 @Component({
@@ -55,7 +55,9 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     if(!!this.audio)
+    {
     this.audio.stop();
+    }
     // this.stopMediaRecording();
   }
   // UploadTopicFile(topicName) {
