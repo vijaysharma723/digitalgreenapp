@@ -1,33 +1,34 @@
 // tslint:disable: no-string-literal
 import { Component, OnInit } from '@angular/core';
-import { SharedDataService } from '../shared-data.service';
 import { ChecknetworkService } from '../services/checknetwork/checknetwork.service';
 import { File } from '@ionic-native/file/ngx';
 import { Network } from '@ionic-native/network/ngx';
 
 // sync service
-import {SyncService} from './../services/sync/sync.service';
+import {SyncService} from './../services/sync/sync.service';;
+import { SessionService } from "./../services/session/session.service";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
-  selector: 'app-sessions',
-  templateUrl: './sessions.page.html',
-  styleUrls: ['./sessions.page.scss'],
+  selector: "app-sessions",
+  templateUrl: "./sessions.page.html",
+  styleUrls: ["./sessions.page.scss"]
 })
 export class SessionsPage implements OnInit {
   constructor(
-    private sharedDataService: SharedDataService,
     public checknetwork: ChecknetworkService,
     public network: Network,
     private readonly FilePlugin: File,
     private readonly syncService: SyncService,
+    private sessionService: SessionService, private route: ActivatedRoute
     ) {}
-  sessionlist;
+  sessionlist = [];
 
-  ngOnInit() {
-    this.sessionlist = this.sharedDataService.getSessionList();
-  }
-  navigateToDetail(session) {
-    this.sharedDataService.setSharedData(session.sessionid);
+  async ngOnInit() {
+    this.route.url.subscribe(async ()=>{
+    const sessions = await this.sessionService.getSessionList();
+    if (!!sessions) {this.sessionlist = sessions;};
+    });
   }
   ionViewDidEnter() {
     this.checknetwork.isOnline.subscribe((val) => {
@@ -39,11 +40,6 @@ export class SessionsPage implements OnInit {
         console.log('not ok');
       }
     });
-  }
-
-  openMenu() {
-    document.querySelector('ion-menu-controller')
-      .open();
   }
 
   syncUserSessions(ifOnline) {

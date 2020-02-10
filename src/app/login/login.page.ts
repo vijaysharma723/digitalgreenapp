@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {UserService} from './../services/user.service';
 import {Router} from '@angular/router';
+import {ToasterService} from './../services/toaster/toaster.service';
 
 @Component({
   selector: 'app-login',
@@ -12,36 +13,32 @@ export class LoginPage implements OnInit {
 username: string;
 password: string;
 // login = {};
-  constructor(private userService: UserService, private router: Router) { }
+  constructor(private userService: UserService, private router: Router, private toaster: ToasterService) { }
 
   ngOnInit() {
   }
 
-// submit() {
-//   console.log();
-// }
 async userLogin() {
   if(!this.username) {
-    console.log("Please enter Username");
+    this.toaster.present({text:"Please enter Username.", colour:"danger"});
   }
   else if(!this.password) {
-    console.log("Please enter Password");
+    this.toaster.present({text:"Please enter Password.", colour:"danger"});
   }
   else {
   const status = await this.userService.validateUserDetails(this.username, this.password);
-  console.log(status);
   if(status === 1) {
-    console.log("User validated");
+    this.toaster.present({text:"Logged in Successfully.", colour:"medium"});
     this.username = "";
     this.password = "";
     this.router.navigate(['/sessions']);
   }
   else if(status === 0) {
-    console.log("User Password incorrect");
+    this.toaster.present({text:"Please enter correct Password.", colour:"danger"});
     this.password = "";
   }
   else {
-        console.log("Username and password incorrect");
+    this.toaster.present({text:"Please enter correct Username and Password.", colour:"danger"});
     this.username = "";
     this.password = "";
   }

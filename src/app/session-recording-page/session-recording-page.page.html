@@ -4,42 +4,70 @@
       <ion-icon slot="icon-only" name="contact"></ion-icon>
     </ion-button>
   </ion-buttons> -->
-        <!-- <ion-buttons slot="start">
+  <!-- <ion-buttons slot="start">
       <ion-back-button
           defaultHref="/sessiondetails">
       </ion-back-button>
     </ion-buttons> -->
-      <ion-buttons class="backbutton" slot="start">
+  <ion-buttons class="backbutton" slot="start">
     <ion-back-button defaultHref="/sessiondetails"></ion-back-button>
   </ion-buttons>
   <ion-title class="textcenter">Recording</ion-title>
 </ion-toolbar>
 
-<ion-content padding>
-  <h1>{{sessionData.name}}</h1>
+<ion-content padding *ngIf="!!sessionData">
+  <h1>{{sessionData?.name}}</h1>
   <p class="sessioncategory">{{topicName}}</p>
-  <div class="recordingcont" >
+  <div class="recordingcont">
     <img src="/assets/images/record.gif" *ngIf="recordStarted" />
-    <h3 class="recordText" *ngIf="!recordStarted">Please start Recording ...</h3>
+    <h3 class="recordText" *ngIf="!recordStarted">
+      Please start Recording ...
+    </h3>
   </div>
   <div class="recordingbuttons">
-      <div class="startrecording" (click)="startRecording()">
-        <span class="circleborder">
-          <span class="dot">
-            <span class="spantext">REC</span>
-          </span>
+    <!-- <div class="startrecording" tappable (click)="startRecording()">
+      <span class="circleborder">
+        <span class="dot">
+          <span class="spantext">REC</span>
         </span>
+      </span>
       <p>Start Recording</p>
-      </div>
-      <div class="stoprecording"  (click)="saveRecording()">
-        <span class="circleborder">
-          <span class="square">
-          </span>
-        </span>
+    </div> -->
+    <div class="startrecording playrecording" tappable (click)="startMediaRecording()">
+      <ion-icon name="microphone" slot="start" color="primary"></ion-icon>
+      <p>Media Recording</p>
+    </div>
+    <div class="startrecording playrecording" tappable (click)="stopMediaRecording()">
+      <ion-icon name="hand" slot="start" color="danger"></ion-icon>
+      <p>Stop Media Recording</p>
+    </div>
+    <!-- <div class="startrecording playrecording" tappable (click)="playAudio()">
+      <ion-icon name="play-circle" slot="start" color="primary"></ion-icon>
+      <p>Play Recording</p>
+    </div> -->
+    <!-- <div class="stoprecording" tappable (click)="stopRecording()">
+      <span class="circleborder">
+        <span class="square"> </span>
+      </span>
       <p>Stop Recording</p>
-</div>
+    </div> -->
   </div>
-     <!-- <div class="savebtn">
+  <div class="sessionlist">
+    <div class="sessiondetails">
+      <div class="sections" *ngFor="let audio of audioList; index as i;">
+        <div class="sectionname">
+          <p>{{audio.filename}}</p>
+        </div>
+        <div class="actions">
+          <ion-button size="small" color="primary" (click)="mediaPlayAudio(audio.filename, i)">
+            <ion-icon size="small" slot="icon-only" name="play"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="savebtn">
           <ion-button
             class="custombtn"
             [routerLink]='["/sessiondetails",sectiontitle]'
