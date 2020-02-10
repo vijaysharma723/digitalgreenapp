@@ -40,18 +40,18 @@ export class CreatesessionsPage implements OnInit {
       const result = await this.sessionService.addNewSession(newSession);
       if (result) {
         this.toaster.present({
-          text: "Session created successfully.",
+          text: this.toaster.toasterMessage.sessionCreated,
           colour: "light"
         });
         this.router.navigate(["/sessiondetails", newSession["sessionid"]]);
       } else {
         this.toaster.present({
-          text: "Unable to create Session.",
+          text: this.toaster.toasterMessage.sessionCreationFailed,
           colour: "danger"
         });
       }
     } else {
-      this.toaster.present({text: "Please select Topic.", colour: "danger"});
+      this.toaster.present({text: this.toaster.toasterMessage.selectTopic, colour: "danger"});
     }
   }
 

@@ -18,24 +18,24 @@ password: string;
 
 async userLogin() {
   if (!this.username) {
-    this.toaster.present({text: "Please enter Username.", colour: "danger"});
+    this.toaster.present({text: this.toaster.toasterMessage.noUsername, colour: "danger"});
   } else if (!this.password) {
-    this.toaster.present({text: "Please enter Password.", colour: "danger"});
+    this.toaster.present({text: this.toaster.toasterMessage.noPassword, colour: "danger"});
   } else {
   const status = await this.userService.validateUserDetails(this.username, this.password);
   if (status === 1) {
-    this.toaster.present({text: "Logged in Successfully.", colour: "light"});
+    this.toaster.present({text: this.toaster.toasterMessage.loggedInSuccessfully, colour: "light"});
     this.username = "";
     this.password = "";
     this.router.navigate(["/sessions"]);
   } else if(status === 0) {
-    this.toaster.present({text: "Please enter correct Password.", colour: "danger"});
+    this.toaster.present({text: this.toaster.toasterMessage.incorrectPassword, colour: "danger"});
     this.password = "";
   } else if(status === -10) {
-    this.toaster.present({text: "Unable to Login.", colour: "danger"});
+    this.toaster.present({text: this.toaster.toasterMessage.loginFailed, colour: "danger"});
     this.password = "";
   } else {
-    this.toaster.present({text: "Please enter correct Username and Password.", colour: "danger"});
+    this.toaster.present({text: this.toaster.toasterMessage.incorrectUsernamePassword, colour: "danger"});
     this.username = "";
     this.password = "";
   }
