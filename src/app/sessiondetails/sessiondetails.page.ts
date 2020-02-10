@@ -16,6 +16,8 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
   filepath: any;
   audio: any;
   stop: any;
+  rec: any;
+  message: string;
   constructor(
     private route: ActivatedRoute,
     private sessionService: SessionService,
@@ -32,7 +34,7 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
     });
   }
   mediaRecording(topic, idx) {
-    this.stop = idx;
+    this.rec = idx;
 
     this.router.navigate([
       "/sessionrecordingpage",
@@ -43,7 +45,7 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
   }
   mediaPauseAudio(i) {
     this.audio.pause();
-    this.stop = i;
+    this.stop = "undefined";
   }
   mediaPlayAudio(file, idx) {
     if (this.plt.is("ios")) {
@@ -60,6 +62,12 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
     this.stop = idx;
 
     this.audio.setVolume(0.8);
+    this.audio.onStatusUpdate.subscribe(status => {
+      if (status.toString() == "4") {
+        // player end running
+        this.stop = "undefined";
+      }
+    });
   }
   ngOnDestroy() {
     if (!!this.audio) this.audio.stop();
