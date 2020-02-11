@@ -8,7 +8,6 @@ import { SessiondetailsPageRoutingModule } from './sessiondetails-routing.module
 
 import { SessiondetailsPage } from './sessiondetails.page';
 import { File } from '@ionic-native/file/ngx';
-
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClientModule, HttpClient} from '@angular/common/http';

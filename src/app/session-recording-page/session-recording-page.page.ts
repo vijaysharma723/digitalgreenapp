@@ -48,7 +48,7 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     private sessionService: SessionService,
     private readonly userSrvc: UserService,
     private readonly syncSrvc: SyncService,
-    translate : TranslateService
+    translate: TranslateService
   ) {
     // this language will be used as a fallback when a translation isn't found in the current language
     translate.setDefaultLang('en');

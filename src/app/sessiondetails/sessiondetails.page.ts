@@ -27,13 +27,13 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
     private media: Media,
     private plt: Platform,
     private router: Router,
-    translate: TranslateService
+    translate : TranslateService
   ) {
-    // this language will be used as a fallback when a translation isn't found in the current language
-    translate.setDefaultLang('en');
-    console.log(translate);
-    // the lang to use, if the lang isn't available, it will use the current loader to get them
-    translate.use('hi');
+     // this language will be used as a fallback when a translation isn't found in the current language
+     translate.setDefaultLang('en');
+     console.log(translate);
+     // the lang to use, if the lang isn't available, it will use the current loader to get them
+     translate.use('hi');
   }
 
   ngOnInit() {

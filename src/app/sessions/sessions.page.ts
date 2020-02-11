@@ -8,12 +8,14 @@ import { Network } from "@ionic-native/network/ngx";
 import { SyncService } from "./../services/sync/sync.service";
 import { SessionService } from "./../services/session/session.service";
 import { ActivatedRoute } from "@angular/router";
-import { TranslateService } from '@ngx-translate/core';
 
 import { CheckStatusService } from "../services/checkStatus/check-status.service";
 import { UserService } from "../services/user.service";
 import { Platform } from "@ionic/angular";
 import { ToasterService } from "../services/toaster/toaster.service";
+;
+
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: "app-sessions",
@@ -38,7 +40,6 @@ export class SessionsPage implements OnInit {
   ) {
     // this language will be used as a fallback when a translation isn't found in the current language
     translate.setDefaultLang('en');
-    console.log(translate);
     // the lang to use, if the lang isn't available, it will use the current loader to get them
     translate.use('hi');
   }
