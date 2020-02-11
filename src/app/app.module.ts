@@ -16,7 +16,15 @@ import { IonicStorageModule } from "@ionic/storage";
 import { File } from "@ionic-native/file/ngx";
 import { MediaCapture } from "@ionic-native/media-capture/ngx";
 import { Media } from "@ionic-native/media/ngx";
-import { HttpClientModule } from "@angular/common/http";
+
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClientModule, HttpClient} from '@angular/common/http';
+import { TranslateConfigService } from './translate-config.service';
+
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 @NgModule({
   declarations: [AppComponent],
@@ -29,6 +37,12 @@ import { HttpClientModule } from "@angular/common/http";
     HttpClientModule,
     IonicStorageModule.forRoot({
       name: "digitalgreendb"
+    }),TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
     })
   ],
   providers: [

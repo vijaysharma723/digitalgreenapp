@@ -9,12 +9,26 @@ import { SessionRecordingPagePageRoutingModule } from './session-recording-page-
 import { SessionRecordingPagePage } from './session-recording-page.page';
 import {File} from '@ionic-native/file/ngx';
 
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClientModule, HttpClient} from '@angular/common/http';
+
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    SessionRecordingPagePageRoutingModule
+    SessionRecordingPagePageRoutingModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    }), HttpClientModule
   ],
   declarations: [SessionRecordingPagePage],
   providers: [File]

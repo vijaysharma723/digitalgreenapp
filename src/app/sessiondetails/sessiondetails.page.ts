@@ -4,6 +4,7 @@ import { SessionService } from "./../services/session/session.service";
 import { File, FileEntry } from "@ionic-native/file/ngx";
 import { Media, MediaObject } from "@ionic-native/media/ngx";
 import { Platform } from "@ionic/angular";
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: "app-sessiondetails",
@@ -25,8 +26,15 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
     private file: File,
     private media: Media,
     private plt: Platform,
-    private router: Router
-  ) {}
+    private router: Router,
+    translate : TranslateService
+  ) {
+     // this language will be used as a fallback when a translation isn't found in the current language
+     translate.setDefaultLang('en');
+     console.log(translate);
+     // the lang to use, if the lang isn't available, it will use the current loader to get them
+     translate.use('hi');
+  }
 
   ngOnInit() {
     this.route.params.subscribe(async params => {

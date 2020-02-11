@@ -13,22 +13,22 @@
     <ion-back-button defaultHref="/sessions"></ion-back-button>
   </ion-buttons>
 
-  <ion-title class="textcenter">Create Session</ion-title>
+  <ion-title class="textcenter">{{ 'Create Session' | translate }}</ion-title>
 </ion-toolbar>
 
 <ion-content>
   <ion-card>
     <ion-card-header>
-      <ion-card-title>New Session</ion-card-title>
-      <h5>{{ sessionDate | date: 'fullDate' }}</h5>
+      <ion-card-title>{{ 'New Session' | translate }}</ion-card-title>
+      <h5>{{ sessionDate | date: fullDate }}</h5>
     </ion-card-header>
     <form class="ion-padding" *ngIf="!!userSessions" (ngSubmit)="logForm()">
       <br />
 
       <ion-list *ngIf="userRole && userRole === 'vrp'">
       <ion-item>
-        <ion-label>Topics</ion-label>
-        <ion-select placeholder=" Select Topic" interface="popover" [(ngModel)]="topic" name="topic">
+        <ion-label>{{ 'Topics' | translate }}</ion-label>
+        <ion-select placeholder="{{ 'Select Topic' | translate }}" interface="popover" [(ngModel)]="topic" name="topic">
           <ion-select-option
             *ngFor="let session of userSessions"
             value="{{session}}">
@@ -40,7 +40,7 @@
 
       <div class="createbtn">
         <ion-button class="custombtn" type="submit">
-          Proceed
+          {{ 'Proceed' | translate }}
         </ion-button>
       </div>
     </form>

@@ -10,6 +10,7 @@ import { ISession } from "../interfaces/ISession";
 import { UserService } from "../services/user.service";
 import { Dialogs } from "@ionic-native/dialogs/ngx";
 import { SyncService } from "../services/sync/sync.service";
+import { TranslateService } from '@ngx-translate/core';
 
 const MEDIA_FOLDER_NAME = "digitalgreenmediafiles";
 const parentDirFolder = "session";
@@ -46,8 +47,15 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     private media: Media,
     private sessionService: SessionService,
     private readonly userSrvc: UserService,
-    private readonly syncSrvc: SyncService
-  ) {}
+    private readonly syncSrvc: SyncService,
+    translate: TranslateService
+  ) {
+    // this language will be used as a fallback when a translation isn't found in the current language
+    translate.setDefaultLang('en');
+    console.log(translate);
+    // the lang to use, if the lang isn't available, it will use the current loader to get them
+    translate.use('hi');
+  }
 
   ngOnInit() {
     const path = this.file.dataDirectory;

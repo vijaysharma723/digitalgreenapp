@@ -22,25 +22,25 @@ export class UserService {
       password: "9971696729",
       role: "vrp",
       topics: [
-        "Water Harvesting",
-        "Crop Cultivation",
-        "Crop Production",
-        "Livestock"
+        "जल संचयन",
+        "फसल की खेती ",
+        "फसल उत्पाद",
+        "पशु"
       ],
       questions: [
         {
           topic_id: "1",
-          topic_name: "What needs to be improved in the video.",
+          topic_name: "वीडियो में क्या सुधार करने की आवश्यकता है।",
           status: false
         },
         {
           topic_id: "2",
-          topic_name: "What do you want to learn more.",
+          topic_name: "आप और क्या सीखना चाहते हैं।",
           status: false
         },
         {
           topic_id: "3",
-          topic_name: "What are the challenges in general.",
+          topic_name: "सामान्य तौर पर चुनौतियां क्या हैं।",
           status: false
         }
       ],
@@ -50,21 +50,21 @@ export class UserService {
       username: "8447818490",
       password: "8447818490",
       role: "vrp",
-      topics: ["Water Harvesting", "Crop Production"],
+      topics: ["जल संचयन", "फसल उत्पाद"],
       questions: [
         {
           topic_id: "1",
-          topic_name: "What needs to be improved in the video.",
+          topic_name: "वीडियो में क्या सुधार करने की आवश्यकता है।",
           status: false
         },
         {
           topic_id: "2",
-          topic_name: "What do you want to learn more.",
+          topic_name: "आप और क्या सीखना चाहते हैं।",
           status: false
         },
         {
           topic_id: "3",
-          topic_name: "What are the challenges in general.",
+          topic_name: "सामान्य तौर पर चुनौतियां क्या हैं।",
           status: false
         }
       ],
@@ -74,21 +74,21 @@ export class UserService {
       username: "8005297302",
       password: "8005297302",
       role: "mrp",
-      topics: ["Water Harvesting", "Crop Cultivation", "Agriculture Policies"],
+      topics: ["जल संचयन", "फसल की खेती", "कृषि नीतियां"],
       questions: [
         {
           topic_id: "1",
-          topic_name: "What needs to be improved in the video by MRP.",
+          topic_name: "वीडियो में एमआरपी में क्या सुधार करने की जरूरत है।",
           status: false
         },
         {
           topic_id: "2",
-          topic_name: "What do you want to learn more by MRP.",
+          topic_name: "आप एमआरपी से और क्या सीखना चाहते हैं।",
           status: false
         },
         {
           topic_id: "3",
-          topic_name: "What are the challenges in general by MRP.",
+          topic_name: "एमआरपी द्वारा सामान्य रूप से क्या चुनौतियां हैं।",
           status: false
         }
       ],
@@ -98,21 +98,21 @@ export class UserService {
       username: "9312252531",
       password: "9312252531",
       role: "mrp",
-      topics: ["Crop Cultivation", "Soil Erosion", "Livestock"],
+      topics: ["फसल की खेती", "मृदा अपरदन", "पशु"],
       questions: [
         {
           topic_id: "1",
-          topic_name: "What needs to be improved in the video by MRP.",
+          topic_name: "वीडियो में एमआरपी में क्या सुधार करने की जरूरत है।",
           status: false
         },
         {
           topic_id: "2",
-          topic_name: "What do you want to learn more by MRP.",
+          topic_name: "आप एमआरपी से और क्या सीखना चाहते हैं।",
           status: false
         },
         {
           topic_id: "3",
-          topic_name: "What are the challenges in general by MRP.",
+          topic_name: "एमआरपी द्वारा सामान्य रूप से क्या चुनौतियां हैं।",
           status: false
         }
       ],
@@ -122,22 +122,22 @@ export class UserService {
       username: "9991062244",
       password: "9991062244",
       role: "block_officer",
-      topics: ["Crop Production", "Pesticide Control", "Crop Cultivation"],
+      topics: ["फसल उत्पाद", "कीटनाशक नियंत्रण", "फसल की खेती"],
       questions: [
         {
           topic_id: "1",
           topic_name:
-            "What needs to be improved in the video by BLOCK_OFFICER.",
+            "वीडियो में ब्लॉक_अधिकारी द्वारा क्या सुधार किए जाने की आवश्यकता है।",
           status: false
         },
         {
           topic_id: "2",
-          topic_name: "What do you want to learn more by BLOCK_OFFICER.",
+          topic_name: "आप ब्लॉक_अधिकारी द्वारा और क्या सीखना चाहते हैं।",
           status: false
         },
         {
           topic_id: "3",
-          topic_name: "What are the challenges in general by BLOCK_OFFICER.",
+          topic_name: "ब्लॉक_अधिकारी द्वारा सामान्य रूप से क्या चुनौतियाँ हैं।",
           status: false
         }
       ],
@@ -148,26 +148,26 @@ export class UserService {
       password: "9886735532",
       role: "block_officer",
       topics: [
-        "Pesticide Control",
-        "Agriculture Policies",
-        "Crop Harvesting",
-        "Dairy Farming"
+        "कीटनाशक नियंत्रण",
+        "कृषि नीतियां",
+        "फसल कटाई",
+        "दूध उत्पादन"
       ],
       questions: [
         {
           topic_id: "1",
           topic_name:
-            "What needs to be improved in the video by BLOCK_OFFICER.",
+            "वीडियो में ब्लॉक_अधिकारी द्वारा क्या सुधार किए जाने की आवश्यकता है।",
           status: false
         },
         {
           topic_id: "2",
-          topic_name: "What do you want to learn more by BLOCK_OFFICER.",
+          topic_name: "आप ब्लॉक_अधिकारी द्वारा और क्या सीखना चाहते हैं।",
           status: false
         },
         {
           topic_id: "3",
-          topic_name: "What are the challenges in general by BLOCK_OFFICER.",
+          topic_name: "ब्लॉक_अधिकारी द्वारा सामान्य रूप से क्या चुनौतियाँ हैं।",
           status: false
         }
       ],

@@ -12,7 +12,7 @@
   <ion-buttons class="backbutton" slot="start">
     <ion-back-button defaultHref="/sessiondetails"></ion-back-button>
   </ion-buttons>
-  <ion-title class="textcenter">Recording</ion-title>
+  <ion-title class="textcenter">{{ 'Recording' | translate }}</ion-title>
 </ion-toolbar>
 
 <ion-content padding *ngIf="!!sessionData">
@@ -20,9 +20,7 @@
   <p class="sessioncategory">{{topicName}}</p>
   <div class="recordingcont">
     <img src="/assets/images/record.gif" *ngIf="recordStarted" />
-    <h3 class="recordText" *ngIf="!recordStarted">
-      Please start Recording ...
-    </h3>
+    <h3 class="recordText" *ngIf="!recordStarted">{{ 'Please start Recording' | translate }} ...</h3>
   </div>
   <div class="recordingbuttons">
     <!-- <div class="startrecording" tappable (click)="startRecording()">
@@ -35,11 +33,11 @@
     </div> -->
     <div class="startrecording playrecording" tappable (click)="startMediaRecording()">
       <ion-icon name="microphone" slot="start" color="primary"></ion-icon>
-      <p>Media Recording</p>
+      <p>{{ 'Media Recording' | translate }}</p>
     </div>
     <div class="startrecording playrecording" tappable (click)="stopMediaRecording()">
       <ion-icon name="hand" slot="start" color="danger"></ion-icon>
-      <p>Stop Media Recording</p>
+      <p>{{ 'Stop Media Recording' | translate }}</p>
     </div>
     <!-- <div class="startrecording playrecording" tappable (click)="playAudio()">
       <ion-icon name="play-circle" slot="start" color="primary"></ion-icon>

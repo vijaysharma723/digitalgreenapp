@@ -14,6 +14,7 @@ import { UserService } from "../services/user.service";
 import { Platform } from "@ionic/angular";
 import { ToasterService } from "../services/toaster/toaster.service";
 import { Storage } from "@ionic/storage";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: "app-sessions",
@@ -34,8 +35,14 @@ export class SessionsPage implements OnInit {
     public file: File,
     private toaster: ToasterService,
     private platform: Platform,
-    private storage: Storage
-  ) {}
+    private storage: Storage,
+    translate: TranslateService
+  ) {
+    // this language will be used as a fallback when a translation isn't found in the current language
+    translate.setDefaultLang("en");
+    // the lang to use, if the lang isn't available, it will use the current loader to get them
+    translate.use("hi");
+  }
   subscription: any;
   counter: number = 0;
   sessionlist = [];

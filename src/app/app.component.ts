@@ -8,6 +8,7 @@ import { StatusBar } from "@ionic-native/status-bar/ngx";
 import { Router } from "@angular/router";
 import { UserService } from "./services/user.service";
 import { Storage } from "@ionic/storage";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: "app-root",
@@ -23,9 +24,14 @@ export class AppComponent implements OnInit {
     private userService: UserService,
     private sessionService: SessionService,
     public router: Router,
-    private storage: Storage
+    private storage: Storage,
+    translate: TranslateService
   ) {
     this.initializeApp();
+    // this language will be used as a fallback when a translation isn't found in the current language
+    translate.setDefaultLang("en");
+    // the lang to use, if the lang isn't available, it will use the current loader to get them
+    translate.use("hi");
   }
   displayName(event) {
     console.log("calling", event);

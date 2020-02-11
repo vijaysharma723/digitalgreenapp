@@ -4,6 +4,7 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
 import { SessionService } from "./../services/session/session.service";
 import { ToasterService } from "./../services/toaster/toaster.service";
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: "app-createsessions",
   templateUrl: "./createsessions.page.html",
@@ -21,8 +22,14 @@ export class CreatesessionsPage implements OnInit {
     public router: Router,
     private sessionService: SessionService,
     private userService: UserService,
-    private toaster: ToasterService
-  ) {}
+    private toaster: ToasterService,
+    translate: TranslateService
+  ) {
+    // this language will be used as a fallback when a translation isn't found in the current language
+    translate.setDefaultLang('en');
+    // the lang to use, if the lang isn't available, it will use the current loader to get them
+    translate.use('hi');
+  }
 
   async ngOnInit() {
     // setTimeout(() => {
