@@ -1,29 +1,53 @@
-import { Injectable } from '@angular/core';
-import {ToastController} from '@ionic/angular';
+import { Injectable } from "@angular/core";
+import { ToastController } from "@ionic/angular";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class ToasterService {
 
-   colorValues = ["primary","secondary","tertiary","success","warning","danger","light","medium","dark"];
+  public toasterMessage = {
+    noUsername: "Please enter Username.",
+    noPassword: "Please enter Password.",
+    loggedInSuccessfully: "Logged in Successfully.",
+    incorrectUsernamePassword: "Please enter correct Username and Password.",
+    incorrectPassword: "Please enter correct Password.",
+    loginFailed: "Unable to Login.",
+    sessionCreated: "Session created successfully.",
+    sessionCreationFailed: "Unable to create Session.",
+    selectTopic: "Please select Topic."
+  };
 
-  constructor(private toastController: ToastController) { }
+  constructor(private toastController: ToastController) {}
 
-    async present({text,place,colour}:
-    {text:string,
-    place?:'top'|'bottom'|'middle',
-    colour:"primary"|"secondary"|"tertiary"|"success"|"warning"|"danger"|"light"|"medium"|"dark"}) 
-  {
-    if(!!!place) {  
-      place = 'top';
+  async present({
+    text,
+    place,
+    colour
+  }: {
+    text: string;
+    place?: "top" | "bottom" | "middle";
+    colour:
+      | "primary"
+      | "secondary"
+      | "tertiary"
+      | "success"
+      | "warning"
+      | "danger"
+      | "light"
+      | "medium"
+      | "dark";
+  }) {
+    if (!place) {
+      place = "top";
     }
 
     const toast = await this.toastController.create({
       message: text,
+      cssClass: "toaster",
       position: place,
       color: colour,
-      duration: 3000
+      duration: 2000
     });
     toast.present();
   }

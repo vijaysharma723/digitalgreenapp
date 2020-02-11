@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Storage } from "@ionic/storage";
+import { BehaviorSubject } from "rxjs";
 
 export interface IUser {
   username: string;
@@ -17,8 +18,8 @@ export class UserService {
     "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJpc2hhYmhrYWxyYTk2IiwiZW1haWwiOiJyaXNoYWJoa2FscmE5NkBnbWFpbC5jb20iLCJpYXQiOjE1ODA4ODI1Nzl9.dxrWrjX3jaUe4t33Y9H0oLdSxenSaJA-EYaCNHIk8Ys";
   private userlist = [
     {
-      username: "12345",
-      password: "12345",
+      username: "9971696729",
+      password: "9971696729",
       role: "vrp",
       topics: [
         "Water Harvesting",
@@ -27,63 +28,124 @@ export class UserService {
         "Livestock"
       ],
       questions: [
-        "What needs to be improved in the video.",
-        "What do you want to learn more.",
-        "What are the challenges in general."
+        {
+          topic_id: "1",
+          topic_name: "What needs to be improved in the video.",
+          status: false
+        },
+        {
+          topic_id: "2",
+          topic_name: "What do you want to learn more.",
+          status: false
+        },
+        {
+          topic_id: "3",
+          topic_name: "What are the challenges in general.",
+          status: false
+        }
       ],
       sessiontoken: ""
     },
     {
-      username: "23456",
-      password: "23456",
+      username: "8447818490",
+      password: "8447818490",
       role: "vrp",
       topics: ["Water Harvesting", "Crop Production"],
       questions: [
-        "What needs to be improved in the video.",
-        "What do you want to learn more.",
-        "What are the challenges in general."
+        {
+          topic_id: "1",
+          topic_name: "What needs to be improved in the video.",
+          status: false
+        },
+        {
+          topic_id: "2",
+          topic_name: "What do you want to learn more.",
+          status: false
+        },
+        {
+          topic_id: "3",
+          topic_name: "What are the challenges in general.",
+          status: false
+        }
       ],
       sessiontoken: ""
     },
     {
-      username: "34567",
-      password: "34567",
+      username: "8005297302",
+      password: "8005297302",
       role: "mrp",
       topics: ["Water Harvesting", "Crop Cultivation", "Agriculture Policies"],
       questions: [
-        "What needs to be improved in the video.",
-        "What do you want to learn more.",
-        "What are the challenges in general."
+        {
+          topic_id: "1",
+          topic_name: "What needs to be improved in the video by MRP.",
+          status: false
+        },
+        {
+          topic_id: "2",
+          topic_name: "What do you want to learn more by MRP.",
+          status: false
+        },
+        {
+          topic_id: "3",
+          topic_name: "What are the challenges in general by MRP.",
+          status: false
+        }
       ],
       sessiontoken: ""
     },
     {
-      username: "45678",
-      password: "45678",
+      username: "9312252531",
+      password: "9312252531",
       role: "mrp",
       topics: ["Crop Cultivation", "Soil Erosion", "Livestock"],
       questions: [
-        "What needs to be improved in the video.",
-        "What do you want to learn more.",
-        "What are the challenges in general."
+        {
+          topic_id: "1",
+          topic_name: "What needs to be improved in the video by MRP.",
+          status: false
+        },
+        {
+          topic_id: "2",
+          topic_name: "What do you want to learn more by MRP.",
+          status: false
+        },
+        {
+          topic_id: "3",
+          topic_name: "What are the challenges in general by MRP.",
+          status: false
+        }
       ],
       sessiontoken: ""
     },
     {
-      username: "56789",
-      password: "56789",
+      username: "9991062244",
+      password: "9991062244",
       role: "block_officer",
       topics: ["Crop Production", "Pesticide Control", "Crop Cultivation"],
       questions: [
-        "What needs to be improved in the video.",
-        "What do you want to learn more.",
-        "What are the challenges in general."
+        {
+          topic_id: "1",
+          topic_name:
+            "What needs to be improved in the video by BLOCK_OFFICER.",
+          status: false
+        },
+        {
+          topic_id: "2",
+          topic_name: "What do you want to learn more by BLOCK_OFFICER.",
+          status: false
+        },
+        {
+          topic_id: "3",
+          topic_name: "What are the challenges in general by BLOCK_OFFICER.",
+          status: false
+        }
       ],
       sessiontoken: ""
     },
     {
-      username: "67890",
-      password: "67890",
+      username: "9886735532",
+      password: "9886735532",
       role: "block_officer",
       topics: [
         "Pesticide Control",
@@ -92,47 +154,70 @@ export class UserService {
         "Dairy Farming"
       ],
       questions: [
-        "What needs to be improved in the video.",
-        "What do you want to learn more.",
-        "What are the challenges in general."
+        {
+          topic_id: "1",
+          topic_name:
+            "What needs to be improved in the video by BLOCK_OFFICER.",
+          status: false
+        },
+        {
+          topic_id: "2",
+          topic_name: "What do you want to learn more by BLOCK_OFFICER.",
+          status: false
+        },
+        {
+          topic_id: "3",
+          topic_name: "What are the challenges in general by BLOCK_OFFICER.",
+          status: false
+        }
       ],
       sessiontoken: ""
     }
   ];
   users: any;
   loggedInUser = null;
+  public username = new BehaviorSubject<any>("");
 
   constructor(private storage: Storage) {}
 
   async validateUserDetails(username, password) {
     const users = this.getUserList();
     let userdetails;
-      for (let i = 0; i < users.length; i++) {
-        const user = users[i];
-        if (user.username === username.trim() && user.password === password) {
-          console.log("inside if",i);
-          userdetails = { ...user };
-          userdetails["sessiontoken"] = this.getMasterToken();
-          var status = await this.setLoggedInUser(userdetails);
+    for (let i = 0; i < users.length; i++) {
+      const user = users[i];
+      if (user.username === username.trim() && user.password === password) {
+        userdetails = { ...user };
+        userdetails["sessiontoken"] = this.getMasterToken();
+        const status = await this.setLoggedInUser(userdetails);
+        this.username.next(username);
+        if (status) {
           return 1;
-        } else if (user.username === username.trim()) {
-          console.log("inside else if",i);
-
-          return 0;
+        } else {
+          return -10;
         }
-        console.log("outside if");
-
+      } else if (user.username === username.trim()) {
+        return 0;
       }
-      return -1;
-
+    }
+    return -1;
   }
 
-  getUserTopics() {
-    return this.loggedInUser["topics"];
+  async getUserTopics() {
+    const user = await this.getLoggedInUser();
+    if (!!user) {
+      return user["topics"];
+    } else {
+      return [];
+    }
   }
 
-  getUserQuestions() {
-    return this.loggedInUser["questions"];
+  async getUserQuestions() {
+    const user = await this.getLoggedInUser();
+    if (!!user) {
+      return user["questions"];
+    } else {
+      return [];
+    }
   }
 
   async setLoggedInUser(userdetails) {
@@ -145,10 +230,9 @@ export class UserService {
   }
 
   async getLoggedInUser() {
-    if(!this.loggedInUser) {
-      let loggedinuser = await this.storage.get(
-        "loggedinuser");
-        this.loggedInUser = JSON.parse(loggedinuser);
+    if (!this.loggedInUser) {
+      const loggedinuser = await this.storage.get("loggedinuser");
+      this.loggedInUser = JSON.parse(loggedinuser);
     }
     return this.loggedInUser;
   }
@@ -162,11 +246,20 @@ export class UserService {
   }
 
   getUserList() {
-    return  [...this.userlist] ;
+    return [...this.userlist];
   }
 
+  async getUserRole() {
+    const user = await this.getLoggedInUser();
+    if (!!user) {
+      return user["role"];
+    } else {
+      return null;
+    }
+  }
 
-  clearUserList() {
-    this.storage.remove("users");
+  clearUserData() {
+    this.users = [];
+    this.loggedInUser = null;
   }
 }

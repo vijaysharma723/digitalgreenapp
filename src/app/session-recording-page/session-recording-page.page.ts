@@ -3,21 +3,17 @@ import { ActivatedRoute } from "@angular/router";
 import { SessionService } from "./../services/session/session.service";
 
 import { Router } from "@angular/router";
-import { File, FileEntry } from "@ionic-native/File/ngx";
-import {
-  MediaCapture,
-  MediaFile,
-  CaptureError,
-  CaptureAudioOptions
-} from "@ionic-native/media-capture/ngx";
+import { File, FileEntry } from "@ionic-native/file/ngx";
 import { Media, MediaObject } from "@ionic-native/media/ngx";
 import { Platform } from "@ionic/angular";
-import { Storage } from "@ionic/storage";
 import { ISession } from "../interfaces/ISession";
-
+import { UserService } from "../services/user.service";
+import { Dialogs } from "@ionic-native/dialogs/ngx";
+import { SyncService } from "../services/sync/sync.service";
 import { TranslateService } from '@ngx-translate/core';
 
 const MEDIA_FOLDER_NAME = "digitalgreenmediafiles";
+const parentDirFolder = "session";
 @Component({
   selector: "app-session-recording-page",
   templateUrl: "./session-recording-page.page.html",
@@ -42,16 +38,17 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
   audioList = [];
   sessionname: any;
   topicid: any;
+  mediaParentFolder = "session";
   constructor(
     public router: Router,
     private route: ActivatedRoute,
     private plt: Platform,
     private file: File,
-    private mediacapture: MediaCapture,
     private media: Media,
-    private storage: Storage,
     private sessionService: SessionService,
-    translate: TranslateService
+    private readonly userSrvc: UserService,
+    private readonly syncSrvc: SyncService,
+    translate : TranslateService
   ) {
     // this language will be used as a fallback when a translation isn't found in the current language
     translate.setDefaultLang('en');
@@ -120,17 +117,17 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     this.audio.stopRecord();
     this.recordStarted = false;
     this.audio.release();
-    // let data = { filename: this.fileName };
-    // this.audioList.push(data);
-    // this.storage.set("audiolist", JSON.stringify(this.audioList));
     const updateddata = await this.sessionService.updateSessionTopicData(
       this.sessionid,
       this.topicid,
       this.fileName
     );
-    this.router.navigate(["/sessiondetails", this.sessionid]);
-    // alert(this.audioList);
-    // this.getAudioList();
+    // trigger the sync api to send the files to the server
+    this.userSrvc.getLoggedInUser().then(user => {
+      const filePathFromRoot = `${this.mediaParentFolder}/${user.username}_${this.sessionid}_${this.topicid}.wav`;
+      this.syncSrvc.sendSessionFileUploadRequest(filePathFromRoot);
+      this.router.navigate(["/sessiondetails", this.sessionid]);
+    });
   }
   mediaPlayAudio(file, idx) {
     // alert("media playing");
@@ -163,27 +160,70 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
   //   });
   // }
   startMediaRecording() {
-    if (this.plt.is("ios")) {
-      this.fileName = "record" + new Date().getTime() + ".wav";
-      this.filepath =
-        this.file.documentsDirectory.replace(/file:\/\//g, "") + this.fileName;
-      this.audio = this.media.create(this.filepath);
-    } else if (this.plt.is("android")) {
-      this.fileName = "record" + new Date().getTime() + ".wav";
-      this.filepath =
-        this.file.externalDataDirectory.replace(/file:\/\//g, "") +
-        this.fileName;
-      this.audio = this.media.create(this.filepath);
-    }
-    this.recordStarted = true;
-    this.audio.startRecord();
+    // get the username, session id and topic id to create a filename of convention username_sessionID_topicID.wav
+    this.userSrvc.getLoggedInUser().then(user => {
+      if (user) {
+        console.log(user);
+        console.log("session data is ", this.sessionData);
+        this.fileName = `${user.username}_${this.sessionid}_${this.topicid}.wav`;
+        console.log("filename is ", this.fileName);
+        // create media file as per platform
+        if (this.plt.is("ios")) {
+          this.filepath =
+            this.file.documentsDirectory.replace(/file:\/\//g, "") +
+            this.fileName;
+        } else if (this.plt.is("android")) {
+          console.log("android device");
+          this.filepath =
+            this.file.externalDataDirectory.replace(/file:\/\//g, "") +
+            parentDirFolder +
+            "/" +
+            this.fileName;
+          this.checkAndCreateSessionDir()
+            .then(created => {
+              console.log("saving recording as ", this.fileName);
+              console.log("savnig in ", this.filepath);
+              this.audio = this.media.create(this.filepath);
+              this.recordStarted = true;
+              this.audio.startRecord();
+            })
+            .catch(() => {
+              console.log("ABORt");
+            });
+        }
+      }
+    });
+  }
+
+  checkAndCreateSessionDir() {
+    return new Promise((res, rej) => {
+      this.file
+        .checkDir(this.file.externalDataDirectory, parentDirFolder)
+        .then(exists => {
+          console.log("exist res ", exists);
+          res(true);
+        })
+        .catch(doesnotExist => {
+          // creating sessions dir
+          console.log("does not exist error ", doesnotExist);
+          console.log("creating sessions directory");
+          this.file
+            .createDir(this.file.externalDataDirectory, parentDirFolder, true)
+            .then(created => {
+              console.log("created ", created);
+              res(true);
+            })
+            .catch(creationErr => {
+              console.log("Error while creating sessions dir", creationErr);
+              rej();
+            });
+        });
+    });
   }
   ngOnDestroy() {
-    if(!!this.audio) {
-    this.audio.stop();
-    this.audio.release();
+    if (!!this.audio) {
+      this.audio.stop();
+      this.audio.release();
     }
-
-    // this.stopMediaRecording();
   }
 }

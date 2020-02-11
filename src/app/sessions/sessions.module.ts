@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { SessionsPageRoutingModule } from './sessions-routing.module';
 
 import { SessionsPage } from './sessions.page';
+import {File} from '@ionic-native/file/ngx';
 
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -30,6 +31,7 @@ export function createTranslateLoader(http: HttpClient) {
       }
     }), HttpClientModule
   ],
+  providers: [File],
   declarations: [SessionsPage]
 })
 export class SessionsPageModule {}

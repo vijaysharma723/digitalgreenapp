@@ -1,5 +1,5 @@
 {
-    "HELLO": "नमस्कार",
+    "Hello": "नमस्कार",
     "Username": "उपयोगकर्ता नाम",
     "Password": "कुंजिका",
     "Sign In": "साइन इन करें",
@@ -24,5 +24,7 @@
     "English": "अंग्रेज़ी",
     "Hindi": "हिंदी",
     "Media Recording": "मीडिया रिकॉर्डिंग",
-    "Stop Media Recording": "मीडिया रिकॉर्डिंग बंद करो"
+    "Stop Media Recording": "मीडिया रिकॉर्डिंग बंद करो",
+    "Topics": "विषय",
+    "Select Topic": "विषय का चयन करें"
   }

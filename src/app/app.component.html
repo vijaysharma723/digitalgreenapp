@@ -1,49 +1,60 @@
 <ion-app>
+  <ion-menu class="sidemenu" side="start" menuId="first" contentId="content">
+    <ion-header>
+      <ion-toolbar class="textcenter">
+        <ion-title *ngIf="!!username">{{ 'Hello' | translate }} {{ username }}</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <ion-menu-toggle auto-hide="true">
+          <ion-item routerLink="/sessions" routerLinkActive="menuactive">
+            <ion-icon name="home" slot="start" color="primary"></ion-icon>
+            <ion-label>{{ 'Home' | translate }}</ion-label>
+          </ion-item>
+          <ion-item routerLink="/createsessions" routerLinkActive="menuactive">
+            <ion-icon name="add-circle" slot="start" color="primary"></ion-icon>
+            <ion-label>{{ 'New Session' | translate }}</ion-label>
+          </ion-item>
+          <ion-item
+            (click)="removeSessionToken()"
+            routerLink="/login"
+            routerLinkActive="menuactive"
+          >
+            <ion-icon name="log-out" slot="start" color="primary"></ion-icon>
+            <ion-label>{{ 'Logout' | translate }}</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
 
-<ion-menu class="sidemenu" side="start" menuId="first" contentId="content">
-  <ion-header>
-    <ion-toolbar class="textcenter">
-      <ion-title>{{ 'Hi' | translate }} Aditya</ion-title>
+  <ion-router-outlet id="content"></ion-router-outlet>
+  <ion-buttons slot="start" *ngIf="!router.url.includes('login')">
+    <ion-menu-button class="sidemenubutton"></ion-menu-button>
+  </ion-buttons>
+
+  <ion-footer *ngIf="!router.url.includes('login')">
+    <ion-toolbar color="dark">
+      <div class="footericons">
+        <div
+          class="footericon"
+          routerLink="/sessions"
+          routerLinkActive="active"
+        >
+          <ion-icon name="home" size="large"></ion-icon>
+          <p class="footericontext">{{ 'Home' | translate }}</p>
+        </div>
+        <div
+          class="footericon"
+          routerLink="/createsessions"
+          routerLinkActive="active"
+        >
+          <ion-icon name="add-circle" size="large"></ion-icon>
+          <p class="footericontext">{{ 'New Session' | translate }}</p>
+        </div>
+      </div>
     </ion-toolbar>
-  </ion-header>
-  <ion-content>
-    <ion-list>
-      <ion-menu-toggle auto-hide="true">
-        <ion-item routerLink="/sessions" routerLinkActive="menuactive">
-          <ion-icon name="home" slot="start" color="primary"></ion-icon>
-          <ion-label>{{ 'Home' | translate }}</ion-label>
-        </ion-item>
-      <ion-item routerLink="/createsessions" routerLinkActive="menuactive">
-        <ion-icon name="add-circle" slot="start" color="primary"></ion-icon>
-        <ion-label>{{ 'New Session' | translate }}</ion-label>
-      </ion-item>
-      <ion-item (click)="removeSessionToken()" routerLink="/login" routerLinkActive="menuactive">
-        <ion-icon name="log-out" slot="start" color="primary"></ion-icon>
-        <ion-label>{{ 'Logout' | translate }}</ion-label>
-      </ion-item>
-    </ion-menu-toggle>
-    </ion-list>
-  </ion-content>
-</ion-menu>
-
-<ion-router-outlet id="content"></ion-router-outlet>
-      <ion-buttons slot="start" *ngIf="!router.url.includes('login')">
-        <ion-menu-button class="sidemenubutton"></ion-menu-button>
-      </ion-buttons>
-
-<ion-footer *ngIf="!router.url.includes('login')">
-  <ion-toolbar color="dark">
-  <div class="footericons">
-    <div class="footericon" routerLink="/sessions" routerLinkActive="active">
-      <ion-icon name="home" size="large"></ion-icon>
-      <p class="footericontext">{{ 'Home' | translate }}</p>
-    </div>
-    <div class="footericon" routerLink="/createsessions" routerLinkActive="active">
-      <ion-icon name="add-circle" size="large"></ion-icon>
-      <p class="footericontext">{{ 'New Session' | translate }}</p>
-    </div>
-  </div>
-  </ion-toolbar>
-</ion-footer>
+  </ion-footer>
   <ion-router-outlet></ion-router-outlet>
 </ion-app>

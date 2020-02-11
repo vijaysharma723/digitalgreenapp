@@ -1,3 +1,5 @@
+// tslint:disable: prefer-for-of
+// tslint:disable: no-string-literal
 import { Injectable } from "@angular/core";
 import { Storage } from "@ionic/storage";
 import { UUID } from "angular2-uuid";
@@ -8,24 +10,20 @@ import { UserService } from "./../user.service";
 })
 export class SessionService {
   sessionList = [];
-  constructor(private storage:Storage, private userService: UserService) {}
+  constructor(private storage: Storage, private userService: UserService) {}
 
   getParsedData(data) {
     return JSON.parse(data);
   }
   async getSessionList() {
-    if(!(this.sessionList.length)) {
+    if (!this.sessionList.length) {
       const loggedinuser = await this.userService.getLoggedInUser();
-      const sessionList = await this.storage.get(
-        loggedinuser["username"]
-      );
-      if (!!sessionList && !!this.sessionList.length) {
+      const sessionList = await this.storage.get(loggedinuser["username"]);
+      if (!!sessionList && !!sessionList.length) {
         this.sessionList = this.getParsedData(sessionList);
       }
-
     }
     return this.sessionList;
-
   }
 
   createUniqueId() {
@@ -39,7 +37,7 @@ export class SessionService {
   }
 
   async addNewSession(sessionData) {
-    let sessionList = await this.getSessionList();
+    const sessionList = await this.getSessionList();
     if (!!sessionList && !!this.sessionList.length) {
       sessionList.unshift(sessionData);
     } else {
@@ -47,7 +45,7 @@ export class SessionService {
     }
     const updated = await this.setSessionList(sessionList);
     const uploadNewSession = await this.storage.set(
-      sessionData['sessionid'],
+      sessionData["sessionid"],
       JSON.stringify(sessionData)
     );
     return uploadNewSession && updated;
@@ -71,7 +69,6 @@ export class SessionService {
       if (topic["topic_id"] === topicId) {
         session["topics"][j]["file_url"] = filePath;
         break;
-        // const updated = await this.setSessionList(sessionList);
       }
     }
     const updateSpecificSessionStorage = await this.storage.set(
@@ -87,7 +84,11 @@ export class SessionService {
       }
     }
     const updateAllSessionStorage = await this.setSessionList(sessionList);
-    return (updateSpecificSessionStorage & updateAllSessionStorage);
+    return updateSpecificSessionStorage & updateAllSessionStorage;
+  }
+
+  clearSessionData() {
+    this.sessionList = [];
   }
 
   // uploadTopicDataToCloud(sessionId, topicId) {

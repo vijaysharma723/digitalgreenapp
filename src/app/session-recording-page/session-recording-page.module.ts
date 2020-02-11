@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { SessionRecordingPagePageRoutingModule } from './session-recording-page-routing.module';
 
 import { SessionRecordingPagePage } from './session-recording-page.page';
+import {File} from '@ionic-native/file/ngx';
 
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -30,6 +31,7 @@ export function createTranslateLoader(http: HttpClient) {
       }
     }), HttpClientModule
   ],
-  declarations: [SessionRecordingPagePage]
+  declarations: [SessionRecordingPagePage],
+  providers: [File]
 })
 export class SessionRecordingPagePageModule {}

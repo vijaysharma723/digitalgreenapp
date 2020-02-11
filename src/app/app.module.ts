@@ -1,4 +1,8 @@
-import { NgModule, OnInit } from "@angular/core";
+import { Network } from "@ionic-native/network/ngx";
+import { Dialogs } from "@ionic-native/dialogs/ngx";
+import { FileTransfer } from "@ionic-native/file-transfer/ngx";
+import { SyncService } from "./services/sync/sync.service";
+import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { RouteReuseStrategy } from "@angular/router";
 
@@ -9,7 +13,7 @@ import { StatusBar } from "@ionic-native/status-bar/ngx";
 import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app-routing.module";
 import { IonicStorageModule } from "@ionic/storage";
-import { File } from "@ionic-native/File/ngx";
+import { File } from "@ionic-native/file/ngx";
 import { MediaCapture } from "@ionic-native/media-capture/ngx";
 import { Media } from "@ionic-native/media/ngx";
 
@@ -26,25 +30,29 @@ export function createTranslateLoader(http: HttpClient) {
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
+    HttpClientModule,
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
     IonicStorageModule.forRoot({
-      name: "digitalgreendb",
-      driverOrder:["localstorage"]
-    }),
-    TranslateModule.forRoot({
+      name: "digitalgreendb"
+    }),TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
         useFactory: (createTranslateLoader),
         deps: [HttpClient]
       }
-    }), HttpClientModule
+    })
   ],
   providers: [
     StatusBar,
-    SplashScreen,,
-    TranslateConfigService,
+    Network,
+    Dialogs,
+    SplashScreen,
+    File,
+    // tslint:disable-next-line: deprecation
+    FileTransfer,
+    SyncService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     Media,
     File,

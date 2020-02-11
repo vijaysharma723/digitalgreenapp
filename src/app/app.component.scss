@@ -28,3 +28,10 @@ p.footericontext {
 .menuactive {
     border-left: 8px solid #b7cc1a;
 }
+
+::ng-deep {
+    .toaster {
+      margin-top: 50px;
+      color: white;
+    }
+  }

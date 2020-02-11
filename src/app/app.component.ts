@@ -1,10 +1,12 @@
-import { Component } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { SessionService } from "./services/session/session.service";
+import { Component, OnInit } from "@angular/core";
 
-import { Platform } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
-import {Router} from '@angular/router';
-import {UserService} from './services/user.service';
+import { Platform } from "@ionic/angular";
+import { SplashScreen } from "@ionic-native/splash-screen/ngx";
+import { StatusBar } from "@ionic-native/status-bar/ngx";
+import { Router } from "@angular/router";
+import { UserService } from "./services/user.service";
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -12,13 +14,16 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: "app.component.html",
   styleUrls: ["app.component.scss"]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+  username: string;
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private userService: UserService,
+    private sessionService: SessionService,
     public router: Router,
+    private route: ActivatedRoute,
     translate: TranslateService
   ) {
     this.initializeApp();
@@ -27,15 +32,29 @@ export class AppComponent {
     // the lang to use, if the lang isn't available, it will use the current loader to get them
     translate.use('hi');
   }
-
+  displayName(event) {
+    console.log("calling", event);
+  }
   initializeApp() {
     this.platform.ready().then(() => {
+      const timeStamp = localStorage.getItem("statusTimeStamp");
+      if (!timeStamp) {
+        localStorage.setItem("statusTimeStamp", new Date().toISOString());
+      }
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
   }
 
+  async ngOnInit() {
+    this.userService.username.subscribe(username => {
+      this.username = username;
+    });
+  }
+
   removeSessionToken() {
     this.userService.endSession();
+    this.userService.clearUserData();
+    this.sessionService.clearSessionData();
   }
 }
