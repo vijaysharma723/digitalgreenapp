@@ -139,3 +139,12 @@
     height: auto;
     position: relative;
 }
+
+.microphonebtn {
+    background-color: white;
+    height: 60px;
+}
+
+button.microphonebtn[disabled] {
+    opacity: 0.6;
+}

@@ -21,26 +21,24 @@ export class UserService {
       username: "9971696729",
       password: "9971696729",
       role: "vrp",
-      topics: [
-        "जल संचयन",
-        "फसल की खेती ",
-        "फसल उत्पाद",
-        "पशु"
-      ],
+      topics: ["जल संचयन", "फसल की खेती ", "फसल उत्पाद", "पशु"],
       questions: [
         {
           topic_id: "1",
           topic_name: "वीडियो में क्या सुधार करने की आवश्यकता है।",
+          isPlayed: false,
           status: false
         },
         {
           topic_id: "2",
           topic_name: "आप और क्या सीखना चाहते हैं।",
+          isPlayed: false,
           status: false
         },
         {
           topic_id: "3",
           topic_name: "सामान्य तौर पर चुनौतियां क्या हैं।",
+          isPlayed: false,
           status: false
         }
       ],
@@ -55,16 +53,19 @@ export class UserService {
         {
           topic_id: "1",
           topic_name: "वीडियो में क्या सुधार करने की आवश्यकता है।",
+          isPlayed: false,
           status: false
         },
         {
           topic_id: "2",
           topic_name: "आप और क्या सीखना चाहते हैं।",
+          isPlayed: false,
           status: false
         },
         {
           topic_id: "3",
           topic_name: "सामान्य तौर पर चुनौतियां क्या हैं।",
+          isPlayed: false,
           status: false
         }
       ],
@@ -79,16 +80,19 @@ export class UserService {
         {
           topic_id: "1",
           topic_name: "वीडियो में एमआरपी में क्या सुधार करने की जरूरत है।",
+          isPlayed: false,
           status: false
         },
         {
           topic_id: "2",
           topic_name: "आप एमआरपी से और क्या सीखना चाहते हैं।",
+          isPlayed: false,
           status: false
         },
         {
           topic_id: "3",
           topic_name: "एमआरपी द्वारा सामान्य रूप से क्या चुनौतियां हैं।",
+          isPlayed: false,
           status: false
         }
       ],
@@ -103,16 +107,19 @@ export class UserService {
         {
           topic_id: "1",
           topic_name: "वीडियो में एमआरपी में क्या सुधार करने की जरूरत है।",
+          isPlayed: false,
           status: false
         },
         {
           topic_id: "2",
           topic_name: "आप एमआरपी से और क्या सीखना चाहते हैं।",
+          isPlayed: false,
           status: false
         },
         {
           topic_id: "3",
           topic_name: "एमआरपी द्वारा सामान्य रूप से क्या चुनौतियां हैं।",
+          isPlayed: false,
           status: false
         }
       ],
@@ -128,16 +135,19 @@ export class UserService {
           topic_id: "1",
           topic_name:
             "वीडियो में ब्लॉक_अधिकारी द्वारा क्या सुधार किए जाने की आवश्यकता है।",
+          isPlayed: false,
           status: false
         },
         {
           topic_id: "2",
           topic_name: "आप ब्लॉक_अधिकारी द्वारा और क्या सीखना चाहते हैं।",
+          isPlayed: false,
           status: false
         },
         {
           topic_id: "3",
           topic_name: "ब्लॉक_अधिकारी द्वारा सामान्य रूप से क्या चुनौतियाँ हैं।",
+          isPlayed: false,
           status: false
         }
       ],
@@ -147,27 +157,25 @@ export class UserService {
       username: "9886735532",
       password: "9886735532",
       role: "block_officer",
-      topics: [
-        "कीटनाशक नियंत्रण",
-        "कृषि नीतियां",
-        "फसल कटाई",
-        "दूध उत्पादन"
-      ],
+      topics: ["कीटनाशक नियंत्रण", "कृषि नीतियां", "फसल कटाई", "दूध उत्पादन"],
       questions: [
         {
           topic_id: "1",
           topic_name:
             "वीडियो में ब्लॉक_अधिकारी द्वारा क्या सुधार किए जाने की आवश्यकता है।",
+          isPlayed: false,
           status: false
         },
         {
           topic_id: "2",
           topic_name: "आप ब्लॉक_अधिकारी द्वारा और क्या सीखना चाहते हैं।",
+          isPlayed: false,
           status: false
         },
         {
           topic_id: "3",
           topic_name: "ब्लॉक_अधिकारी द्वारा सामान्य रूप से क्या चुनौतियाँ हैं।",
+          isPlayed: false,
           status: false
         }
       ],
