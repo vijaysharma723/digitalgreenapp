@@ -58,7 +58,7 @@ export class SyncService {
       const fileNameData = this.getFileDataFromName(filePath.split('session/')[1]);
       const username = fileNameData[0];
       const sessionID = fileNameData[1];
-      const topicID = fileNameData[2];
+      const topicID = fileNameData[2].split('.wav')[0];
       const statusEP = this.CheckStatusAPIEndpoint + username;
       const headerOptions = {
         headers: new HttpHeaders(
@@ -223,7 +223,7 @@ export class SyncService {
       }
     } else {
       // there is no its, means it's the first time for upload
-      this.dialog.alert('allowing', topic.topic_id);
+      // this.dialog.alert('allowing', topic.topic_id);
       return true;
     }
   }

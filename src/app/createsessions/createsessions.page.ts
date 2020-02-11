@@ -38,7 +38,7 @@ export class CreatesessionsPage implements OnInit {
     this.userRole = await this.userService.getUserRole();
     this.userSessions = await this.userService.getUserTopics();
     if (this.userRole !== "vrp") {
-      this.topic = "Untitled_" + new Date().getTime().toString();
+      this.topic = "सामान्य";
     }
   }
 

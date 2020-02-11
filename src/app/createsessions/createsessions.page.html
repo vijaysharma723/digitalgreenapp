@@ -20,7 +20,7 @@
   <ion-card>
     <ion-card-header>
       <ion-card-title>{{ 'New Session' | translate }}</ion-card-title>
-      <h5>{{ sessionDate | date: fullDate }}</h5>
+      <h5>{{ sessionDate | date: 'short' }}</h5>
     </ion-card-header>
     <form class="ion-padding" *ngIf="!!userSessions" (ngSubmit)="logForm()">
       <br />

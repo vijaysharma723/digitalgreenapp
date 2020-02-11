@@ -17,11 +17,11 @@
       <div class="sessionname">
         <p>{{ session.name }}</p>
         <div class="date">
-          {{ session.created | date: 'mediumDate' }}
+          {{ session.created | date: 'short' }}
         </div>
       </div>
       <div class="upload">
-        <ion-button *ngIf="!session.isUploaded">
+        <ion-button *ngIf="!session.isUploaded" disabled>
           <ion-icon slot="icon-only" name="cloud-upload"></ion-icon>
         </ion-button>
         <ion-button *ngIf="session.isUploaded" disabled>
