@@ -1,12 +1,12 @@
 // tslint:disable: prefer-for-of
 // tslint:disable: no-string-literal
-import { Injectable } from '@angular/core';
-import { Storage } from '@ionic/storage';
-import { UUID } from 'angular2-uuid';
-import { UserService } from './../user.service';
+import { Injectable } from "@angular/core";
+import { Storage } from "@ionic/storage";
+import { UUID } from "angular2-uuid";
+import { UserService } from "./../user.service";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class SessionService {
   sessionList = [];
@@ -18,7 +18,7 @@ export class SessionService {
   async getSessionList() {
     if (!this.sessionList.length) {
       const loggedinuser = await this.userService.getLoggedInUser();
-      const sessionList = await this.storage.get(loggedinuser['username']);
+      const sessionList = await this.storage.get(loggedinuser["username"]);
       if (!!sessionList && !!sessionList.length) {
         this.sessionList = this.getParsedData(sessionList);
       }
@@ -45,7 +45,7 @@ export class SessionService {
     }
     const updated = await this.setSessionList(sessionList);
     const uploadNewSession = await this.storage.set(
-      sessionData['sessionid'],
+      sessionData["sessionid"],
       JSON.stringify(sessionData)
     );
     return uploadNewSession && updated;
@@ -54,7 +54,7 @@ export class SessionService {
   async setSessionList(sessionList) {
     const loggedinuser = await this.userService.getLoggedInUser();
     const status = await this.storage.set(
-      loggedinuser['username'],
+      loggedinuser["username"],
       JSON.stringify(sessionList)
     );
 
@@ -64,10 +64,10 @@ export class SessionService {
 
   async updateSessionTopicData(sessionId, topicId, filePath) {
     const session = await this.getSessionById(sessionId);
-    for (let j = 0; j < session['topics'].length; j++) {
-      const topic = session['topics'][j];
-      if (topic['topic_id'] === topicId) {
-        session['topics'][j]['file_url'] = filePath;
+    for (let j = 0; j < session["topics"].length; j++) {
+      const topic = session["topics"][j];
+      if (topic["topic_id"] === topicId) {
+        session["topics"][j]["file_url"] = filePath;
         break;
       }
     }
@@ -78,13 +78,13 @@ export class SessionService {
     const sessionList = await this.getSessionList();
     for (let i = 0; i < sessionList.length; i++) {
       const sessionEach = sessionList[i];
-      if (sessionEach['sessionid'] === sessionId) {
+      if (sessionEach["sessionid"] === sessionId) {
         sessionList[i] = session;
         break;
       }
     }
     const updateAllSessionStorage = await this.setSessionList(sessionList);
-    return (updateSpecificSessionStorage & updateAllSessionStorage);
+    return updateSpecificSessionStorage & updateAllSessionStorage;
   }
 
   clearSessionData() {

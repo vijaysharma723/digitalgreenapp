@@ -17,6 +17,18 @@ export class ToasterService {
     "dark"
   ];
 
+  public toasterMessage = {
+    noUsername: "Please enter Username.",
+    noPassword: "Please enter Password.",
+    loggedInSuccessfully: "Logged in Successfully.",
+    incorrectUsernamePassword: "Please enter correct Username and Password.",
+    incorrectPassword: "Please enter correct Password.",
+    loginFailed: "Unable to Login.",
+    sessionCreated: "Session created successfully.",
+    sessionCreationFailed: "Unable to create Session.",
+    selectTopic: "Please select Topic."
+  };
+
   constructor(private toastController: ToastController) {}
 
   async present({

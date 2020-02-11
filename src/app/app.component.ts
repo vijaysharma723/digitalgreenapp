@@ -1,20 +1,17 @@
-import { ActivatedRoute } from '@angular/router';
-import { SessionService } from './services/session/session.service';
-import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from "@angular/router";
+import { SessionService } from "./services/session/session.service";
+import { Component, OnInit } from "@angular/core";
 
-import { Platform } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { Router } from '@angular/router';
-import { UserService } from './services/user.service';
-
-
-
+import { Platform } from "@ionic/angular";
+import { SplashScreen } from "@ionic-native/splash-screen/ngx";
+import { StatusBar } from "@ionic-native/status-bar/ngx";
+import { Router } from "@angular/router";
+import { UserService } from "./services/user.service";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss']
+  selector: "app-root",
+  templateUrl: "app.component.html",
+  styleUrls: ["app.component.scss"]
 })
 export class AppComponent implements OnInit {
   username: string;
@@ -30,13 +27,13 @@ export class AppComponent implements OnInit {
     this.initializeApp();
   }
   displayName(event) {
-    console.log('calling', event);
+    console.log("calling", event);
   }
   initializeApp() {
     this.platform.ready().then(() => {
-      const timeStamp = localStorage.getItem('statusTimeStamp');
+      const timeStamp = localStorage.getItem("statusTimeStamp");
       if (!timeStamp) {
-        localStorage.setItem('statusTimeStamp', new Date().toISOString());
+        localStorage.setItem("statusTimeStamp", new Date().toISOString());
       }
       this.statusBar.styleDefault();
       this.splashScreen.hide();
@@ -44,7 +41,7 @@ export class AppComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.userService.username.subscribe((username) => {
+    this.userService.username.subscribe(username => {
       this.username = username;
     });
   }

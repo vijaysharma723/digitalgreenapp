@@ -176,7 +176,7 @@ export class UserService {
   loggedInUser = null;
   public username = new BehaviorSubject<any>("");
 
-  constructor(private storage: Storage) { }
+  constructor(private storage: Storage) {}
 
   async validateUserDetails(username, password) {
     const users = this.getUserList();
@@ -229,7 +229,7 @@ export class UserService {
 
   async getLoggedInUser() {
     if (!this.loggedInUser) {
-      const loggedinuser = await this.storage.get('loggedinuser');
+      const loggedinuser = await this.storage.get("loggedinuser");
       this.loggedInUser = JSON.parse(loggedinuser);
     }
     return this.loggedInUser;
@@ -240,7 +240,7 @@ export class UserService {
   }
 
   endSession() {
-    this.storage.remove('loggedinuser');
+    this.storage.remove("loggedinuser");
   }
 
   getUserList() {
@@ -250,7 +250,7 @@ export class UserService {
   async getUserRole() {
     const user = await this.getLoggedInUser();
     if (!!user) {
-      return user['role'];
+      return user["role"];
     } else {
       return null;
     }

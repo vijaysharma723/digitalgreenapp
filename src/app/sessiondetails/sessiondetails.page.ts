@@ -1,18 +1,18 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { SessionService } from './../services/session/session.service';
-import { File} from '@ionic-native/file/ngx';
-import { Media } from '@ionic-native/media/ngx';
-import { Platform } from '@ionic/angular';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { SessionService } from "./../services/session/session.service";
+import { File, FileEntry } from "@ionic-native/File/ngx";
+import { Media, MediaObject } from "@ionic-native/media/ngx";
+import { Platform } from "@ionic/angular";
 
 @Component({
-  selector: 'app-sessiondetails',
-  templateUrl: './sessiondetails.page.html',
-  styleUrls: ['./sessiondetails.page.scss']
+  selector: "app-sessiondetails",
+  templateUrl: "./sessiondetails.page.html",
+  styleUrls: ["./sessiondetails.page.scss"]
 })
 export class SessiondetailsPage implements OnInit, OnDestroy {
   sessionData;
-  parentDirFolder = 'session';
+  parentDirFolder = "session";
   sessdata;
   filepath: any;
   audio: any;
@@ -30,7 +30,7 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.route.params.subscribe(async params => {
-      const sessionid = params['sessionid'];
+      const sessionid = params["sessionid"];
       this.sessionData = await this.sessionService.getSessionById(sessionid);
     });
   }
@@ -38,7 +38,7 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
     this.rec = idx;
 
     this.router.navigate([
-      '/sessionrecordingpage',
+      "/sessionrecordingpage",
       this.sessionData.sessionid,
       topic.topic_id,
       topic.topic_name
@@ -49,12 +49,16 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
     this.stop = undefined;
   }
   mediaPlayAudio(file, idx) {
-    if (this.plt.is('ios')) {
+    if (this.plt.is("ios")) {
       this.filepath =
-        this.file.documentsDirectory.replace(/file:\/\//g, '') + file;
+        this.file.documentsDirectory.replace(/file:\/\//g, "") + file;
       this.audio = this.media.create(this.filepath);
-    } else if (this.plt.is('android')) {
-      this.filepath = this.file.externalDataDirectory.replace(/file:\/\//g, '') + this.parentDirFolder + '/' + file;
+    } else if (this.plt.is("android")) {
+      this.filepath =
+        this.file.externalDataDirectory.replace(/file:\/\//g, "") +
+        this.parentDirFolder +
+        "/" +
+        file;
 
       this.audio = this.media.create(this.filepath);
     }
@@ -63,7 +67,7 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
 
     this.audio.setVolume(0.8);
     this.audio.onStatusUpdate.subscribe(status => {
-      if (status.toString() === '4') {
+      if (status.toString() === "4") {
         // player end running
         this.stop = undefined;
       }
@@ -71,7 +75,7 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     if (!!this.audio) {
-    this.audio.stop();
+      this.audio.stop();
     }
   }
 }

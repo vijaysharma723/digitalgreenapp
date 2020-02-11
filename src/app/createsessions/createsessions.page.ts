@@ -1,16 +1,16 @@
 // tslint:disable: no-string-literal
-import { UserService } from './../services/user.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-import { SessionService } from './../services/session/session.service';
-import { ToasterService } from './../services/toaster/toaster.service';
+import { UserService } from "./../services/user.service";
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { Router } from "@angular/router";
+import { SessionService } from "./../services/session/session.service";
+import { ToasterService } from "./../services/toaster/toaster.service";
 @Component({
-  selector: 'app-createsessions',
-  templateUrl: './createsessions.page.html',
-  styleUrls: ['./createsessions.page.scss']
+  selector: "app-createsessions",
+  templateUrl: "./createsessions.page.html",
+  styleUrls: ["./createsessions.page.scss"]
 })
 export class CreatesessionsPage implements OnInit {
-  @ViewChild('sessionInput', { static: false }) sessionInput;
+  @ViewChild("sessionInput", { static: false }) sessionInput;
 
   sessionDate = new Date();
   topic: string;
@@ -30,8 +30,8 @@ export class CreatesessionsPage implements OnInit {
     // }, 0);
     this.userRole = await this.userService.getUserRole();
     this.userSessions = await this.userService.getUserTopics();
-    if (this.userRole !== 'vrp') {
-      this.topic = 'Untitled_' + new Date().getTime().toString();
+    if (this.userRole !== "vrp") {
+      this.topic = "Untitled_" + new Date().getTime().toString();
     }
   }
 
@@ -41,29 +41,32 @@ export class CreatesessionsPage implements OnInit {
       const result = await this.sessionService.addNewSession(newSession);
       if (result) {
         this.toaster.present({
-          text: 'Session created successfully.',
-          colour: 'light'
+          text: this.toaster.toasterMessage.sessionCreated,
+          colour: "light"
         });
-        this.router.navigate(['/sessiondetails', newSession['sessionid']]);
+        this.router.navigate(["/sessiondetails", newSession["sessionid"]]);
       } else {
         this.toaster.present({
-          text: 'Unable to create Session.',
-          colour: 'danger'
+          text: this.toaster.toasterMessage.sessionCreationFailed,
+          colour: "danger"
         });
       }
     } else {
-      this.toaster.present({text: 'Please select Topic.', colour: 'danger'});
+      this.toaster.present({
+        text: this.toaster.toasterMessage.selectTopic,
+        colour: "danger"
+      });
     }
   }
 
   async createNewSession(name) {
     const newSessionDetails = {};
-    newSessionDetails['name'] = name;
-    newSessionDetails['sessionid'] = await this.sessionService.createUniqueId();
-    newSessionDetails['created'] = new Date().toISOString();
-    newSessionDetails['isUploaded'] = false;
+    newSessionDetails["name"] = name;
+    newSessionDetails["sessionid"] = await this.sessionService.createUniqueId();
+    newSessionDetails["created"] = new Date().toISOString();
+    newSessionDetails["isUploaded"] = false;
     const userTopics = await this.userService.getUserQuestions();
-    newSessionDetails['topics'] = userTopics;
+    newSessionDetails["topics"] = userTopics;
 
     return newSessionDetails;
   }
