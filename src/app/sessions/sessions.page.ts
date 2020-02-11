@@ -23,6 +23,8 @@ import { TranslateService } from "@ngx-translate/core";
 })
 export class SessionsPage implements OnInit {
   userName: any;
+  parentFolderDir = 'session';
+  isOnline: boolean;
   constructor(
     public checknetwork: ChecknetworkService,
     public network: Network,
@@ -48,6 +50,15 @@ export class SessionsPage implements OnInit {
   sessionlist = [];
 
   async ngOnInit() {
+    this.checknetwork.isOnline.subscribe(val => {
+      debugger;
+      if (val === "Connected") {
+        // when online is detected on the sessions page, trigger sync api
+       this.syncService.syncUserSessions (true);
+      } else if (val === "Disconnected") {
+        console.log("not ok");
+      }
+    });
     this.route.url.subscribe(async () => {
       const sessions = await this.sessionService.getSessionList();
       if (!!sessions) {
@@ -57,15 +68,7 @@ export class SessionsPage implements OnInit {
   }
   ionViewDidEnter() {
     this.userName = this.userService.loggedInUser["username"];
-    this.checknetwork.isOnline.subscribe(val => {
-      if (val === "Connected") {
-        // when online is detected on the sessions page, trigger sync api
-        // this.syncUserSessions (true);
-      } else if (val === "Disconnected") {
-        console.log("not ok");
-      }
-    });
-    if (this.sessionlist && this.sessionlist.length > 0) {
+    if (this.sessionlist && this.sessionlist.length > 0 && this.checknetwork.isOnlineStatic) {
       this.checkSessionToUpload();
     }
     this.subscription = this.platform.backButton.subscribe(() => {
@@ -82,26 +85,8 @@ export class SessionsPage implements OnInit {
     });
   }
 
-  syncUserSessions(ifOnline) {
-    if (ifOnline) {
-      console.log("initiating sync event");
-      // get the file, and send its path to the upload/session api
-      console.log(this.FilePlugin.applicationDirectory);
-      this.FilePlugin.listDir(
-        this.FilePlugin.externalDataDirectory,
-        "session"
-      ).then(dirItems => {
-        console.log("items are ", dirItems);
-        const fileObj = dirItems[0];
-        if (fileObj.isFile) {
-          console.log("trying to upoad ", fileObj);
-          this.syncService.sendSessionFileUploadRequest(fileObj["nativeURL"]);
-        }
-      });
-    }
-  }
-  async getTimeDiff() {
-    const initialtimeStamp = await this.storage.get("statusTimeStamp");
+  getTimeDiff() {
+    const initialtimeStamp = localStorage.getItem("statusTimeStamp");
     const d1 = new Date(initialtimeStamp);
     const currentTimeStamp = new Date().toISOString();
     const d2 = new Date(currentTimeStamp);
@@ -112,6 +97,8 @@ export class SessionsPage implements OnInit {
   setTopicStatus(index) {
     this.sessionlist[index]["topics"].forEach(async (topic, j) => {
       this.sessionlist[index]["topics"][j]["isUploaded"] = true;
+      // this topic is now synced
+      this.sessionlist[index]["topics"][j]['topic_status'] = (3).toString();
       if (
         await this.file.checkDir(this.file.externalDataDirectory, "session")
       ) {

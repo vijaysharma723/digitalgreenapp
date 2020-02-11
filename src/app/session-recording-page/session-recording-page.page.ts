@@ -127,6 +127,9 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     // trigger the sync api to send the files to the server
     this.userSrvc.getLoggedInUser().then(user => {
       const filePathFromRoot = `${this.mediaParentFolder}/${user.username}_${this.sessionid}_${this.topicid}.wav`;
+      // set the status to initiate in local db
+      // this.sessionService.setSessionStatus({topic_status: 0, its: new Date().toISOString()}, this.sessionid, this.topicid);
+      // send the file for upload
       this.syncSrvc.sendSessionFileUploadRequest(filePathFromRoot);
       this.router.navigate(["/sessiondetails", this.sessionid]);
     });

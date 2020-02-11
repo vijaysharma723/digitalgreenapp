@@ -69,6 +69,8 @@ export class SessionService {
       const topic = session["topics"][j];
       if (topic["topic_id"] === topicId) {
         session["topics"][j]["file_url"] = filePath;
+        session['topics'][j]['isUploaded'] = false;
+        session['topics'][j]['topic_status'] = -1;
         break;
       }
     }
@@ -92,19 +94,58 @@ export class SessionService {
     this.sessionList = [];
   }
 
-  // uploadTopicDataToCloud(sessionId, topicId) {
-  //     const sessionData = this.getSessionById(sessionId)[0];
-  //         let topicData:any = sessionData['topics'].filter((element)=>{
-  //     return element.topic_name===topicId;
-  //     });
-  //      topicData= topicData[0];
-  //      topicData['isUploaded'] = true;
+  /**
+   * Gets un synced sessions
+   */
+  getUnSyncedSessions() {
+    return new Promise(async (resolve, reject) => {
+      const userSessions = await this.getSessionList();
+      if (Array.isArray(userSessions) && userSessions.length > 0) {
+        // get all the unsynced sessions
+        const unsyncedSessions = userSessions.filter(session => {
+          return session.isUploaded === false;
+        });
+        resolve({ok: true, sessions: unsyncedSessions});
+      } else {
+        resolve({ok: true, sessions: []});
+      }
+    });
+  }
 
-  //       let topicDataUploadStatus: any = sessionData['topics'].filter((element)=>{
-  //     return element.isUploaded===false;
-  // });
-  //       if (topicDataUploadStatus.length > 0) {
-  //         sessionData['isUploaded'] = true;
-  //     }
-  // }
+  /**
+   * Sets session status. To upate the status of the session / topic
+   * @param stausVal
+   * @param sessionID
+   * @param [topicID]
+   */
+  async setSessionStatus(statusObj: any, sessionID: string, topicID?: string) {
+    console.log('status obj to update is ', statusObj);
+    debugger;
+    if (!sessionID || statusObj == null || statusObj === undefined) {
+      return false;
+    } else {
+      // get the session, update its session status / topic status, set it back
+      const sessions = await this.getSessionList();
+      const sessionidx = sessions.findIndex(session => session.sessionid === sessionID);
+      if (topicID !== undefined && topicID !== null) {
+        // update topic status
+        sessions[sessionidx]['topics'].forEach(topic => {
+          if (topic['topic_id'].toString() === topicID.toString()) {
+            Object.entries(statusObj).forEach(entryArray => {
+              topic[entryArray[0]] = entryArray[1];
+            });
+          }
+        });
+      } else {
+        // update session status
+        console.log('sessions updated as ', sessions);
+        Object.entries(statusObj).forEach(entryArray => {
+          sessions[sessionidx][entryArray[0]] = entryArray[1];
+        });
+      }
+      // set the session object back
+      this.setSessionList(sessions);
+      return true;
+    }
+  }
 }

@@ -12,16 +12,20 @@ export class ChecknetworkService {
       this.isOnlineStatic = true;
       this.isOnline.next('Connected');
     } else if (!window.navigator.onLine) {
-      this.isOnlineStatic = true;
+      this.isOnlineStatic = false;
       this.isOnline.next('Disonnected');
     }
     this.networkStatus();
   }
   networkStatus() {
-    this.network.onDisconnect().subscribe( () => {
-      this.isOnline.next( 'Disconnected');
+    this.network.onDisconnect().subscribe(() => {
+      this.isOnlineStatic = false;
+
+      this.isOnline.next('Disconnected');
     });
     this.network.onConnect().subscribe(() => {
+      this.isOnlineStatic = true;
+
       this.isOnline.next('Connected');
     });
   }

@@ -1,5 +1,7 @@
 // tslint:disable: deprecation
 // tslint:disable: max-line-length
+// tslint:disable: no-string-literal
+// tslint:disable: no-debugger
 import { Injectable } from '@angular/core';
 
 import { FileTransfer } from '@ionic-native/file-transfer/ngx';
@@ -14,10 +16,11 @@ import { SessionService } from '../session/session.service';
 })
 export class SyncService {
 
-  private APIEndpoint = 'https://9043818a.ngrok.io/sessions/upload';
-  private createSessionEndPoint = 'https://9043818a.ngrok.io/sessions/create';
-  private CheckStatusAPIEndpoint = 'https://9043818a.ngrok.io/sessions/status/';
+  private APIEndpoint = 'https://44e578d9.ngrok.io/sessions/upload';
+  private createSessionEndPoint = 'https://44e578d9.ngrok.io/sessions/create';
+  private CheckStatusAPIEndpoint = 'https://44e578d9.ngrok.io/sessions/status/';
   private defaultBearer = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJpc2hhYmhrYWxyYTk2IiwiZW1haWwiOiJyaXNoYWJoa2FscmE5NkBnbWFpbC5jb20iLCJpYXQiOjE1ODA4ODI1Nzl9.dxrWrjX3jaUe4t33Y9H0oLdSxenSaJA-EYaCNHIk8Ys';
+  parentFolderDir = 'session';
 
   constructor(
     private readonly FileTransferProvider: FileTransfer,
@@ -55,6 +58,7 @@ export class SyncService {
       const fileNameData = this.getFileDataFromName(filePath.split('session/')[1]);
       const username = fileNameData[0];
       const sessionID = fileNameData[1];
+      const topicID = fileNameData[2];
       const statusEP = this.CheckStatusAPIEndpoint + username;
       const headerOptions = {
         headers: new HttpHeaders(
@@ -65,9 +69,9 @@ export class SyncService {
         .subscribe(response => {
           console.log('recieved http details', response);
           if (response['status'] && (response['status'].toString() === '200' || response['status'].toString() === '304')) {
-            let selectedSession = [];
+            const selectedSession = [];
             response['data'].every(session => {
-              if (session.session_id === sessionID) {
+              if (session.sessionid === sessionID) {
                 // found
                 console.log('session exists');
                 selectedSession.push(session);
@@ -77,7 +81,7 @@ export class SyncService {
             });
             if (selectedSession.length > 0) {
               // it is an existing session, send the file
-              this.sendForUpload(filePath);
+              this.sendForUpload(filePath, null, null, sessionID, topicID);
             } else {
               // create a new session
               // get session from local db, and create as is in the remote db
@@ -97,7 +101,7 @@ export class SyncService {
                 // hit the create api
                 this.http.post(this.createSessionEndPoint, remoteSessionObj, headerOptions).subscribe(createRes => {
                   console.log('createRes', createRes);
-                  this.sendForUpload(filePath);
+                  this.sendForUpload(filePath, null, null, sessionID, topicID);
                 });
               });
             }
@@ -110,10 +114,10 @@ export class SyncService {
     }
   }
 
-  sendForUpload(filePath, APIEndPoint?: string, requestType?: string) {
+  sendForUpload(filePath, APIEndPoint?: string, requestType?: string, sessionID?: string, topicID?: any) {
     const externalPath = this.file.externalDataDirectory + filePath;
     console.log('complete path to upload is ', externalPath);
-    return new Promise((uploadRes, uploadRej) => {
+    return new Promise(async (uploadRes, uploadRej) => {
       if (!APIEndPoint) {
         APIEndPoint = this.APIEndpoint;
       }
@@ -136,25 +140,146 @@ export class SyncService {
           Authorization: this.defaultBearer,
         }
       };
-      debugger;
+      // set the status to 0 as we are now initiating the upload request
+      await this.sessionSrvc.setSessionStatus({topic_status: 0, its: new Date().toISOString()}, sessionID, topicID);
       uploader.upload(externalPath, APIEndPoint, options)
-        .then(uploaded => {
+        .then(async uploaded => {
           if (uploaded.responseCode.toString() === '200') {
             const response = JSON.parse(uploaded.response);
             this.dialog.alert(response.message);
+            // update the topic status
+            if (sessionID && topicID) {
+              if (await this.sessionSrvc.setSessionStatus({topic_status: 1, its: new Date().toISOString()}, sessionID, topicID)) {
+                console.log('status updated in session db for ', sessionID + ' ' + topicID + ' ' + 1);
+              }
+            }
             uploadRes({ ok: true, response });
           }
         })
         .catch(uploadErr => {
+          // if errror, check the number of tries the file has already been hit
+          // if it has crossed 2 retries, means the file is permanently failed
+          // else increment the retires so that it can be reuploaded later on
+          // NOTE : by this time the file status should be 0 (only initiated but not uploaded)
           this.dialog.alert(`Error uploading ${fileName}`);
+          this.updateRetries(sessionID, topicID);
           console.log('Error while uploading', uploadErr);
           uploadRej({ ok: false, error: `Error uploading ${fileName}` });
         });
     });
   }
 
+  async updateRetries(sessionID, topicID) {
+    debugger;
+    const sessions = await this.sessionSrvc.getSessionList();
+    sessions.every((session, index) => {
+      if (session.sessionid.toString() === sessionID.toString()) {
+        const topics = session.topics;
+        topics.every((topic, topicidx) => {
+          if (topic.topic_id.toString() === topicID.toString()) {
+            if (sessions[index].topics[topicidx].hasOwnProperty('topic_retries')) {
+              if (sessions[index].topics[topicidx].topic_retries >= 2) {
+                // this topic is now permanently failed
+                console.log('file ' + sessionID + ' ' + topicID + ' is now permanently failed');
+                sessions[index].topics[topicidx]['topic_status'] = 2;
+              } else {
+                // increment retries
+                sessions[index].topics[topicidx].topic_retries = (parseInt(sessions[index].topics[topicidx].topic_retries, 10) + 1).toString();
+              }
+              return false;
+            } else {
+              // add the topic_retires entry too
+              sessions[index].topics[topicidx]['topic_retries'] = 0;
+            }
+            return false;
+          }
+          return true;
+        });
+        return true;
+      }
+      return true;
+    });
+    // set the sessions back in the list
+    this.sessionSrvc.setSessionList(sessions);
+  }
+
   getFileDataFromName(filePath) {
     const fileParams = filePath.split('_');
     return fileParams;
+  }
+
+  checkTopicTSEligibility(topic, defaultDiff = 20): boolean {
+    const topicUploadTS = topic['its'];
+    if (topicUploadTS) {
+      // check whether the its difference is >= defaultDiff mins
+      const currentTS = new Date();
+      const diffInTime = new Date(topicUploadTS).getTime() - currentTS.getTime();
+      if (Math.abs(Math.round(diffInTime / 1000 / 60)) >= defaultDiff ) {
+        console.log('file allowed to reupload', topic.topic_id);
+        return true;
+      } else {
+        this.dialog.alert('less than 20 for ', topic.topic_id);
+        return false;
+      }
+    } else {
+      // there is no its, means it's the first time for upload
+      this.dialog.alert('allowing', topic.topic_id);
+      return true;
+    }
+  }
+
+  async syncUserSessions(ifOnline) {
+    debugger;
+    if (ifOnline) {
+      console.log('initiating sync event');
+      // get the file, and send its path to the upload/session api
+      // read all the sessions which are not yet synced
+      const unsyncedSessions = await this.sessionSrvc.getUnSyncedSessions();
+      console.log('unsynced sessions found as ', unsyncedSessions);
+      if (unsyncedSessions['ok'] && unsyncedSessions['sessions'].length > 0) {
+        for (const unsyncedSessionObj of unsyncedSessions['sessions']) {
+          // generate complete path for the file, send it to upload api
+          const sessionTopics = unsyncedSessionObj['topics'];
+          if (sessionTopics && Array.isArray(sessionTopics) && sessionTopics.length > 0) {
+            for (const topic of sessionTopics) {
+              // check if the last time this topic was updated X mins ago (default 20)
+              if (topic.hasOwnProperty('file_url') && parseInt(topic.topic_status, 10) < 1) {
+
+                if (this.checkTopicTSEligibility(topic)) {
+                  // file has been recorded, time to upload it
+                const filePath =  {
+                  base: this.file.externalDataDirectory,
+                  filePath: 'session/' + topic.file_url,
+                };
+                // check if it is present
+                this.file.checkFile(filePath.base, filePath.filePath)
+                .then(res => {
+                  console.log(res);
+                  if (res) {
+                    // file is present, upload it
+                    console.log('starting upload to ', filePath.filePath);
+                    // this.sessionSrvc.setSessionStatus({topic_status: 0, its: new Date().toISOString()}, unsyncedSessionObj.sessionid, topic.topic_id)
+                    this.sendSessionFileUploadRequest(filePath.filePath);
+                  } else {
+                    // file is not present, leave it as is
+                  }
+                }).catch(fileErr => {
+                  if (fileErr.message === 'NOT_FOUND_ERR') {
+                    console.log('file url is present but file is not present locally for ' + filePath.filePath);
+                  }
+                });
+                } else {
+                  console.log('topic ', topic.topic_id + ' was uploaded less than default time diff, will try it later');
+                }
+              } else {
+                // it has not been recorded, yet
+              }
+            }
+          }
+        }
+      } else {
+        console.log('No unsynced sessions present');
+      }
+    }
   }
 }
