@@ -77,6 +77,7 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
     this.audio.onStatusUpdate.subscribe(status => {
       if (status.toString() === "4") {
         // player end running
+        this.stop = null;
         this.stop = undefined;
       }
     });

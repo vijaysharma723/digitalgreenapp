@@ -38,6 +38,7 @@ export class AppComponent implements OnInit {
   }
   initializeApp() {
     this.platform.ready().then(async () => {
+      console.log("platform ready");
       const timeStamp = await this.storage.get("statusTimeStamp");
       if (!timeStamp) {
         await this.storage.set("statusTimeStamp", new Date().toISOString());
@@ -45,12 +46,19 @@ export class AppComponent implements OnInit {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
+    this.platform.resume.subscribe(async () => {
+      const userdetails = await this.userService.getLoggedInUser();
+      if (!!userdetails) {
+        this.username = userdetails.username;
+      }
+    });
   }
 
   async ngOnInit() {
-    this.userService.username.subscribe(username => {
-      this.username = username;
-    });
+    const userdetails = await this.userService.getLoggedInUser();
+    if (!!userdetails) {
+      this.username = userdetails.username;
+    }
   }
 
   removeSessionToken() {
