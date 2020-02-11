@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { SessiondetailsPageRoutingModule } from './sessiondetails-routing.module';
 
 import { SessiondetailsPage } from './sessiondetails.page';
+import { File } from '@ionic-native/file/ngx';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { SessiondetailsPage } from './sessiondetails.page';
     IonicModule,
     SessiondetailsPageRoutingModule
   ],
-  declarations: [SessiondetailsPage]
+  declarations: [SessiondetailsPage],
+  providers: [File]
 })
 export class SessiondetailsPageModule {}

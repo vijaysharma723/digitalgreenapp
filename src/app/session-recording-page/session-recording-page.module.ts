@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { SessionRecordingPagePageRoutingModule } from './session-recording-page-routing.module';
 
 import { SessionRecordingPagePage } from './session-recording-page.page';
+import {File} from '@ionic-native/file/ngx';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { SessionRecordingPagePage } from './session-recording-page.page';
     IonicModule,
     SessionRecordingPagePageRoutingModule
   ],
-  declarations: [SessionRecordingPagePage]
+  declarations: [SessionRecordingPagePage],
+  providers: [File]
 })
 export class SessionRecordingPagePageModule {}
