@@ -7,15 +7,15 @@ import { ToastController } from "@ionic/angular";
 export class ToasterService {
 
   public toasterMessage = {
-    noUsername: "Please enter Username.",
-    noPassword: "Please enter Password.",
-    loggedInSuccessfully: "Logged in Successfully.",
-    incorrectUsernamePassword: "Please enter correct Username and Password.",
-    incorrectPassword: "Please enter correct Password.",
-    loginFailed: "Unable to Login.",
-    sessionCreated: "Session created successfully.",
-    sessionCreationFailed: "Unable to create Session.",
-    selectTopic: "Please select Topic."
+    noUsername: "कृपया उपयोगकर्ता नाम दर्ज करें।",
+    noPassword: "कृप्या पास्वर्ड भरो।",
+    loggedInSuccessfully: "सफलतापूर्वक लॉग इन हो चुका है।",
+    incorrectUsernamePassword: "कृपया सही उपयोगकर्ता नाम और पासवर्ड दर्ज करें।",
+    incorrectPassword: "कृपया सही पासवर्ड दर्ज करें।",
+    loginFailed: "लॉग इन करने में असमर्थ रहा।",
+    sessionCreated: "सत्र सफलतापूर्वक बनाया गया।",
+    sessionCreationFailed: "सत्र बनाने में असमर्थ।",
+    selectTopic: "कृपया विषय चुनें।"
   };
 
   constructor(private toastController: ToastController) {}

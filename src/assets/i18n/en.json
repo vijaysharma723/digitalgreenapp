@@ -21,5 +21,8 @@
   "Logout": "Logout",
   "Select Language": "Select Language",
   "Media Recording": "Media Recording",
-  "Stop Media Recording": "Stop Media Recording"
+  "Stop Media Recording": "Stop Media Recording",
+  "Topics": "Topics",
+  "Select Topic": "Select Topic",
+  "No Sessions Recorded": "No Sessions Recorded"
 }
