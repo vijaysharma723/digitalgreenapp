@@ -51,7 +51,7 @@
             ></ion-icon>
           </ion-button>
           <ion-button
-            *ngIf="topic.file_url && ((stop == 'undefined') || (i != stop))"
+            *ngIf="topic.file_url && ((stop == undefined) || (i != stop))"
             size="small"
             color="primary"
             (click)="mediaPlayAudio(topic.file_url, i)"

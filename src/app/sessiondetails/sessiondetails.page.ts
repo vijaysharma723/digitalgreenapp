@@ -45,7 +45,7 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
   }
   mediaPauseAudio(i) {
     this.audio.pause();
-    this.stop = "undefined";
+    this.stop = undefined;
   }
   mediaPlayAudio(file, idx) {
     if (this.plt.is("ios")) {
@@ -65,7 +65,7 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
     this.audio.onStatusUpdate.subscribe(status => {
       if (status.toString() == "4") {
         // player end running
-        this.stop = "undefined";
+        this.stop = undefined;
       }
     });
   }
