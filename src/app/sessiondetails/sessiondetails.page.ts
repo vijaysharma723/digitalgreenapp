@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { SessionService } from "./../services/session/session.service";
 import { File, FileEntry } from "@ionic-native/File/ngx";
 import { Media, MediaObject } from "@ionic-native/media/ngx";
@@ -15,13 +15,16 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
   sessdata;
   filepath: any;
   audio: any;
-  played = false;
+  stop: any;
+  rec: any;
+  message: string;
   constructor(
     private route: ActivatedRoute,
     private sessionService: SessionService,
     private file: File,
     private media: Media,
-    private plt: Platform
+    private plt: Platform,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -30,12 +33,21 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
       this.sessionData = await this.sessionService.getSessionById(sessionid);
     });
   }
-  mediaPauseAudio() {
+  mediaRecording(topic, idx) {
+    this.rec = idx;
+
+    this.router.navigate([
+      "/sessionrecordingpage",
+      this.sessionData.sessionid,
+      topic.topic_id,
+      topic.topic_name
+    ]);
+  }
+  mediaPauseAudio(i) {
     this.audio.pause();
-    this.played = false;
+    this.stop = undefined;
   }
   mediaPlayAudio(file, idx) {
-    // alert("media playing");
     if (this.plt.is("ios")) {
       this.filepath =
         this.file.documentsDirectory.replace(/file:\/\//g, "") + file;
@@ -43,21 +55,21 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
     } else if (this.plt.is("android")) {
       this.filepath =
         this.file.externalDataDirectory.replace(/file:\/\//g, "") + file;
-      // alert("media file path:  - ");
-      // alert(this.filepath);
 
       this.audio = this.media.create(this.filepath);
     }
     this.audio.play();
-    this.played = true;
+    this.stop = idx;
+
     this.audio.setVolume(0.8);
+    this.audio.onStatusUpdate.subscribe(status => {
+      if (status.toString() == "4") {
+        // player end running
+        this.stop = undefined;
+      }
+    });
   }
   ngOnDestroy() {
-    if(!!this.audio)
-    this.audio.stop();
-    // this.stopMediaRecording();
+    if (!!this.audio) this.audio.stop();
   }
-  // UploadTopicFile(topicName) {
-  //   this.sharedDataSevice.uploadTopicDataToCloud(this.sessdata.sessionid, topicName);
-  // }
 }

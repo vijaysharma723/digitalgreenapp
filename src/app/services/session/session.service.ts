@@ -8,24 +8,20 @@ import { UserService } from "./../user.service";
 })
 export class SessionService {
   sessionList = [];
-  constructor(private storage:Storage, private userService: UserService) {}
+  constructor(private storage: Storage, private userService: UserService) {}
 
   getParsedData(data) {
     return JSON.parse(data);
   }
   async getSessionList() {
-    if (!(this.sessionList.length)) {
+    if (!this.sessionList.length) {
       const loggedinuser = await this.userService.getLoggedInUser();
-      const sessionList = await this.storage.get(
-        loggedinuser["username"]
-      );
+      const sessionList = await this.storage.get(loggedinuser["username"]);
       if (!!sessionList && !!sessionList.length) {
         this.sessionList = this.getParsedData(sessionList);
       }
-
     }
     return this.sessionList;
-
   }
 
   createUniqueId() {
@@ -47,10 +43,10 @@ export class SessionService {
     }
     const updated = await this.setSessionList(sessionList);
     const uploadNewSession = await this.storage.set(
-      sessionData['sessionid'],
+      sessionData["sessionid"],
       JSON.stringify(sessionData)
     );
-    return (uploadNewSession && updated);
+    return uploadNewSession && updated;
   }
 
   async setSessionList(sessionList) {
@@ -87,7 +83,7 @@ export class SessionService {
       }
     }
     const updateAllSessionStorage = await this.setSessionList(sessionList);
-    return (updateSpecificSessionStorage & updateAllSessionStorage);
+    return updateSpecificSessionStorage & updateAllSessionStorage;
   }
 
   clearSessionData() {

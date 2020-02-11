@@ -110,9 +110,6 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     this.audio.stopRecord();
     this.recordStarted = false;
     this.audio.release();
-    // let data = { filename: this.fileName };
-    // this.audioList.push(data);
-    // this.storage.set("audiolist", JSON.stringify(this.audioList));
     const updateddata = await this.sessionService.updateSessionTopicData(
       this.sessionid,
       this.topicid,
@@ -169,9 +166,9 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     this.audio.startRecord();
   }
   ngOnDestroy() {
-    if(!!this.audio) {
-    this.audio.stop();
-    this.audio.release();
+    if (!!this.audio) {
+      this.audio.stop();
+      this.audio.release();
     }
 
     // this.stopMediaRecording();
