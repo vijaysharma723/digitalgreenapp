@@ -5,17 +5,6 @@ import { ToastController } from "@ionic/angular";
   providedIn: "root"
 })
 export class ToasterService {
-  colorValues = [
-    "primary",
-    "secondary",
-    "tertiary",
-    "success",
-    "warning",
-    "danger",
-    "light",
-    "medium",
-    "dark"
-  ];
 
   public toasterMessage = {
     noUsername: "Please enter Username.",

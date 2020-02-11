@@ -23,9 +23,20 @@ ion-item{
 .sessionlist {
     padding-bottom: 50px;
 }
-
+.cont{
+    text-align: center;
+    padding: 40% 0;;
+}
+.noresultfound{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.icon4x{font-size: 4em;}
+.w100{
+    width:100%
+}
 .noresults {
     font-size: 2em;
-    margin-top: 50%;
     text-align: center;
 }
