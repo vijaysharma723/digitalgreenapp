@@ -1,6 +1,7 @@
-ion-item{
+ion-item {
     border-radius: 10px;
 }
+
 .session {
     /* padding: 1em; */
     display: flex;
@@ -11,31 +12,39 @@ ion-item{
 
 .sessionname {
     font-size: 1em;
-     padding: 1em;
-     width: 180px;
+    padding: 1em;
+    width: 180px;
 }
 
-.textcenter{
+.textcenter {
     text-align: center;
-    margin:auto;
+    margin: auto;
 }
 
 .sessionlist {
     padding-bottom: 50px;
 }
-.cont{
+
+.cont {
     text-align: center;
-    padding: 40% 0;;
+    padding: 40% 0;
+    ;
 }
-.noresultfound{
+
+.noresultfound {
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.icon4x{font-size: 4em;}
-.w100{
-    width:100%
+
+.icon4x {
+    font-size: 4em;
 }
+
+.w100 {
+    width: 100%
+}
+
 .noresults {
     font-size: 2em;
     text-align: center;

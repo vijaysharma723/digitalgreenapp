@@ -7,6 +7,7 @@ import { SplashScreen } from "@ionic-native/splash-screen/ngx";
 import { StatusBar } from "@ionic-native/status-bar/ngx";
 import { Router } from "@angular/router";
 import { UserService } from "./services/user.service";
+import { Storage } from "@ionic/storage";
 
 @Component({
   selector: "app-root",
@@ -22,7 +23,7 @@ export class AppComponent implements OnInit {
     private userService: UserService,
     private sessionService: SessionService,
     public router: Router,
-    private route: ActivatedRoute
+    private storage: Storage
   ) {
     this.initializeApp();
   }
@@ -30,10 +31,10 @@ export class AppComponent implements OnInit {
     console.log("calling", event);
   }
   initializeApp() {
-    this.platform.ready().then(() => {
-      const timeStamp = localStorage.getItem("statusTimeStamp");
+    this.platform.ready().then(async () => {
+      const timeStamp = await this.storage.get("statusTimeStamp");
       if (!timeStamp) {
-        localStorage.setItem("statusTimeStamp", new Date().toISOString());
+        await this.storage.set("statusTimeStamp", new Date().toISOString());
       }
       this.statusBar.styleDefault();
       this.splashScreen.hide();

@@ -5,7 +5,6 @@ import { ToastController } from "@ionic/angular";
   providedIn: "root"
 })
 export class ToasterService {
-
   public toasterMessage = {
     noUsername: "Please enter Username.",
     noPassword: "Please enter Password.",
@@ -15,7 +14,8 @@ export class ToasterService {
     loginFailed: "Unable to Login.",
     sessionCreated: "Session created successfully.",
     sessionCreationFailed: "Unable to create Session.",
-    selectTopic: "Please select Topic."
+    selectTopic: "Please select Topic.",
+    exit: "Press again to exit"
   };
 
   constructor(private toastController: ToastController) {}

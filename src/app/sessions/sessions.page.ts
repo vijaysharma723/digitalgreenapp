@@ -13,6 +13,7 @@ import { CheckStatusService } from "../services/checkStatus/check-status.service
 import { UserService } from "../services/user.service";
 import { Platform } from "@ionic/angular";
 import { ToasterService } from "../services/toaster/toaster.service";
+import { Storage } from "@ionic/storage";
 
 @Component({
   selector: "app-sessions",
@@ -32,10 +33,11 @@ export class SessionsPage implements OnInit {
     public userService: UserService,
     public file: File,
     private toaster: ToasterService,
-    private platform: Platform
+    private platform: Platform,
+    private storage: Storage
   ) {}
   subscription: any;
-  counter: number;
+  counter: number = 0;
   sessionlist = [];
 
   async ngOnInit() {
@@ -60,7 +62,7 @@ export class SessionsPage implements OnInit {
       this.checkSessionToUpload();
     }
     this.subscription = this.platform.backButton.subscribe(() => {
-      if (this.counter <= 1) {
+      if (this.counter < 1) {
         this.counter++;
         this.presentToast();
         setTimeout(() => {
@@ -91,8 +93,8 @@ export class SessionsPage implements OnInit {
       });
     }
   }
-  getTimeDiff() {
-    const initialtimeStamp = localStorage.getItem("statusTimeStamp");
+  async getTimeDiff() {
+    const initialtimeStamp = await this.storage.get("statusTimeStamp");
     const d1 = new Date(initialtimeStamp);
     const currentTimeStamp = new Date().toISOString();
     const d2 = new Date(currentTimeStamp);
@@ -137,12 +139,12 @@ export class SessionsPage implements OnInit {
     }
     this.sessionService.setSessionList(this.sessionlist);
   }
-  checkSessionToUpload() {
-    const timeInMin = this.getTimeDiff();
+  async checkSessionToUpload() {
+    const timeInMin = await this.getTimeDiff();
     console.log("Time in minutes", timeInMin);
     if (timeInMin >= 20) {
       // update initial timestamp
-      localStorage.setItem("statusTimeStamp", new Date().toISOString());
+      await this.storage.set("statusTimeStamp", new Date().toISOString());
       // check if there is anything to upload and hit status api on backend
       this.sessionlist.every((item, index) => {
         if (!item["isUploaded"]) {
@@ -160,8 +162,7 @@ export class SessionsPage implements OnInit {
   }
   presentToast() {
     this.toaster.present({
-      text: " Press again to exit",
-      place: "middle",
+      text: this.toaster.toasterMessage.exit,
       colour: "light"
     });
   }
