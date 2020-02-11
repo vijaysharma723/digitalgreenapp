@@ -16,12 +16,10 @@ export class SessionService {
     return JSON.parse(data);
   }
   async getSessionList() {
-    if (!this.sessionList.length) {
-      const loggedinuser = await this.userService.getLoggedInUser();
-      const sessionList = await this.storage.get(loggedinuser["username"]);
-      if (!!sessionList && !!sessionList.length) {
-        this.sessionList = this.getParsedData(sessionList);
-      }
+    const loggedinuser = await this.userService.getLoggedInUser();
+    const sessionList = await this.storage.get(loggedinuser["username"]);
+    if (!!sessionList && !!sessionList.length) {
+      this.sessionList = this.getParsedData(sessionList);
     }
     return this.sessionList;
   }
@@ -31,9 +29,12 @@ export class SessionService {
   }
 
   async getSessionById(id) {
-    let session = await this.storage.get(id);
-    session = this.getParsedData(session);
-    return session;
+    const sessionList = await this.getSessionList();
+    for (let i = 0; i < sessionList.length; i++) {
+      if (sessionList[i]["sessionid"] === id) {
+        return sessionList[i];
+      }
+    }
   }
 
   async addNewSession(sessionData) {

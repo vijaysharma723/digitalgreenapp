@@ -20,7 +20,9 @@
   <p class="sessioncategory">{{topicName}}</p>
   <div class="recordingcont">
     <img src="/assets/images/record.gif" *ngIf="recordStarted" />
-    <h3 class="recordText" *ngIf="!recordStarted">{{ 'Please start Recording' | translate }} ...</h3>
+    <h3 class="recordText" *ngIf="!recordStarted">
+      {{ 'Please start Recording' | translate }} ...
+    </h3>
   </div>
   <div class="recordingbuttons">
     <!-- <div class="startrecording" tappable (click)="startRecording()">
@@ -31,11 +33,20 @@
       </span>
       <p>Start Recording</p>
     </div> -->
-    <div class="startrecording playrecording" tappable (click)="startMediaRecording()">
+    <div
+      class="startrecording playrecording"
+      disabled="flag"
+      tappable
+      (click)="startMediaRecording()"
+    >
       <ion-icon name="microphone" slot="start" color="primary"></ion-icon>
       <p>{{ 'Media Recording' | translate }}</p>
     </div>
-    <div class="startrecording playrecording" tappable (click)="stopMediaRecording()">
+    <div
+      class="startrecording playrecording"
+      tappable
+      (click)="stopMediaRecording()"
+    >
       <ion-icon name="hand" slot="start" color="danger"></ion-icon>
       <p>{{ 'Stop Media Recording' | translate }}</p>
     </div>
@@ -57,7 +68,11 @@
           <p>{{audio.filename}}</p>
         </div>
         <div class="actions">
-          <ion-button size="small" color="primary" (click)="mediaPlayAudio(audio.filename, i)">
+          <ion-button
+            size="small"
+            color="primary"
+            (click)="mediaPlayAudio(audio.filename, i)"
+          >
             <ion-icon size="small" slot="icon-only" name="play"></ion-icon>
           </ion-button>
         </div>

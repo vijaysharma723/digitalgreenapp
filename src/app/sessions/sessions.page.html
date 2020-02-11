@@ -16,7 +16,9 @@
       [routerLink]='["/sessiondetails",session.sessionid]'>
       <div class="sessionname">
         <p>{{ session.name }}</p>
-        <div class="date">{{ session.created | date: 'mediumDate' }}</div>
+        <div class="date">
+          {{ session.created | date: 'mediumDate' }}
+        </div>
       </div>
       <div class="upload">
         <ion-button *ngIf="!session.isUploaded">

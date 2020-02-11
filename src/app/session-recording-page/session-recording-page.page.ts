@@ -10,7 +10,7 @@ import { ISession } from "../interfaces/ISession";
 import { UserService } from "../services/user.service";
 import { Dialogs } from "@ionic-native/dialogs/ngx";
 import { SyncService } from "../services/sync/sync.service";
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService } from "@ngx-translate/core";
 
 const MEDIA_FOLDER_NAME = "digitalgreenmediafiles";
 const parentDirFolder = "session";
@@ -28,6 +28,7 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     topics: []
   };
   sessionid: string;
+  flag: boolean = false;
   topicName: string;
   recordStarted = false;
   filepath: string;
@@ -51,10 +52,10 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     translate: TranslateService
   ) {
     // this language will be used as a fallback when a translation isn't found in the current language
-    translate.setDefaultLang('en');
+    translate.setDefaultLang("en");
     console.log(translate);
     // the lang to use, if the lang isn't available, it will use the current loader to get them
-    translate.use('hi');
+    translate.use("hi");
   }
 
   ngOnInit() {
@@ -114,6 +115,7 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
   }
   async stopMediaRecording() {
     // alert("stopping");
+    this.flag = false;
     this.audio.stopRecord();
     this.recordStarted = false;
     this.audio.release();
@@ -160,6 +162,7 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
   //   });
   // }
   startMediaRecording() {
+    this.flag = true;
     // get the username, session id and topic id to create a filename of convention username_sessionID_topicID.wav
     this.userSrvc.getLoggedInUser().then(user => {
       if (user) {
@@ -222,6 +225,7 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     if (!!this.audio) {
+      this.flag = false;
       this.audio.stop();
       this.audio.release();
     }
