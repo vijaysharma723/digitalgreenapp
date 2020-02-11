@@ -42,7 +42,7 @@
           <ion-button
             *ngIf="!topic.file_url"
             size="small"
-            [routerLink]='["/sessionrecordingpage",sessionData.sessionid,topic.topic_id,topic.topic_name]'
+            (click)="mediaRecording(topic,i)"
           >
             <ion-icon
               slot="icon-only"
@@ -51,7 +51,7 @@
             ></ion-icon>
           </ion-button>
           <ion-button
-            *ngIf="topic.file_url && !played"
+            *ngIf="topic.file_url && ((stop == undefined) || (i != stop))"
             size="small"
             color="primary"
             (click)="mediaPlayAudio(topic.file_url, i)"
@@ -59,7 +59,7 @@
             <ion-icon size="small" slot="icon-only" name="play"></ion-icon>
           </ion-button>
           <ion-button
-            *ngIf="topic.file_url && played"
+            *ngIf="topic.file_url && (i==stop)"
             size="small"
             color="danger"
             class="stop"

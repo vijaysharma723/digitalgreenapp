@@ -70,7 +70,7 @@ export class SyncService {
               if (session.session_id === sessionID) {
                 // found
                 console.log('session exists');
-                selectedSession = session;
+                selectedSession.push(session);
                 return false;
               }
               return true;

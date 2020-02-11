@@ -5,12 +5,14 @@ import { File } from '@ionic-native/file/ngx';
 import { Network } from '@ionic-native/network/ngx';
 
 // sync service
-import { SyncService } from './../services/sync/sync.service'; ;
+import { SyncService } from './../services/sync/sync.service';
 import { SessionService } from './../services/session/session.service';
 import { ActivatedRoute } from '@angular/router';
 
 import { CheckStatusService } from '../services/checkStatus/check-status.service';
 import { UserService } from '../services/user.service';
+import { Platform } from '@ionic/angular';
+import { ToasterService } from '../services/toaster/toaster.service';
 
 @Component({
   selector: 'app-sessions',
@@ -27,8 +29,12 @@ export class SessionsPage implements OnInit {
     private sessionService: SessionService, private route: ActivatedRoute,
     public checkStatus: CheckStatusService,
     public userService: UserService,
-    public file: File
+    public file: File,
+    private toaster: ToasterService,
+    private platform: Platform
   ) { }
+  subscription: any;
+  counter: number;
   sessionlist = [];
 
   async ngOnInit() {
@@ -51,6 +57,18 @@ export class SessionsPage implements OnInit {
     if (this.sessionlist && this.sessionlist.length > 0) {
       this.checkSessionToUpload();
     }
+    this.subscription = this.platform.backButton.subscribe(() => {
+      if (this.counter <= 1) {
+        this.counter++;
+        this.presentToast();
+        setTimeout(() => {
+          this.counter = 0;
+        }, 3000);
+      } else {
+        // console.log("exitapp");
+        navigator['app'].exitApp();
+      }
+    });
   }
 
   syncUserSessions(ifOnline) {
@@ -129,5 +147,16 @@ export class SessionsPage implements OnInit {
         }
       });
     }
+  }
+  presentToast() {
+    this.toaster.present({
+      text: ' Press again to exit',
+      place: 'middle',
+      colour: 'light'
+    });
+  }
+
+  ionViewWillLeave() {
+    this.subscription.unsubscribe();
   }
 }
