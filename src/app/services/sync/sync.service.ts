@@ -170,7 +170,6 @@ export class SyncService {
   }
 
   async updateRetries(sessionID, topicID) {
-    debugger;
     const sessions = await this.sessionSrvc.getSessionList();
     sessions.every((session, index) => {
       if (session.sessionid.toString() === sessionID.toString()) {
@@ -229,7 +228,6 @@ export class SyncService {
   }
 
   async syncUserSessions(ifOnline) {
-    debugger;
     if (ifOnline) {
       console.log('initiating sync event');
       // get the file, and send its path to the upload/session api

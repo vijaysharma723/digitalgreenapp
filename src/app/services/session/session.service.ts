@@ -120,7 +120,6 @@ export class SessionService {
    */
   async setSessionStatus(statusObj: any, sessionID: string, topicID?: string) {
     console.log('status obj to update is ', statusObj);
-    debugger;
     if (!sessionID || statusObj == null || statusObj === undefined) {
       return false;
     } else {

@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { ToasterService } from "./../services/toaster/toaster.service";
 import { TranslateService } from '@ngx-translate/core';
 import { TranslateConfigService } from '../translate-config.service';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: "app-login",
@@ -13,9 +14,12 @@ import { TranslateConfigService } from '../translate-config.service';
 export class LoginPage implements OnInit {
   username: string;
   password: string;
+  subscription: any;
+  counter: number = 0;
   constructor(
     private userService: UserService,
     private router: Router,
+    private platform: Platform,
     private toaster: ToasterService,
     translate: TranslateService
   ) {
@@ -27,7 +31,7 @@ export class LoginPage implements OnInit {
     // this.selectedLanguage = this.translateConfigService.getDefaultLanguage();
   }
 
-  ngOnInit() {}
+  ngOnInit() {console.log('at login page');}
 
   async userLogin() {
     if (!this.username) {
@@ -74,5 +78,30 @@ export class LoginPage implements OnInit {
         this.password = "";
       }
     }
+  }
+  ionViewDidEnter() {
+    this.subscription = this.platform.backButton.subscribe(() => {
+      if (this.counter < 1) {
+        this.counter++;
+        this.presentToast();
+        setTimeout(() => {
+          this.counter = 0;
+        }, 3000);
+      } else {
+        console.log("exitapp");
+        navigator["app"].exitApp();
+      }
+    });
+  }
+  presentToast() {
+    this.toaster.present({
+      text: this.toaster.toasterMessage['exit'],
+      colour: "light"
+    });
+  }
+  ionViewWillLeave() {
+    console.log('leaving login');
+    this.counter = 0;
+    this.subscription.unsubscribe();
   }
 }

@@ -51,7 +51,6 @@ export class SessionsPage implements OnInit {
 
   async ngOnInit() {
     this.checknetwork.isOnline.subscribe(val => {
-      debugger;
       if (val === "Connected") {
         // when online is detected on the sessions page, trigger sync api
        this.syncService.syncUserSessions (true);
