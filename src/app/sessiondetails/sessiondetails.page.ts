@@ -52,7 +52,7 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
       topic.topic_id
     ]);
   }
-  mediaPauseAudio(i) {
+  mediaPauseAudio(url, i) {
     this.audio.pause();
     this.topics[i]["isPlayed"] = false;
     this.stop = undefined;
