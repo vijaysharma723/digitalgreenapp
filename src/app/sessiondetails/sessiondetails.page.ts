@@ -49,8 +49,7 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
     this.router.navigate([
       "/sessionrecordingpage",
       this.sessionData.sessionid,
-      topic.topic_id,
-      topic.topic_name
+      topic.topic_id
     ]);
   }
   mediaPauseAudio(i) {

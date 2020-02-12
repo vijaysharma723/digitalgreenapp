@@ -18,6 +18,7 @@ export class ToasterService {
     exit: "बाहर निकलने के लिए फिर से दबाएं"
   };
 
+  private ifToasterPresent = [];
   constructor(private toastController: ToastController) {}
 
   async present({
@@ -49,6 +50,12 @@ export class ToasterService {
       color: colour,
       duration: 2000
     });
+
+    this.ifToasterPresent.forEach(element => {
+        element.dismiss();
+      });
+
     toast.present();
+    this.ifToasterPresent.push(toast);
   }
 }

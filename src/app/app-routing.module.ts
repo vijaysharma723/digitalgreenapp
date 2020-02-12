@@ -28,7 +28,7 @@ const routes: Routes = [
       )
   },
   {
-    path: "sessionrecordingpage/:sessionid/:topic_id/:topicname",
+    path: "sessionrecordingpage/:sessionid/:topic_id",
     loadChildren: () =>
       import("./session-recording-page/session-recording-page.module").then(
         m => m.SessionRecordingPagePageModule

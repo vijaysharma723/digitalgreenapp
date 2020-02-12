@@ -74,11 +74,15 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     });
     this.route.params.subscribe(async params => {
       this.sessionid = params["sessionid"];
-      this.topicName = params["topicname"];
       this.topicid = params["topic_id"];
       this.sessionData = await this.sessionService.getSessionById(
         this.sessionid
       );
+      this.sessionData['topics'].forEach(element => {
+        if (this.topicid === element['topic_id']) {
+          this.topicName = element['topic_name'];
+        }
+      });
     });
   }
   loadFiles() {
