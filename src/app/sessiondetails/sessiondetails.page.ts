@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { SessionService } from "./../services/session/session.service";
 import { File, FileEntry } from "@ionic-native/file/ngx";
@@ -30,6 +30,7 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
     private media: Media,
     private plt: Platform,
     private router: Router,
+    private cdr: ChangeDetectorRef,
     translate: TranslateService
   ) {
     // this language will be used as a fallback when a translation isn't found in the current language
@@ -58,21 +59,17 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
       topic.topic_id
     ]);
   }
-<<<<<<< Updated upstream
-  mediaPauseAudio(url, i) {
-=======
   mediaPauseAudio(topic, i) {
->>>>>>> Stashed changes
     this.audio.pause();
-    this.updateTopic(topic, false);
+    this.stop = undefined;
   }
-  updateTopic(topic, status) {
-    topic["isPlayed"] = status;
-    const filterd = this.topics.filter(
-      elem => elem["isPlayed"] !== topic["isPlayed"]
-    );
-    this.topics = [...filterd, topic];
-  }
+  // updateTopic(topic, status) {
+  //   topic["isPlayed"] = status;
+  //   const filterd = this.topics.filter(
+  //     elem => elem["isPlayed"] !== topic["isPlayed"]
+  //   );
+  //   this.topics = [...filterd, topic];
+  // }
   mediaPlayAudio(topic, idx) {
     if (this.plt.is("ios")) {
       this.filepath =
@@ -88,13 +85,15 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
       this.audio = this.media.create(this.filepath);
     }
     this.audio.play();
-    this.updateTopic(topic, true);
+    this.stop = idx;
+    this.cdr.detectChanges();
 
     this.audio.setVolume(0.8);
     this.audio.onStatusUpdate.subscribe(status => {
       if (status.toString() === "4") {
         // player end running
-        this.updateTopic(topic, false);
+        this.stop = undefined;
+        this.cdr.detectChanges();
       }
     });
   }
