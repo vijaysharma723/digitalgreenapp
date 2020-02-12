@@ -14,8 +14,8 @@ import { TranslateService } from "@ngx-translate/core";
 export class SessiondetailsPage implements OnInit, OnDestroy {
   sessionData;
   parentDirFolder = "session";
-  sessdata;
   filepath: any;
+  topics: Array<any> = [];
   audio: any;
   stop: any;
   rec: any;
@@ -40,6 +40,7 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
     this.route.params.subscribe(async params => {
       const sessionid = params["sessionid"];
       this.sessionData = await this.sessionService.getSessionById(sessionid);
+    this.topics = this.sessionData["topics"];
     });
   }
   mediaRecording(topic, idx) {
@@ -54,6 +55,7 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
   }
   mediaPauseAudio(i) {
     this.audio.pause();
+    this.topics[i]["isPlayed"] = false;
     this.stop = undefined;
   }
   mediaPlayAudio(file, idx) {
@@ -71,6 +73,7 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
       this.audio = this.media.create(this.filepath);
     }
     this.audio.play();
+    this.topics[idx]["isPlayed"] = true;
     this.stop = idx;
 
     this.audio.setVolume(0.8);
@@ -78,6 +81,7 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
       if (status.toString() === "4") {
         // player end running
         this.stop = null;
+        this.topics[idx]["isPlayed"] = false;
         this.stop = undefined;
       }
     });

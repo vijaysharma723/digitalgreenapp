@@ -22,7 +22,7 @@
     </ion-button>
   </div>
 
-  <h5>{{ sessionData.created | date: 'short' }}</h5>
+  <h5>{{ sessionData.created | dateTime }}</h5>
   <br />
   <!-- <p>
     Watering harvesting means capturing rain water, where it falls and capture
@@ -33,7 +33,7 @@
     <div class="sessiondetails">
       <div
         class="sections"
-        *ngFor="let topic of sessionData.topics; let i=index"
+        *ngFor="let topic of topics; let i=index"
       >
         <div class="sectionname">
           <p>{{topic.topic_name}}</p>
