@@ -78,8 +78,8 @@ export class UserService {
       questions: [
         {
           topic_id: "1",
-          topic_name: "वीडियो में एमआरपी में क्या सुधार करने की जरूरत है।",
           isPlayed: false,
+          topic_name: "प्रक्रिया में क्या सुधार की जरूरत है।",
           status: false
         },
         {
@@ -90,8 +90,8 @@ export class UserService {
         },
         {
           topic_id: "3",
-          topic_name: "एमआरपी द्वारा सामान्य रूप से क्या चुनौतियां हैं।",
           isPlayed: false,
+          topic_name: "एमआरपी से कौन सी चुनौतियां हल हो सकती हैं।",
           status: false
         }
       ],
@@ -105,8 +105,8 @@ export class UserService {
       questions: [
         {
           topic_id: "1",
-          topic_name: "वीडियो में एमआरपी में क्या सुधार करने की जरूरत है।",
           isPlayed: false,
+          topic_name: "प्रक्रिया में क्या सुधार की जरूरत है।",
           status: false
         },
         {
@@ -117,8 +117,8 @@ export class UserService {
         },
         {
           topic_id: "3",
-          topic_name: "एमआरपी द्वारा सामान्य रूप से क्या चुनौतियां हैं।",
           isPlayed: false,
+          topic_name: "एमआरपी से कौन सी चुनौतियां हल हो सकती हैं।",
           status: false
         }
       ],
@@ -132,21 +132,20 @@ export class UserService {
       questions: [
         {
           topic_id: "1",
-          topic_name:
-            "वीडियो में ब्लॉक_अधिकारी द्वारा क्या सुधार किए जाने की आवश्यकता है।",
           isPlayed: false,
+          topic_name: "प्रक्रिया में क्या सुधार की जरूरत है।",
           status: false
         },
         {
           topic_id: "2",
-          topic_name: "आप ब्लॉक_अधिकारी द्वारा और क्या सीखना चाहते हैं।",
           isPlayed: false,
+          topic_name: "आप ब्लॉक_अधिकारी से और क्या सीखना चाहते हैं।",
           status: false
         },
         {
           topic_id: "3",
-          topic_name: "ब्लॉक_अधिकारी द्वारा सामान्य रूप से क्या चुनौतियाँ हैं।",
           isPlayed: false,
+          topic_name: "ऐसी कौन सी चुनौतियाँ हैं जिन्हें ब्लॉक_अधिकारी द्वारा हल किया जा सकता है।",
           status: false
         }
       ],
@@ -160,21 +159,20 @@ export class UserService {
       questions: [
         {
           topic_id: "1",
-          topic_name:
-            "वीडियो में ब्लॉक_अधिकारी द्वारा क्या सुधार किए जाने की आवश्यकता है।",
           isPlayed: false,
+          topic_name: "प्रक्रिया में क्या सुधार की जरूरत है।",
           status: false
         },
         {
           topic_id: "2",
-          topic_name: "आप ब्लॉक_अधिकारी द्वारा और क्या सीखना चाहते हैं।",
           isPlayed: false,
+          topic_name: "आप ब्लॉक_अधिकारी से और क्या सीखना चाहते हैं।",
           status: false
         },
         {
           topic_id: "3",
-          topic_name: "ब्लॉक_अधिकारी द्वारा सामान्य रूप से क्या चुनौतियाँ हैं।",
           isPlayed: false,
+          topic_name: "ऐसी कौन सी चुनौतियाँ हैं जिन्हें ब्लॉक_अधिकारी द्वारा हल किया जा सकता है।",
           status: false
         }
       ],
