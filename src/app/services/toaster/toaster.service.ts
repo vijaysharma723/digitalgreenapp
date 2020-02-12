@@ -8,11 +8,11 @@ export class ToasterService {
 
   public toasterMessage = {
     noUsername: "कृपया उपयोगकर्ता नाम दर्ज करें।",
-    noPassword: "कृप्या पास्वर्ड भरो।",
+    noPassword: "कृप्या पास्वर्ड भरें।",
     loggedInSuccessfully: "सफलतापूर्वक लॉग इन हो चुका है।",
     incorrectUsernamePassword: "कृपया सही उपयोगकर्ता नाम और पासवर्ड दर्ज करें।",
     incorrectPassword: "कृपया सही पासवर्ड दर्ज करें।",
-    loginFailed: "लॉग इन करने में असमर्थ रहा।",
+    loginFailed: "लॉग इन करने में असमर्थ।",
     sessionCreated: "सत्र सफलतापूर्वक बनाया गया।",
     sessionCreationFailed: "सत्र बनाने में असमर्थ।",
     selectTopic: "कृपया विषय चुनें।"
