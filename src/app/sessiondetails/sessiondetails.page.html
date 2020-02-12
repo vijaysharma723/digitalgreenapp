@@ -31,10 +31,7 @@
   </p> -->
   <div class="sessionlist">
     <div class="sessiondetails">
-      <div
-        class="sections"
-        *ngFor="let topic of topics; let i=index"
-      >
+      <div class="sections" *ngFor="let topic of topics; let i=index">
         <div class="sectionname">
           <p>{{topic.topic_name}}</p>
         </div>
@@ -51,19 +48,19 @@
             ></ion-icon>
           </ion-button>
           <ion-button
-            *ngIf="(!sessionData.isUploaded) && topic.file_url && ((stop == undefined) || (i != stop))"
+            *ngIf="(!sessionData.isUploaded) && topic.file_url && (topic?.isPlayed ==false)"
             size="small"
             color="primary"
-            (click)="mediaPlayAudio(topic.file_url, i)"
+            (click)="mediaPlayAudio(topic, i)"
           >
             <ion-icon size="small" slot="icon-only" name="play"></ion-icon>
           </ion-button>
           <ion-button
-            *ngIf="topic.file_url && (i==stop)"
+            *ngIf="topic.file_url && (topic?.isPlayed==true)"
             size="small"
             color="danger"
             class="stop"
-            (click)="mediaPauseAudio(topic.file_url, i)"
+            (click)="mediaPauseAudio(topic, i)"
           >
             <ion-icon size="small" slot="icon-only" name="square"></ion-icon>
           </ion-button>

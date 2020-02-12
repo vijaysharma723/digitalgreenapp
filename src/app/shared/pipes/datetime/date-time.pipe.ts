@@ -1,27 +1,26 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform } from "@angular/core";
 
 @Pipe({
-  name: 'dateTime'
+  name: "dateTime"
 })
 export class DateTimePipe implements PipeTransform {
-
   month = {
-            1: "Jan",
-            2: "Feb",
-            3: "March",
-            4: "April",
-            5: "May",
-            6: "June",
-            7: "July",
-            8: "Aug",
-            9: "Sep",
-            10: "Oct",
-            11: "Nov",
-            12: "Dec"
-          };
+    1: "जनवरी",
+    2: "फ़रवरी",
+    3: "मार्च",
+    4: "अप्रैल",
+    5: "मई",
+    6: "जून",
+    7: "जुलाई",
+    8: "अगस्त",
+    9: "सितम्बर",
+    10: "अक्टूबर",
+    11: "नवंबर",
+    12: "दिसम्बर"
+  };
   timeZone = {
-            "am": "am",
-            "pm": "pm"
+    am: "प्रातः",
+    pm: "शाम"
   };
   transform(value: string, args?: any[]): string {
     // "2020-02-12T06:04:24.807Z"
@@ -29,21 +28,22 @@ export class DateTimePipe implements PipeTransform {
     // converting to dd/mm/yyyy format
     let convertedDate = dateObj.getDate().toString();
     const month = dateObj.getMonth() + 1;
-    convertedDate += ' ' + this.month[month];
-    convertedDate += ',' + dateObj.getFullYear();
+    convertedDate += " " + this.month[month];
+    convertedDate += "," + dateObj.getFullYear();
 
-    let timeZone = 'am';
+    let timeZone = "am";
     let hour = dateObj.getHours();
-    if(hour > 12) {
-      timeZone = 'pm';
+    if (hour > 12) {
+      timeZone = "pm";
       hour = hour - 12;
-    } else if(hour === 12) {
-      timeZone = 'pm';
+    } else if (hour === 12) {
+      timeZone = "pm";
     }
-    let convertedTime = hour.toString();
-    convertedTime += ':' + dateObj.getMinutes();
-    convertedTime += ' ' + this.timeZone[timeZone];
-    return convertedDate + ' ' + convertedTime;
-  }
 
+    let convertedTime = this.timeZone[timeZone] + ": ";
+
+    convertedTime += hour.toString();
+    convertedTime += " " + "बजे";
+    return convertedDate + "  " + convertedTime;
+  }
 }

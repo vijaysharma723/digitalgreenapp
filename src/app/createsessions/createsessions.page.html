@@ -20,23 +20,22 @@
   <ion-card>
     <ion-card-header>
       <ion-card-title>{{ 'New Session' | translate }}</ion-card-title>
-      <h5>{{ sessionDate | date: 'short' }}</h5>
+      <h5>{{ sessionDate | dateTime }}</h5>
     </ion-card-header>
     <form class="ion-padding" *ngIf="!!userSessions" (ngSubmit)="logForm()">
       <br />
 
       <ion-list *ngIf="userRole && userRole === 'vrp'">
-      <ion-item>
-        <ion-label>{{ 'Topics' | translate }}</ion-label>
-        <ion-select placeholder="{{ 'Select Topic' | translate }}" interface="popover" [(ngModel)]="topic" name="topic">
-          <ion-select-option
-            *ngFor="let session of userSessions"
-            value="{{session}}">
-            {{session}}
-          </ion-select-option>
-        </ion-select>
-      </ion-item>
-    </ion-list>
+        <ion-item>
+          <ion-label>{{ 'Topics' | translate }}</ion-label>
+          <ion-select placeholder="{{ 'Select Topic' | translate }}" interface="popover" [(ngModel)]="topic"
+            name="topic">
+            <ion-select-option *ngFor="let session of userSessions" value="{{session}}">
+              {{session}}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
 
       <div class="createbtn">
         <ion-button class="custombtn" type="submit">
