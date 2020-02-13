@@ -30,16 +30,6 @@ export class SyncService {
     private readonly http: HttpClient,
     private readonly sessionSrvc: SessionService) { }
 
-  // initupload which will take filename
-  // check status for session id
-  // create session
-  // get the session data and pass to the upload function
-  // call
-
-
-
-
-
   /**
    * To send a session recording file (strictly in .wav format) to the session upload api. Note that this API will first look whether the session id is existing or not
    * If not, it will trigger the session create functionality and then send the file
@@ -93,6 +83,7 @@ export class SyncService {
                       name: sessionObj.name,
                       created: sessionObj.created,
                       session_id: sessionID,
+                      topics_limit: sessionObj.topics_limit,
                       isUploaded: false,
                       topics: []
                     }
