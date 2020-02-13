@@ -15,10 +15,11 @@ export class ToasterService {
     sessionCreated: "सत्र सफलतापूर्वक बनाया गया।",
     sessionCreationFailed: "सत्र बनाने में असमर्थ।",
     selectTopic: "कृपया विषय चुनें।",
-    exit: "बाहर निकलने के लिए फिर से दबाएं"
+    exit: "बाहर निकलने के लिए फिर से दबाएं",
+    recordingSuccessful: "सत्र सफलतापूर्वक दर्ज किया गया"
   };
 
-  private ifToasterPresent = [];
+  private ifToasterPresent;
   constructor(private toastController: ToastController) {}
 
   async present({
@@ -51,11 +52,11 @@ export class ToasterService {
       duration: 2000
     });
 
-    this.ifToasterPresent.forEach(element => {
-        element.dismiss();
-      });
+    if(!!this.ifToasterPresent) {
+      this.ifToasterPresent.dismiss();
+    }
 
     toast.present();
-    this.ifToasterPresent.push(toast);
+    this.ifToasterPresent = toast;
   }
 }
