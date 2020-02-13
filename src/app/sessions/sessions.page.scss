@@ -57,6 +57,6 @@ ion-item {
 
 ::ng-deep {
     ion-footer{
-        display: block;
+        display: block !important;
     }
   }

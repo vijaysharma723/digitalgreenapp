@@ -24,19 +24,25 @@ export class UserService {
       questions: [
         {
           topic_id: "1",
-          topic_name: "वीडियो में क्या सुधार करने की आवश्यकता है।",
+          topic_name: "वीडियो और प्रसार प्रक्रिया में क्या सुधार करने की आवश्यकता है?",
           isPlayed: false,
           status: false
         },
         {
           topic_id: "2",
-          topic_name: "आप और क्या सीखना चाहते हैं।",
+          topic_name: "आप और क्या सीखना चाहते हैं?",
           isPlayed: false,
           status: false
         },
         {
           topic_id: "3",
-          topic_name: "सामान्य तौर पर चुनौतियां क्या हैं।",
+          topic_name: "आज के दौर में आपको किन चुनौतियों का सामना करना पड़ता है?",
+          isPlayed: false,
+          status: false
+        },
+        {
+          topic_id: "4",
+          topic_name: "ऐसे कौन से उपाय हैं जो आपकी मदद कर सकते हैं?",
           isPlayed: false,
           status: false
         }
@@ -51,19 +57,25 @@ export class UserService {
       questions: [
         {
           topic_id: "1",
-          topic_name: "वीडियो में क्या सुधार करने की आवश्यकता है।",
+          topic_name: "वीडियो और प्रसार प्रक्रिया में क्या सुधार करने की आवश्यकता है?",
           isPlayed: false,
           status: false
         },
         {
           topic_id: "2",
-          topic_name: "आप और क्या सीखना चाहते हैं।",
+          topic_name: "आप और क्या सीखना चाहते हैं?",
           isPlayed: false,
           status: false
         },
         {
           topic_id: "3",
-          topic_name: "सामान्य तौर पर चुनौतियां क्या हैं।",
+          topic_name: "आज के दौर में आपको किन चुनौतियों का सामना करना पड़ता है?",
+          isPlayed: false,
+          status: false
+        },
+        {
+          topic_id: "4",
+          topic_name: "ऐसे कौन से उपाय हैं जो आपकी मदद कर सकते हैं?",
           isPlayed: false,
           status: false
         }
@@ -78,20 +90,20 @@ export class UserService {
       questions: [
         {
           topic_id: "1",
+          topic_name: "प्रक्रिया में क्या सुधार करने की आवश्यकता है?",
           isPlayed: false,
-          topic_name: "प्रक्रिया में क्या सुधार की जरूरत है।",
           status: false
         },
         {
           topic_id: "2",
-          topic_name: "आप एमआरपी से और क्या सीखना चाहते हैं।",
+          topic_name: "किसानों द्वारा सामना किए गए शीर्ष चुनौतियां क्या हैं?",
           isPlayed: false,
           status: false
         },
         {
           topic_id: "3",
+          topic_name: "वीआरपी के सामने जमीनी स्तर की चुनौतियां क्या हैं?",
           isPlayed: false,
-          topic_name: "एमआरपी से कौन सी चुनौतियां हल हो सकती हैं।",
           status: false
         }
       ],
@@ -105,20 +117,20 @@ export class UserService {
       questions: [
         {
           topic_id: "1",
+          topic_name: "प्रक्रिया में क्या सुधार करने की आवश्यकता है?",
           isPlayed: false,
-          topic_name: "प्रक्रिया में क्या सुधार की जरूरत है।",
           status: false
         },
         {
           topic_id: "2",
-          topic_name: "आप एमआरपी से और क्या सीखना चाहते हैं।",
+          topic_name: "किसानों द्वारा सामना किए गए शीर्ष चुनौतियां क्या हैं?",
           isPlayed: false,
           status: false
         },
         {
           topic_id: "3",
+          topic_name: "वीआरपी के सामने जमीनी स्तर की चुनौतियां क्या हैं?",
           isPlayed: false,
-          topic_name: "एमआरपी से कौन सी चुनौतियां हल हो सकती हैं।",
           status: false
         }
       ],
@@ -133,19 +145,13 @@ export class UserService {
         {
           topic_id: "1",
           isPlayed: false,
-          topic_name: "प्रक्रिया में क्या सुधार की जरूरत है।",
+          topic_name: "प्रक्रिया में क्या सुधार करने की आवश्यकता है?",
           status: false
         },
         {
           topic_id: "2",
           isPlayed: false,
-          topic_name: "आप ब्लॉक_अधिकारी से और क्या सीखना चाहते हैं।",
-          status: false
-        },
-        {
-          topic_id: "3",
-          isPlayed: false,
-          topic_name: "ऐसी कौन सी चुनौतियाँ हैं जिन्हें ब्लॉक_अधिकारी द्वारा हल किया जा सकता है।",
+          topic_name: "किसानों द्वारा सामना किए गए शीर्ष चुनौतियां क्या हैं?",
           status: false
         }
       ],
@@ -160,19 +166,13 @@ export class UserService {
         {
           topic_id: "1",
           isPlayed: false,
-          topic_name: "प्रक्रिया में क्या सुधार की जरूरत है।",
+          topic_name: "प्रक्रिया में क्या सुधार करने की आवश्यकता है?",
           status: false
         },
         {
           topic_id: "2",
           isPlayed: false,
-          topic_name: "आप ब्लॉक_अधिकारी से और क्या सीखना चाहते हैं।",
-          status: false
-        },
-        {
-          topic_id: "3",
-          isPlayed: false,
-          topic_name: "ऐसी कौन सी चुनौतियाँ हैं जिन्हें ब्लॉक_अधिकारी द्वारा हल किया जा सकता है।",
+          topic_name: "किसानों द्वारा सामना किए गए शीर्ष चुनौतियां क्या हैं?",
           status: false
         }
       ],

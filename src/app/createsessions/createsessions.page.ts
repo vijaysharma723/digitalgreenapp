@@ -74,6 +74,7 @@ export class CreatesessionsPage implements OnInit {
     newSessionDetails["isUploaded"] = false;
     const userTopics = await this.userService.getUserQuestions();
     newSessionDetails["topics"] = userTopics;
+    newSessionDetails["topics_limit"] = userTopics.length;
 
     return newSessionDetails;
   }

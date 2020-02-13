@@ -94,6 +94,6 @@ background-image: url(/assets/images/bubble-25.svg);
 
 ::ng-deep {
   ion-footer{
-      display: none;
+      display: none !important;
   }
 }

@@ -1,3 +1,4 @@
+import { UserService } from './../services/user.service';
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { SessionService } from "./../services/session/session.service";
@@ -22,10 +23,13 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
   audio: any;
   stop: any;
   rec: any;
+  userDetails: any;
+  userRole: string;
   message: string;
   constructor(
     private route: ActivatedRoute,
     private sessionService: SessionService,
+    private userService: UserService,
     private file: File,
     private media: Media,
     private plt: Platform,
@@ -40,7 +44,9 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
     translate.use("hi");
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.userDetails = await this.userService.getLoggedInUser();
+    this.userRole = this.userDetails["role"];
     this.route.params.subscribe(async params => {
       const sessionid = params["sessionid"];
       this.sessionData = await this.sessionService.getSessionById(sessionid);
