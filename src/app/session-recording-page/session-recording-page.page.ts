@@ -1,3 +1,4 @@
+import { ToasterService } from './../services/toaster/toaster.service';
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { SessionService } from "./../services/session/session.service";
@@ -8,7 +9,6 @@ import { Media, MediaObject } from "@ionic-native/media/ngx";
 import { Platform } from "@ionic/angular";
 import { ISession } from "../interfaces/ISession";
 import { UserService } from "../services/user.service";
-import { Dialogs } from "@ionic-native/dialogs/ngx";
 import { SyncService } from "../services/sync/sync.service";
 import { TranslateService } from "@ngx-translate/core";
 
@@ -49,7 +49,8 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     private sessionService: SessionService,
     private readonly userSrvc: UserService,
     private readonly syncSrvc: SyncService,
-    translate: TranslateService
+    translate: TranslateService,
+    private toaster: ToasterService
   ) {
     // this language will be used as a fallback when a translation isn't found in the current language
     translate.setDefaultLang("en");
@@ -135,6 +136,7 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
       // this.sessionService.setSessionStatus({topic_status: 0, its: new Date().toISOString()}, this.sessionid, this.topicid);
       // send the file for upload
       this.syncSrvc.sendSessionFileUploadRequest(filePathFromRoot);
+      this.toaster.present({text: this.toaster.toasterMessage.recordingSuccessful, colour: "light"});
       this.router.navigate(["/sessiondetails", this.sessionid]);
     });
   }
