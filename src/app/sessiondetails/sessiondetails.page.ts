@@ -49,21 +49,18 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
   async ngOnInit() {
     this.userDetails = await this.userService.getLoggedInUser();
     this.userRole = this.userDetails["role"];
-    if(this.userRole === 'vrp') {
-      this.topics1 = [];
-      this.topics2 = [];
-      this.topics1.push(this.userDetails["questions"][0]);
-      this.topics1.push(this.userDetails["questions"][1]);
-      this.topics2.push(this.userDetails["questions"][2]);
-      this.topics2.push(this.userDetails["questions"][3]);
-    }
     this.route.params.subscribe(async params => {
       const sessionid = params["sessionid"];
       this.sessionData = await this.sessionService.getSessionById(sessionid);
-      this.topics = this.sessionData["topics"].map(element => {
-        element["isPlayed"] = false;
-        return element;
-      });
+      this.topics = this.sessionData["topics"];
+      if(this.userRole === 'vrp') {
+        this.topics1 = [];
+        this.topics2 = [];
+        this.topics1.push(this.topics[0]);
+        this.topics1.push(this.topics[1]);
+        this.topics2.push(this.topics[2]);
+        this.topics2.push(this.topics[3]);
+      }
     });
   }
   mediaRecording(topic, idx) {
@@ -90,7 +87,7 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
   mediaPlayAudio(topic, idx) {
     if (this.plt.is("ios")) {
       this.filepath =
-        this.file.documentsDirectory.replace(/file:\/\//g, "") + topic.file_url;
+        this.file.documentsDirectory.replace(/fiidxle:\/\//g, "") + topic.file_url;
       this.audio = this.media.create(this.filepath);
     } else if (this.plt.is("android")) {
       this.filepath =
@@ -114,6 +111,7 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
       }
     });
   }
+  
   ngOnDestroy() {
     if (!!this.audio) {
       this.audio.stop();
