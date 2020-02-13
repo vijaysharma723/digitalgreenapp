@@ -40,10 +40,12 @@ export class DateTimePipe implements PipeTransform {
       timeZone = "pm";
     }
 
-    let convertedTime = this.timeZone[timeZone] + ": ";
+    let convertedTime = this.timeZone[timeZone] + " ";
 
     convertedTime += hour.toString();
     convertedTime += " " + "बजे";
-    return convertedDate + "  " + convertedTime;
+
+    const convertedDateTime = convertedDate + "  " + convertedTime;
+    return convertedDateTime;
   }
 }
