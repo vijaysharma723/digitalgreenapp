@@ -26,6 +26,8 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
   userDetails: any;
   userRole: string;
   message: string;
+  topics1 = [];
+  topics2 = [];
   constructor(
     private route: ActivatedRoute,
     private sessionService: SessionService,
@@ -47,6 +49,14 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
   async ngOnInit() {
     this.userDetails = await this.userService.getLoggedInUser();
     this.userRole = this.userDetails["role"];
+    if(this.userRole === 'vrp') {
+      this.topics1 = [];
+      this.topics2 = [];
+      this.topics1.push(this.userDetails["questions"][0]);
+      this.topics1.push(this.userDetails["questions"][1]);
+      this.topics2.push(this.userDetails["questions"][2]);
+      this.topics2.push(this.userDetails["questions"][3]);
+    }
     this.route.params.subscribe(async params => {
       const sessionid = params["sessionid"];
       this.sessionData = await this.sessionService.getSessionById(sessionid);
