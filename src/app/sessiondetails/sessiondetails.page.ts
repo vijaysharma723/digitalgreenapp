@@ -62,6 +62,7 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
   mediaPauseAudio(topic, i) {
     this.audio.pause();
     this.stop = undefined;
+    this.cdr.detectChanges();
   }
   // updateTopic(topic, status) {
   //   topic["isPlayed"] = status;
