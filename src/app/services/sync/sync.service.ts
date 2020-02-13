@@ -16,9 +16,9 @@ import { SessionService } from '../session/session.service';
 })
 export class SyncService {
 
-  private APIEndpoint = 'https://44e578d9.ngrok.io/sessions/upload';
-  private createSessionEndPoint = 'https://44e578d9.ngrok.io/sessions/create';
-  private CheckStatusAPIEndpoint = 'https://44e578d9.ngrok.io/sessions/status/';
+  private APIEndpoint = 'http://13.234.2.81:3001/sessions/upload';
+  private createSessionEndPoint = 'http://13.234.2.81:3001/sessions/create';
+  private CheckStatusAPIEndpoint = 'http://13.234.2.81:3001/sessions/status/';
   private defaultBearer = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJpc2hhYmhrYWxyYTk2IiwiZW1haWwiOiJyaXNoYWJoa2FscmE5NkBnbWFpbC5jb20iLCJpYXQiOjE1ODA4ODI1Nzl9.dxrWrjX3jaUe4t33Y9H0oLdSxenSaJA-EYaCNHIk8Ys';
   parentFolderDir = 'session';
 
