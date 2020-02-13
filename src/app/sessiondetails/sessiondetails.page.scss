@@ -36,3 +36,9 @@ ion-title{
 h5 {
     margin-top: auto;
 }
+
+::ng-deep {
+    ion-footer{
+        display: block;
+    }
+  }

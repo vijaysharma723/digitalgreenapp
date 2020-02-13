@@ -54,3 +54,9 @@ ion-item {
     font-size: 2em;
     text-align: center;
 }
+
+::ng-deep {
+    ion-footer{
+        display: block;
+    }
+  }

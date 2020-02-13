@@ -18,10 +18,8 @@ export class DateTimePipe implements PipeTransform {
     11: "नवंबर",
     12: "दिसम्बर"
   };
-  timeZone = {
-    am: "प्रातः",
-    pm: "शाम"
-  };
+  timeZone = ["सुबह", "दोपहर", "शाम", "रात"];
+
   transform(value: string, args?: any[]): string {
     // "2020-02-12T06:04:24.807Z"
     const dateObj = new Date(value);
@@ -31,17 +29,24 @@ export class DateTimePipe implements PipeTransform {
     convertedDate += " " + this.month[month];
     convertedDate += "," + dateObj.getFullYear();
 
-    let timeZone = "am";
+    let timeZone = null;
     let hour = dateObj.getHours();
-    if (hour > 12) {
-      timeZone = "pm";
-      hour = hour - 12;
-    } else if (hour === 12) {
-      timeZone = "pm";
+
+    if (hour >= 5 && hour < 12) {
+      timeZone = this.timeZone[0];
+    } else if(hour >= 12 && hour < 16) {
+      timeZone = this.timeZone[1];
+    } else if(hour >= 16 && hour < 20) {
+      timeZone = this.timeZone[2];
+    } else {
+      timeZone = this.timeZone[3];
     }
 
-    let convertedTime = this.timeZone[timeZone] + " ";
+    let convertedTime = timeZone + " ";
 
+    if(hour > 12) {
+      hour -= 12;
+    }
     convertedTime += hour.toString();
     convertedTime += " " + "बजे";
 

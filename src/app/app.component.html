@@ -30,8 +30,9 @@
     <ion-menu-button class="sidemenubutton"></ion-menu-button>
   </ion-buttons>
 
-  <ion-footer [ngStyle]="{'display':(!router.url.includes('login')) ? 'block' : 'none' }">
-    <ion-toolbar color="dark">
+  <ion-footer>
+    <!-- <ion-footer [ngStyle]="{'display':(!router.url.includes('login')) ? 'block' : 'none' }"> -->
+      <ion-toolbar color="dark">
       <div class="footericons">
         <div class="footericon" routerLink="/sessions" routerLinkActive="active">
           <ion-icon name="home" size="large"></ion-icon>

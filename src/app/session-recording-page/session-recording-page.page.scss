@@ -148,3 +148,9 @@
 button.microphonebtn[disabled] {
     opacity: 0.6;
 }
+
+::ng-deep {
+    ion-footer{
+        display: block;
+    }
+  }
