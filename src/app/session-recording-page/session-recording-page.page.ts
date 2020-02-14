@@ -20,6 +20,12 @@ const parentDirFolder = "session";
   styleUrls: ["./session-recording-page.page.scss"]
 })
 export class SessionRecordingPagePage implements OnInit, OnDestroy {
+  textnode: string;
+  min: number;
+  sec: number;
+  current = 0;
+  target = 300000;
+  countFlag = 0;
   sessionData: ISession = {
     sessionid: "",
     name: "",
@@ -120,6 +126,7 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     }
   }
   async stopMediaRecording() {
+    this.countFlag = 0;
     window.clearInterval(this.recordingTimeout);
     // alert("stopping");
     this.flag = false;
@@ -174,6 +181,8 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
   // }
   startMediaRecording() {
     this.flag = true;
+    this.countFlag++;
+    if (this.countFlag === 1) {
     // get the username, session id and topic id to create a filename of convention username_sessionID_topicID.wav
     this.userSrvc.getLoggedInUser().then(user => {
       if (user) {
@@ -200,6 +209,7 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
               this.audio = this.media.create(this.filepath);
               this.recordStarted = true;
               this.audio.startRecord();
+              this.countDown();
               this.recordingTimeout = window.setTimeout(() => this.stopMediaRecording(), 300000);
             })
             .catch(() => {
@@ -209,7 +219,17 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
       }
     });
   }
-
+}
+countDown() {
+  this.current += 1000;
+  const diff = this.target - this.current;
+  this.min = Math.floor(diff / 1000 / 60);
+  this.sec = (diff / 1000) % 60;
+  console.log(this.min , this.sec);
+  if (diff > 0) {
+      setTimeout(() => {this.countDown(); } , 1000);
+  }
+}
   checkAndCreateSessionDir() {
     return new Promise((res, rej) => {
       this.file
@@ -241,6 +261,7 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
       this.flag = false;
       this.audio.stop();
       this.audio.release();
+      this.countFlag = 0;
     }
   }
 }

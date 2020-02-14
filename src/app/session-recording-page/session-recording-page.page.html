@@ -20,6 +20,7 @@
   <p class="sessioncategory">{{topicName}}</p>
   <div class="recordingcont">
     <img src="/assets/images/record.gif" *ngIf="recordStarted" />
+    <h4 class="countdown" *ngIf="recordStarted">{{min}}:{{sec}}</h4>
     <h3 class="recordText" *ngIf="!recordStarted">
       {{ 'Please start Recording' | translate }} ...
     </h3>

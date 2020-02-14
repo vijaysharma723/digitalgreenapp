@@ -111,7 +111,7 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
       }
     });
   }
-  
+
   ngOnDestroy() {
     if (!!this.audio) {
       this.audio.stop();
