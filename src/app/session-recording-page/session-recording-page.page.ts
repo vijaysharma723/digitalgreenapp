@@ -36,6 +36,7 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
   files = [];
   fileName: string;
   audio: MediaObject;
+  recordingTimeout: any;
   audioList = [];
   sessionname: any;
   topicid: any;
@@ -119,6 +120,7 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     }
   }
   async stopMediaRecording() {
+    window.clearInterval(this.recordingTimeout);
     // alert("stopping");
     this.flag = false;
     this.audio.stopRecord();
@@ -198,9 +200,10 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
               this.audio = this.media.create(this.filepath);
               this.recordStarted = true;
               this.audio.startRecord();
+              this.recordingTimeout = window.setTimeout(() => this.stopMediaRecording(), 300000);
             })
             .catch(() => {
-              console.log("ABORt");
+              console.log("ABORT");
             });
         }
       }
@@ -234,6 +237,7 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     if (!!this.audio) {
+      window.clearInterval(this.recordingTimeout);
       this.flag = false;
       this.audio.stop();
       this.audio.release();
