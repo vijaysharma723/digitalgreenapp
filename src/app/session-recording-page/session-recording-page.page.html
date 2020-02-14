@@ -18,13 +18,34 @@
 <ion-content padding *ngIf="!!sessionData">
   <h1>{{sessionData?.name}}</h1>
   <p class="sessioncategory">{{topicName}}</p>
-  <div class="recordingcont">
+  <!-- <div class="recordingcont">
     <img src="/assets/images/record.gif" *ngIf="recordStarted" />
     <h4 class="countdown" *ngIf="recordStarted">{{min}}:{{sec}}</h4>
     <h3 class="recordText" *ngIf="!recordStarted">
       {{ 'Please start Recording' | translate }} ...
     </h3>
-  </div>
+  </div> -->
+    <div class="recordingcont">
+  <ion-grid>
+    <ion-row *ngIf="recordStarted">
+      <ion-col>
+        <img src="/assets/images/record.gif"/>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="recordStarted">
+      <ion-col>
+        <h4 class="countdown">{{min}}:{{sec}}</h4>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="!recordStarted">
+      <ion-col>
+        <h3 class="recordText">
+          {{ 'Please start Recording' | translate }} ...
+        </h3>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>
   <div class="recordingbuttons">
     <!-- <div class="startrecording" tappable (click)="startRecording()">
       <span class="circleborder">
@@ -90,4 +111,3 @@
           </ion-button>
         </div> -->
 </ion-content>
-<app-footer></app-footer>
