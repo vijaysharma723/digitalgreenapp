@@ -1,4 +1,4 @@
-import { ToasterService } from './../services/toaster/toaster.service';
+import { ToasterService } from "./../services/toaster/toaster.service";
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { SessionService } from "./../services/session/session.service";
@@ -86,9 +86,9 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
       this.sessionData = await this.sessionService.getSessionById(
         this.sessionid
       );
-      this.sessionData['topics'].forEach(element => {
-        if (this.topicid === element['topic_id']) {
-          this.topicName = element['topic_name'];
+      this.sessionData["topics"].forEach(element => {
+        if (this.topicid === element["topic_id"]) {
+          this.topicName = element["topic_name"];
         }
       });
     });
@@ -145,7 +145,10 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
       // this.sessionService.setSessionStatus({topic_status: 0, its: new Date().toISOString()}, this.sessionid, this.topicid);
       // send the file for upload
       this.syncSrvc.sendSessionFileUploadRequest(filePathFromRoot);
-      this.toaster.present({text: this.toaster.toasterMessage.recordingSuccessful, colour: "light"});
+      this.toaster.present({
+        text: this.toaster.toasterMessage.recordingSuccessful,
+        colour: "light"
+      });
       this.router.navigate(["/sessiondetails", this.sessionid]);
     });
   }
@@ -183,53 +186,58 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     this.flag = true;
     this.countFlag++;
     if (this.countFlag === 1) {
-    // get the username, session id and topic id to create a filename of convention username_sessionID_topicID.wav
-    this.userSrvc.getLoggedInUser().then(user => {
-      if (user) {
-        console.log(user);
-        console.log("session data is ", this.sessionData);
-        this.fileName = `${user.username}_${this.sessionid}_${this.topicid}.wav`;
-        console.log("filename is ", this.fileName);
-        // create media file as per platform
-        if (this.plt.is("ios")) {
-          this.filepath =
-            this.file.documentsDirectory.replace(/file:\/\//g, "") +
-            this.fileName;
-        } else if (this.plt.is("android")) {
-          console.log("android device");
-          this.filepath =
-            this.file.externalDataDirectory.replace(/file:\/\//g, "") +
-            parentDirFolder +
-            "/" +
-            this.fileName;
-          this.checkAndCreateSessionDir()
-            .then(created => {
-              console.log("saving recording as ", this.fileName);
-              console.log("savnig in ", this.filepath);
-              this.audio = this.media.create(this.filepath);
-              this.recordStarted = true;
-              this.audio.startRecord();
-              this.countDown();
-              this.recordingTimeout = window.setTimeout(() => this.stopMediaRecording(), 300000);
-            })
-            .catch(() => {
-              console.log("ABORT");
-            });
+      // get the username, session id and topic id to create a filename of convention username_sessionID_topicID.wav
+      this.userSrvc.getLoggedInUser().then(user => {
+        if (user) {
+          console.log(user);
+          console.log("session data is ", this.sessionData);
+          this.fileName = `${user.username}_${this.sessionid}_${this.topicid}.wav`;
+          console.log("filename is ", this.fileName);
+          // create media file as per platform
+          if (this.plt.is("ios")) {
+            this.filepath =
+              this.file.documentsDirectory.replace(/file:\/\//g, "") +
+              this.fileName;
+          } else if (this.plt.is("android")) {
+            console.log("android device");
+            this.filepath =
+              this.file.externalDataDirectory.replace(/file:\/\//g, "") +
+              parentDirFolder +
+              "/" +
+              this.fileName;
+            this.checkAndCreateSessionDir()
+              .then(created => {
+                console.log("saving recording as ", this.fileName);
+                console.log("savnig in ", this.filepath);
+                this.audio = this.media.create(this.filepath);
+                this.recordStarted = true;
+                this.audio.startRecord();
+                this.countDown();
+                this.recordingTimeout = window.setTimeout(
+                  () => this.stopMediaRecording(),
+                  300000
+                );
+              })
+              .catch(() => {
+                console.log("ABORT");
+              });
+          }
         }
-      }
-    });
+      });
+    }
   }
-}
-countDown() {
-  this.current += 1000;
-  const diff = this.target - this.current;
-  this.min = Math.floor(diff / 1000 / 60);
-  this.sec = (diff / 1000) % 60;
-  console.log(this.min , this.sec);
-  if (diff > 0) {
-      setTimeout(() => {this.countDown(); } , 1000);
+  countDown() {
+    this.current += 1000;
+    const diff = this.target - this.current;
+    this.min = Math.floor(diff / 1000 / 60);
+    this.sec = (diff / 1000) % 60;
+    console.log(this.min, this.sec);
+    if (diff > 0) {
+      setTimeout(() => {
+        this.countDown();
+      }, 1000);
+    }
   }
-}
   checkAndCreateSessionDir() {
     return new Promise((res, rej) => {
       this.file
@@ -256,6 +264,16 @@ countDown() {
     });
   }
   ngOnDestroy() {
+    if (!!this.audio) {
+      window.clearInterval(this.recordingTimeout);
+      this.flag = false;
+      this.audio.stop();
+      this.audio.release();
+      this.countFlag = 0;
+    }
+  }
+
+  ionViewWillLeave() {
     if (!!this.audio) {
       window.clearInterval(this.recordingTimeout);
       this.flag = false;

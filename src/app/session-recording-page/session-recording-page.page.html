@@ -25,65 +25,60 @@
       {{ 'Please start Recording' | translate }} ...
     </h3>
   </div> -->
-    <div class="recordingcont">
   <ion-grid>
-    <ion-row *ngIf="recordStarted">
+    <div class="recordingcont">
+      <ion-row *ngIf="recordStarted">
+        <ion-col>
+          <div class="hvc">
+            <img src="/assets/images/record.gif" />
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="recordStarted">
+        <ion-col>
+          <h4 class="countdown">समय शेष : {{min}}:{{sec}}</h4>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="!recordStarted">
+        <ion-col>
+          <div class="hvc">
+            <h3 class="recordText">
+              {{ 'Please start Recording' | translate }} ...
+            </h3>
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
+    <ion-row>
       <ion-col>
-        <img src="/assets/images/record.gif"/>
-      </ion-col>
-    </ion-row>
-    <ion-row *ngIf="recordStarted">
-      <ion-col>
-        <h4 class="countdown">{{min}}:{{sec}}</h4>
-      </ion-col>
-    </ion-row>
-    <ion-row *ngIf="!recordStarted">
-      <ion-col>
-        <h3 class="recordText">
-          {{ 'Please start Recording' | translate }} ...
-        </h3>
+        <div class="recordingbuttons">
+          <div
+            class="startrecording playrecording"
+            tappable
+            (click)="startMediaRecording()"
+          >
+            <button [disabled]="flag" class="microphonebtn">
+              <ion-icon
+                name="microphone"
+                slot="start"
+                color="primary"
+              ></ion-icon>
+            </button>
+            <p>{{ 'Media Recording' | translate }}</p>
+          </div>
+          <div
+            class="startrecording playrecording"
+            tappable
+            (click)="stopMediaRecording()"
+          >
+            <ion-icon name="hand" slot="start" color="danger"></ion-icon>
+            <p>{{ 'Stop Media Recording' | translate }}</p>
+          </div>
+        </div>
       </ion-col>
     </ion-row>
   </ion-grid>
-</div>
-  <div class="recordingbuttons">
-    <!-- <div class="startrecording" tappable (click)="startRecording()">
-      <span class="circleborder">
-        <span class="dot">
-          <span class="spantext">REC</span>
-        </span>
-      </span>
-      <p>Start Recording</p>
-    </div> -->
-    <div
-      class="startrecording playrecording"
-      tappable
-      (click)="startMediaRecording()"
-    >
-      <button [disabled]="flag" class="microphonebtn">
-        <ion-icon name="microphone" slot="start" color="primary"></ion-icon>
-      </button>
-      <p>{{ 'Media Recording' | translate }}</p>
-    </div>
-    <div
-      class="startrecording playrecording"
-      tappable
-      (click)="stopMediaRecording()"
-    >
-      <ion-icon name="hand" slot="start" color="danger"></ion-icon>
-      <p>{{ 'Stop Media Recording' | translate }}</p>
-    </div>
-    <!-- <div class="startrecording playrecording" tappable (click)="playAudio()">
-      <ion-icon name="play-circle" slot="start" color="primary"></ion-icon>
-      <p>Play Recording</p>
-    </div> -->
-    <!-- <div class="stoprecording" tappable (click)="stopRecording()">
-      <span class="circleborder">
-        <span class="square"> </span>
-      </span>
-      <p>Stop Recording</p>
-    </div> -->
-  </div>
+
   <div class="sessionlist">
     <div class="sessiondetails">
       <div class="sections" *ngFor="let audio of audioList; index as i;">
