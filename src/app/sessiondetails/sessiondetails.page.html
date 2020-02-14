@@ -29,9 +29,9 @@
     the runoff from, catchment and streams etc. Generally, water harvesting is
     direct rainwater collection.
   </p> -->
-  <div class="sessionlist" *ngIf="!userRole==='vrp'">
+  <div class="sessionlist" *ngIf="!(userRole==='vrp')">
     <div class="sessiondetails">
-      <div class="sections" *ngFor="let topic of topics; let i=index">
+      <div class="sections" *ngFor="let topic of topics">
         <div class="sectionname">
           <p>{{topic.topic_name}}</p>
         </div>
@@ -39,7 +39,7 @@
           <ion-button
             *ngIf="!topic.file_url"
             size="small"
-            (click)="mediaRecording(topic,i)"
+            (click)="mediaRecording(topic,topic.topic_id)"
           >
             <ion-icon
               slot="icon-only"
@@ -48,19 +48,19 @@
             ></ion-icon>
           </ion-button>
           <ion-button
-            *ngIf="(!sessionData.isUploaded) && topic.file_url && ((stop == undefined) || (i != stop))"
+            *ngIf="(!sessionData.isUploaded) && topic.file_url && ((stop == undefined) || (topic.topic_id != stop))"
             size="small"
             color="primary"
-            (click)="mediaPlayAudio(topic, i)"
+            (click)="mediaPlayAudio(topic, topic.topic_id)"
           >
             <ion-icon size="small" slot="icon-only" name="play"></ion-icon>
           </ion-button>
           <ion-button
-            *ngIf="topic.file_url && (i==stop)"
+            *ngIf="topic.file_url && (topic.topic_id==stop)"
             size="small"
             color="danger"
             class="stop"
-            (click)="mediaPauseAudio(topic, i)"
+            (click)="mediaPauseAudio(topic, topic.topic_id)"
           >
             <ion-icon size="small" slot="icon-only" name="square"></ion-icon>
           </ion-button>
