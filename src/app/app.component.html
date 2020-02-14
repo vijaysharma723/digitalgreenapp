@@ -30,20 +30,5 @@
     <ion-menu-button class="sidemenubutton"></ion-menu-button>
   </ion-buttons>
 
-  <!-- <ion-footer> -->
-    <ion-footer [ngStyle]="{'display':(!router.url.includes('login')) ? 'block' : 'none' }">
-      <ion-toolbar color="dark">
-      <div class="footericons">
-        <div class="footericon" routerLink="/sessions" routerLinkActive="active">
-          <ion-icon name="home" size="large"></ion-icon>
-          <p class="footericontext">{{ 'Home' | translate }}</p>
-        </div>
-        <div class="footericon" routerLink="/createsessions" routerLinkActive="active">
-          <ion-icon name="add-circle" size="large"></ion-icon>
-          <p class="footericontext">{{ 'New Session' | translate }}</p>
-        </div>
-      </div>
-    </ion-toolbar>
-  </ion-footer>
   <ion-router-outlet></ion-router-outlet>
 </ion-app>

@@ -1,3 +1,5 @@
+import { IonicModule } from '@ionic/angular';
+import { FooterComponent } from './component/footer/footer.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DateTimePipe } from './pipes/datetime/date-time.pipe';
@@ -5,12 +7,14 @@ import { DateTimePipe } from './pipes/datetime/date-time.pipe';
 
 
 @NgModule({
-  declarations: [DateTimePipe],
+  declarations: [DateTimePipe, FooterComponent],
   imports: [
-    CommonModule
+    CommonModule,
+    IonicModule.forRoot(),
   ],
   exports: [
-    DateTimePipe
+    DateTimePipe,
+    FooterComponent
   ]
 })
 export class SharedModule { }

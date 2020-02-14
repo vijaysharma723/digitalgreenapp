@@ -1,29 +1,10 @@
-ion-footer{
-    display: none;
-   }
-  
-.sidemenubutton {
+  .sidemenubutton {
     color: #ffffff;
     align-items: center;
     height: 56px;
 }
 ion-buttons{
     width:36px
-}
-.footericons{
-    display: flex;
-    justify-content: space-evenly
-}
-p.footericontext {
-    margin: 0;
-    font-size: 12px;
-    text-align: center;
-}
-.footericon {
-    text-align: center;
-        width: 50%;
-        outline:none;
-        cursor: pointer;
 }
 .active {
     border-bottom: 8px solid #b7cc1a;

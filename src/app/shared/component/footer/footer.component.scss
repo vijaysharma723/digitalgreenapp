@@ -1,0 +1,15 @@
+.footericons{
+    display: flex;
+    justify-content: space-evenly
+}
+p.footericontext {
+    margin: 0;
+    font-size: 12px;
+    text-align: center;
+}
+.footericon {
+    text-align: center;
+        width: 50%;
+        outline:none;
+        cursor: pointer;
+}
