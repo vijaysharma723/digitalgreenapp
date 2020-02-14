@@ -16,9 +16,9 @@ import { SessionService } from '../session/session.service';
 })
 export class SyncService {
 
-  private APIEndpoint = 'http://13.234.2.81:3001/sessions/upload';
-  private createSessionEndPoint = 'http://13.234.2.81:3001/sessions/create';
-  private CheckStatusAPIEndpoint = 'http://13.234.2.81:3001/sessions/status/';
+  private APIEndpoint = 'http://52.221.207.221:3001/sessions/upload';
+  private createSessionEndPoint = 'http://52.221.207.221:3001/sessions/create';
+  private CheckStatusAPIEndpoint = 'http://52.221.207.221:3001/sessions/status/';
   private defaultBearer = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJpc2hhYmhrYWxyYTk2IiwiZW1haWwiOiJyaXNoYWJoa2FscmE5NkBnbWFpbC5jb20iLCJpYXQiOjE1ODA4ODI1Nzl9.dxrWrjX3jaUe4t33Y9H0oLdSxenSaJA-EYaCNHIk8Ys';
   parentFolderDir = 'session';
 
@@ -137,7 +137,8 @@ export class SyncService {
         .then(async uploaded => {
           if (uploaded.responseCode.toString() === '200') {
             const response = JSON.parse(uploaded.response);
-            this.dialog.alert(response.message);
+            console.log('respose message ----> ', response.message);
+            // this.dialog.alert(response.message);
             // update the topic status
             if (sessionID && topicID) {
               if (await this.sessionSrvc.setSessionStatus({topic_status: 1, its: new Date().toISOString()}, sessionID, topicID)) {
