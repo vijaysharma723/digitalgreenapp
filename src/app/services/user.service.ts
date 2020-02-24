@@ -145,13 +145,29 @@ export class UserService {
         {
           topic_id: "1",
           isPlayed: false,
-          topic_name: "प्रक्रिया में क्या सुधार करने की आवश्यकता है?",
+          topic_title: 'कृषि',
+          topic_name: "किसानों को किन शीर्ष चुनौतियों का सामना करना पड़ रहा है?",
           status: false
         },
         {
           topic_id: "2",
           isPlayed: false,
-          topic_name: "किसानों द्वारा सामना किए गए शीर्ष चुनौतियां क्या हैं?",
+          topic_title: 'कृषि',
+          topic_name: "किस प्रकार के समाधान आपकी सहायता कर सकते हैं?",
+          status: false
+        },
+        {
+          topic_id: "3",
+          isPlayed: false,
+          topic_title: 'स्वास्थ्य',
+          topic_name: "किसानों को किन शीर्ष स्वास्थ्य चुनौतियों का सामना करना पड़ रहा है?",
+          status: false
+        },
+        {
+          topic_id: "4",
+          isPlayed: false,
+          topic_title: 'स्वास्थ्य',
+          topic_name: "किस प्रकार के समाधान आपकी सहायता कर सकते हैं?",
           status: false
         }
       ],
@@ -166,13 +182,29 @@ export class UserService {
         {
           topic_id: "1",
           isPlayed: false,
-          topic_name: "प्रक्रिया में क्या सुधार करने की आवश्यकता है?",
+          topic_title: 'कृषि',
+          topic_name: "किसानों को किन शीर्ष चुनौतियों का सामना करना पड़ रहा है?",
           status: false
         },
         {
           topic_id: "2",
           isPlayed: false,
-          topic_name: "किसानों द्वारा सामना किए गए शीर्ष चुनौतियां क्या हैं?",
+          topic_title: 'कृषि',
+          topic_name: "किस प्रकार के समाधान आपकी सहायता कर सकते हैं?",
+          status: false
+        },
+        {
+          topic_id: "3",
+          isPlayed: false,
+          topic_title: 'स्वास्थ्य',
+          topic_name: "किसानों को किन शीर्ष स्वास्थ्य चुनौतियों का सामना करना पड़ रहा है?",
+          status: false
+        },
+        {
+          topic_id: "4",
+          isPlayed: false,
+          topic_title: 'स्वास्थ्य',
+          topic_name: "किस प्रकार के समाधान आपकी सहायता कर सकते हैं?",
           status: false
         }
       ],

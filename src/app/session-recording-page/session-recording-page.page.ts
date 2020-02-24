@@ -146,7 +146,7 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
       // send the file for upload
       this.syncSrvc.sendSessionFileUploadRequest(filePathFromRoot);
       this.toaster.present({
-        text: this.toaster.toasterMessage.recordingSuccessful,
+        text: this.toaster.toasterMessage['recordingSuccessful'],
         colour: "light"
       });
       this.router.navigate(["/sessiondetails", this.sessionid]);
@@ -231,7 +231,7 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     const diff = this.target - this.current;
     this.min = Math.floor(diff / 1000 / 60);
     this.sec = (diff / 1000) % 60;
-    console.log(this.min, this.sec);
+    // console.log(this.min, this.sec);
     if (diff > 0) {
       setTimeout(() => {
         this.countDown();

@@ -72,7 +72,12 @@ export class CreatesessionsPage implements OnInit {
     newSessionDetails["sessionid"] = await this.sessionService.createUniqueId();
     newSessionDetails["created"] = new Date().toISOString();
     newSessionDetails["isUploaded"] = false;
-    const userTopics = await this.userService.getUserQuestions();
+    let userTopics = await this.userService.getUserQuestions();
+    // assign a default of isUploaded false to all the topics
+    userTopics = userTopics.map(topic => {
+      topic['isUploaded'] = false;
+      return topic;
+    });
     newSessionDetails["topics"] = userTopics;
     newSessionDetails["topics_limit"] = userTopics.length;
 

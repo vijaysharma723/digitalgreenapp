@@ -13,6 +13,6 @@ export class CheckStatusService {
       })
     };
 
-    return this.http.get('http://52.221.207.221:3001/sessions/status/' + username, httpOptions);
+    return this.http.get('https://164e70f5.ngrok.io/sessions/status/' + username, httpOptions);
   }
 }

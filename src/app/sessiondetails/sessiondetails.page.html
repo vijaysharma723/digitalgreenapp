@@ -29,7 +29,7 @@
     the runoff from, catchment and streams etc. Generally, water harvesting is
     direct rainwater collection.
   </p> -->
-  <div class="sessionlist" *ngIf="!(userRole==='vrp')">
+  <div class="sessionlist"  *ngIf="userRole!=='vrp' && userRole!=='block_officer'">
     <div class="sessiondetails">
       <div class="sections" *ngFor="let topic of topics">
         <div class="sectionname">
@@ -48,7 +48,7 @@
             ></ion-icon>
           </ion-button>
           <ion-button
-            *ngIf="(!sessionData.isUploaded) && topic.file_url && ((stop == undefined) || (topic.topic_id != stop))"
+            *ngIf="(!sessionData.isUploaded && !topic.isUploaded) && topic.file_url && ((stop == undefined) || (topic.topic_id != stop))"
             size="small"
             color="primary"
             (click)="mediaPlayAudio(topic, topic.topic_id)"
@@ -56,7 +56,7 @@
             <ion-icon size="small" slot="icon-only" name="play"></ion-icon>
           </ion-button>
           <ion-button
-            *ngIf="topic.file_url && (topic.topic_id==stop)"
+            *ngIf="(!sessionData.isUploaded && !topic.isUploaded) && topic.file_url && (topic.topic_id==stop)"
             size="small"
             color="danger"
             class="stop"
@@ -64,12 +64,16 @@
           >
             <ion-icon size="small" slot="icon-only" name="square"></ion-icon>
           </ion-button>
+          <ion-button *ngIf="!sessionData.isUploaded && topic.isUploaded && topic.topic_status === '3'" disabled size="small">
+            <ion-icon slot="icon-only" name="checkmark-circle"></ion-icon>
+          </ion-button>
         </div>
       </div>
     </div>
   </div>
-  <div class="sessionlist"  *ngIf="userRole==='vrp'">
+  <div class="sessionlist"  *ngIf="userRole ==='vrp' || userRole ==='block_officer'">
     <div class="sessiondetails">
+      <p *ngIf="topci1Name">{{topci1Name}}</p>
       <div class="sessiondetails-part1">
       <div class="sections" *ngFor="let topic of topics1">
         <div class="sectionname">
@@ -88,7 +92,7 @@
             ></ion-icon>
           </ion-button>
           <ion-button
-            *ngIf="(!sessionData.isUploaded) && topic.file_url && ((stop == undefined) || (topic.topic_id != stop))"
+            *ngIf="(!sessionData.isUploaded && !topic.isUploaded) && topic.file_url && ((stop == undefined) || (topic.topic_id != stop))"
             size="small"
             color="primary"
             (click)="mediaPlayAudio(topic, topic.topic_id)"
@@ -96,7 +100,7 @@
             <ion-icon size="small" slot="icon-only" name="play"></ion-icon>
           </ion-button>
           <ion-button
-            *ngIf="topic.file_url && (topic.topic_id==stop)"
+            *ngIf="(!sessionData.isUploaded && !topic.isUploaded) && topic.file_url && (topic.topic_id==stop)"
             size="small"
             color="danger"
             class="stop"
@@ -104,10 +108,14 @@
           >
             <ion-icon size="small" slot="icon-only" name="square"></ion-icon>
           </ion-button>
+          <ion-button *ngIf="!sessionData.isUploaded && topic.isUploaded && topic.topic_status === '3'" disabled size="small">
+            <ion-icon slot="icon-only" name="checkmark-circle"></ion-icon>
+          </ion-button>
         </div>
       </div>
       </div>
       <br/>
+      <p *ngIf="topic2Name">{{topic2Name}}</p>
       <div class="sessiondetails-part2">
       <div class="sections" *ngFor="let topic of topics2">
           <div class="sectionname">
@@ -126,7 +134,7 @@
               ></ion-icon>
             </ion-button>
             <ion-button
-              *ngIf="(!sessionData.isUploaded) && topic.file_url && ((stop == undefined) || (topic.topic_id != stop))"
+              *ngIf="(!sessionData.isUploaded && !topic.isUploaded) && topic.file_url && ((stop == undefined) || (topic.topic_id != stop))"
               size="small"
               color="primary"
               (click)="mediaPlayAudio(topic, topic.topic_id)"
@@ -134,13 +142,16 @@
               <ion-icon size="small" slot="icon-only" name="play"></ion-icon>
             </ion-button>
             <ion-button
-              *ngIf="topic.file_url && (topic.topic_id==stop)"
+              *ngIf="(!sessionData.isUploaded && !topic.isUploaded) && topic.file_url && (topic.topic_id==stop)"
               size="small"
               color="danger"
               class="stop"
               (click)="mediaPauseAudio(topic, topic.topic_id)"
             >
               <ion-icon size="small" slot="icon-only" name="square"></ion-icon>
+            </ion-button>
+            <ion-button *ngIf="!sessionData.isUploaded && topic.isUploaded && topic.topic_status === '3'" disabled size="small">
+              <ion-icon slot="icon-only" name="checkmark-circle"></ion-icon>
             </ion-button>
           </div>
         </div>
