@@ -86,7 +86,7 @@ export class UserService {
       username: "8005297302",
       password: "8005297302",
       role: "mrp",
-      topics: ["कृषि", "स्वास्थ्य"],
+      topics: ["जल संचयन", "फसल की खेती", "कृषि नीतियां"],
       questions: [
         {
           topic_id: "1",
@@ -113,7 +113,7 @@ export class UserService {
       username: "9312252531",
       password: "9312252531",
       role: "mrp",
-      topics: ["कृषि", "स्वास्थ्य"],
+      topics: ["फसल की खेती", "मृदा अपरदन", "पशु"],
       questions: [
         {
           topic_id: "1",
@@ -140,7 +140,7 @@ export class UserService {
       username: "9991062244",
       password: "9991062244",
       role: "block_officer",
-      topics: ["कृषि", "स्वास्थ्य"],
+      topics: ["फसल उत्पाद", "कीटनाशक नियंत्रण", "फसल की खेती"],
       questions: [
         {
           topic_id: "1",
@@ -161,7 +161,7 @@ export class UserService {
       username: "9886735532",
       password: "9886735532",
       role: "block_officer",
-      topics: ["कृषि", "स्वास्थ्य"],
+      topics: ["कीटनाशक नियंत्रण", "कृषि नीतियां", "फसल कटाई", "दूध उत्पादन"],
       questions: [
         {
           topic_id: "1",
@@ -181,7 +181,7 @@ export class UserService {
     {
       username: "99999",
       password: "99999",
-      role: "block_officer",
+      role: "vrp",
       topics: ["कृषि", "स्वास्थ्य"],
       questions: [
         {
