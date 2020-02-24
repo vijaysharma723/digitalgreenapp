@@ -20,7 +20,7 @@ export class UserService {
       username: "9971696729",
       password: "9971696729",
       role: "vrp",
-      topics: ["जल संचयन", "फसल की खेती ", "फसल उत्पाद", "पशु"],
+      topics: ["कृषि", "स्वास्थ्य"],
       questions: [
         {
           topic_id: "1",
@@ -53,7 +53,7 @@ export class UserService {
       username: "8447818490",
       password: "8447818490",
       role: "vrp",
-      topics: ["जल संचयन", "फसल उत्पाद"],
+      topics: ["कृषि", "स्वास्थ्य"],
       questions: [
         {
           topic_id: "1",
@@ -86,7 +86,7 @@ export class UserService {
       username: "8005297302",
       password: "8005297302",
       role: "mrp",
-      topics: ["जल संचयन", "फसल की खेती", "कृषि नीतियां"],
+      topics: ["कृषि", "स्वास्थ्य"],
       questions: [
         {
           topic_id: "1",
@@ -113,7 +113,7 @@ export class UserService {
       username: "9312252531",
       password: "9312252531",
       role: "mrp",
-      topics: ["फसल की खेती", "मृदा अपरदन", "पशु"],
+      topics: ["कृषि", "स्वास्थ्य"],
       questions: [
         {
           topic_id: "1",
@@ -140,7 +140,7 @@ export class UserService {
       username: "9991062244",
       password: "9991062244",
       role: "block_officer",
-      topics: ["फसल उत्पाद", "कीटनाशक नियंत्रण", "फसल की खेती"],
+      topics: ["कृषि", "स्वास्थ्य"],
       questions: [
         {
           topic_id: "1",
@@ -161,7 +161,7 @@ export class UserService {
       username: "9886735532",
       password: "9886735532",
       role: "block_officer",
-      topics: ["कीटनाशक नियंत्रण", "कृषि नीतियां", "फसल कटाई", "दूध उत्पादन"],
+      topics: ["कृषि", "स्वास्थ्य"],
       questions: [
         {
           topic_id: "1",
@@ -177,7 +177,29 @@ export class UserService {
         }
       ],
       sessiontoken: ""
-    }
+    },
+    {
+      username: "99999",
+      password: "99999",
+      role: "block_officer",
+      topics: ["कृषि", "स्वास्थ्य"],
+      questions: [
+        {
+          topic_id: "1",
+          isPlayed: false,
+          topic_name: "प्रक्रिया में क्या सुधार करने की आवश्यकता है?",
+          status: false
+        },
+        {
+          topic_id: "2",
+          isPlayed: false,
+          topic_name: "किसानों द्वारा सामना किए गए शीर्ष चुनौतियां क्या हैं?",
+          status: false
+        }
+      ],
+      sessiontoken: ""
+    },
+    
   ];
   users: any;
   loggedInUser = null;
