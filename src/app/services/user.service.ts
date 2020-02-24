@@ -113,7 +113,7 @@ export class UserService {
       username: "9312252531",
       password: "9312252531",
       role: "mrp",
-      topics: ["फसल की खेती", "मृदा अपरदन", "पशु"],
+      topics: ["जल संचयन", "फसल की खेती", "कृषि नीतियां"],
       questions: [
         {
           topic_id: "1",
@@ -213,19 +213,35 @@ export class UserService {
     {
       username: "99999",
       password: "99999",
-      role: "vrp",
-      topics: ["कृषि", "स्वास्थ्य"],
+      role: "block_officer",
+      topics: ["कीटनाशक नियंत्रण", "कृषि नीतियां", "फसल कटाई", "दूध उत्पादन"],
       questions: [
         {
           topic_id: "1",
           isPlayed: false,
-          topic_name: "प्रक्रिया में क्या सुधार करने की आवश्यकता है?",
+          topic_title: 'कृषि',
+          topic_name: "किसानों को किन शीर्ष चुनौतियों का सामना करना पड़ रहा है?",
           status: false
         },
         {
           topic_id: "2",
           isPlayed: false,
-          topic_name: "किसानों द्वारा सामना किए गए शीर्ष चुनौतियां क्या हैं?",
+          topic_title: 'कृषि',
+          topic_name: "किस प्रकार के समाधान आपकी सहायता कर सकते हैं?",
+          status: false
+        },
+        {
+          topic_id: "3",
+          isPlayed: false,
+          topic_title: 'स्वास्थ्य',
+          topic_name: "किसानों को किन शीर्ष स्वास्थ्य चुनौतियों का सामना करना पड़ रहा है?",
+          status: false
+        },
+        {
+          topic_id: "4",
+          isPlayed: false,
+          topic_title: 'स्वास्थ्य',
+          topic_name: "किस प्रकार के समाधान आपकी सहायता कर सकते हैं?",
           status: false
         }
       ],
