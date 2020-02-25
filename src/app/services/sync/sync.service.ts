@@ -61,7 +61,7 @@ export class SyncService {
           if (response['status'] && (response['status'].toString() === '200' || response['status'].toString() === '304')) {
             const selectedSession = [];
             response['data'].every(session => {
-              if (session.sessionid === sessionID) {
+              if (session.session_id === sessionID) {
                 // found
                 console.log('session exists');
                 selectedSession.push(session);
@@ -97,6 +97,9 @@ export class SyncService {
               });
             }
           }
+        }, statusErr => {
+          console.log('Error while hitting status api, will try later');
+          console.log(statusErr);
         });
     } else {
       console.log('detected as offline for now, aborting online sync');
