@@ -125,32 +125,41 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
       audiofile.play();
     }
   }
-  async stopMediaRecording() {
-    this.countFlag = 0;
-    window.clearInterval(this.recordingTimeout);
-    // alert("stopping");
-    this.flag = false;
-    this.audio.stopRecord();
-    this.recordStarted = false;
-    this.audio.release();
-    const updateddata = await this.sessionService.updateSessionTopicData(
-      this.sessionid,
-      this.topicid,
-      this.fileName
-    );
-    // trigger the sync api to send the files to the server
-    this.userSrvc.getLoggedInUser().then(user => {
-      const filePathFromRoot = `${this.mediaParentFolder}/${user.username}_${this.sessionid}_${this.topicid}.wav`;
-      // set the status to initiate in local db
-      // this.sessionService.setSessionStatus({topic_status: 0, its: new Date().toISOString()}, this.sessionid, this.topicid);
-      // send the file for upload
-      this.syncSrvc.sendSessionFileUploadRequest(filePathFromRoot);
-      this.toaster.present({
-        text: this.toaster.toasterMessage['recordingSuccessful'],
-        colour: "light"
-      });
-      this.router.navigate(["/sessiondetails", this.sessionid]);
-    });
+  stopMediaRecording() {
+    if (this.flag) {
+      window.clearInterval(this.recordingTimeout);
+      // alert("stopping");
+      this.flag = false;
+      this.recordStarted = false;
+      // IIFE to invoke this immediately
+      ( () => {
+        window.setTimeout(async () => {
+          this.audio.stopRecord();
+          this.audio.release();
+          const updateddata = await this.sessionService.updateSessionTopicData(
+            this.sessionid,
+            this.topicid,
+            this.fileName
+          );
+          // trigger the sync api to send the files to the server
+          this.userSrvc.getLoggedInUser().then(user => {
+            const filePathFromRoot = `${this.mediaParentFolder}/${user.username}_${this.sessionid}_${this.topicid}.wav`;
+            // set the status to initiate in local db
+            // this.sessionService.setSessionStatus({topic_status: 0, its: new Date().toISOString()}, this.sessionid, this.topicid);
+            // send the file for upload
+            this.syncSrvc.sendSessionFileUploadRequest(filePathFromRoot);
+            this.toaster.present({
+              text: this.toaster.toasterMessage['recordingSuccessful'],
+              colour: "light"
+            });
+            this.router.navigate(["/sessiondetails", this.sessionid]);
+          });
+        }, 1000);
+      }
+      )();
+    } else {
+      console.log('recording not yet started, cannot stop before starting');
+    }
   }
   mediaPlayAudio(file, idx) {
     // alert("media playing");
@@ -169,19 +178,6 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     this.audio.play();
     this.audio.setVolume(0.8);
   }
-  // getAudioList() {
-  //   this.storage.get("audiolist").then(res => {
-  //     if (res) {
-  //       this.audioList = JSON.parse(res);
-  //       // alert(" get data");
-  //       // alert(JSON.stringify(this.audioList));
-
-  //       console.log(this.audioList);
-  //     } else {
-  //       // alert("didn't get data");
-  //     }
-  //   });
-  // }
   startMediaRecording() {
     this.flag = true;
     this.countFlag++;
@@ -224,6 +220,8 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
           }
         }
       });
+    } else {
+      console.log('flagCount is ', this.countFlag + 'not equal to one');
     }
   }
   countDown() {
