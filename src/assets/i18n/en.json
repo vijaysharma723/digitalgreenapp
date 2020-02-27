@@ -22,7 +22,12 @@
   "Select Language": "Select Language",
   "Media Recording": "Media Recording",
   "Stop Media Recording": "Stop Media Recording",
+  "Stop and Save Media Recording": "Stop and Save Media Recording",
   "Topics": "Topics",
   "Select Topic": "Select Topic",
-  "No Sessions Recorded": "No Sessions Recorded"
+  "No Sessions Recorded": "No Sessions Recorded",
+  "Go Back": "Go Back",
+  "Are you sure you want to go back without saving your recording": "Are you sure you want to go back without saving your recording",
+  "No": "No",
+  "yes": "Yes"
 }

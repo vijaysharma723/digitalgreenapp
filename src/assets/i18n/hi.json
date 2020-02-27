@@ -25,7 +25,12 @@
     "Hindi": "हिंदी",
     "Media Recording": "मीडिया रिकॉर्डिंग",
     "Stop Media Recording": "मीडिया रिकॉर्डिंग बंद करें",
+    "Stop and Save Media Recording": "मीडिया रिकॉर्डिंग बंद करो और बचाओ",
     "Topics": "विषय",
     "Select Topic": "विषय का चयन करें",
-    "No Sessions Recorded": "कोई सत्र रिकॉर्ड नहीं किया गया"
+    "No Sessions Recorded": "कोई सत्र रिकॉर्ड नहीं किया गया",
+    "Go Back": "वापस जाएं",
+    "Are you sure you want to go back without saving your recording": "क्या आप वाकई रिकॉर्डिंग को सहेजे बिना वापस जाना चाहते हैं",
+    "No": "नहीं",
+    "Yes": "हाँ"
   }

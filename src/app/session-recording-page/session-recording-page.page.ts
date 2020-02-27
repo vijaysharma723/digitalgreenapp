@@ -56,7 +56,7 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     private sessionService: SessionService,
     private readonly userSrvc: UserService,
     private readonly syncSrvc: SyncService,
-    translate: TranslateService,
+    public translate: TranslateService,
     private toaster: ToasterService,
     private readonly alertController: AlertController,
   ) {
@@ -294,19 +294,18 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
 
 
   async promptForBack() {
-    
     const alert = await this.alertController.create({
-      header: 'वापस जाएं',
-      message: 'क्या आप वाकई रिकॉर्डिंग को सहेजे बिना वापस जाना चाहते हैं?',
+      header: this.translate.instant('Go Back'),
+      message: this.translate.instant('Are you sure you want to go back without saving your recording') + '?',
       buttons: [
         {
-          text: 'नहीं',
+          text: this.translate.instant('No'),
           handler: () => {
             console.log('clicked no');
           }
         },
         {
-          text: 'हाँ',
+          text: this.translate.instant('Yes'),
           handler: () => {
             console.log('clicked OK');
             // route back to sessiondetails route
