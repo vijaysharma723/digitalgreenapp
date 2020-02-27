@@ -23,7 +23,7 @@ export class CreatesessionsPage implements OnInit {
     private sessionService: SessionService,
     private userService: UserService,
     private toaster: ToasterService,
-    translate: TranslateService
+    public translate: TranslateService
   ) {
     // this language will be used as a fallback when a translation isn't found in the current language
     translate.setDefaultLang('en');
@@ -37,9 +37,15 @@ export class CreatesessionsPage implements OnInit {
     // }, 0);
     this.userRole = await this.userService.getUserRole();
     this.userSessions = await this.userService.getUserTopics();
-    if (this.userRole !== "vrp") {
-      this.topic = "सामान्य";
+    if (this.userRole !== 'vrp') {
+      const commonText = this.translate.instant('Common');
+      this.topic = 'सामान्य_' + this.getRandomString();
     }
+  }
+
+  getRandomString() {
+    const currentDate = new Date();
+    return `${currentDate.getHours()}${currentDate.getMinutes()}${currentDate.getMilliseconds()}`
   }
 
   async logForm() {
