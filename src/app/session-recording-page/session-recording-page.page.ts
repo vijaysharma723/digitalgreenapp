@@ -1,9 +1,9 @@
 import { ToasterService } from "./../services/toaster/toaster.service";
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { SessionService } from "./../services/session/session.service";
+import {AlertController} from '@ionic/angular';
 
-import { Router } from "@angular/router";
 import { File, FileEntry } from "@ionic-native/file/ngx";
 import { Media, MediaObject } from "@ionic-native/media/ngx";
 import { Platform } from "@ionic/angular";
@@ -57,7 +57,8 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     private readonly userSrvc: UserService,
     private readonly syncSrvc: SyncService,
     translate: TranslateService,
-    private toaster: ToasterService
+    private toaster: ToasterService,
+    private readonly alertController: AlertController,
   ) {
     // this language will be used as a fallback when a translation isn't found in the current language
     translate.setDefaultLang("en");
@@ -279,5 +280,41 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
       this.audio.release();
       this.countFlag = 0;
     }
+  }
+
+
+  triggerPrompt(){
+    if (this.recordStarted && this.flag) {
+      console.log('active recording');
+      this.promptForBack();
+    } else {
+      this.router.navigate(['sessiondetails', this.sessionid]);
+    }
+  }
+
+
+  async promptForBack() {
+    
+    const alert = await this.alertController.create({
+      header: 'वापस जाएं',
+      message: 'क्या आप वाकई रिकॉर्डिंग को सहेजे बिना वापस जाना चाहते हैं?',
+      buttons: [
+        {
+          text: 'नहीं',
+          handler: () => {
+            console.log('clicked no');
+          }
+        },
+        {
+          text: 'हाँ',
+          handler: () => {
+            console.log('clicked OK');
+            // route back to sessiondetails route
+            this.router.navigate(['sessiondetails', this.sessionid]);
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 }

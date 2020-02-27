@@ -10,7 +10,10 @@
       </ion-back-button>
     </ion-buttons> -->
   <ion-buttons class="backbutton" slot="start">
-    <ion-back-button defaultHref="/sessiondetails"></ion-back-button>
+    <!-- <ion-back-button defaultHref="/sessiondetails"></ion-back-button> -->
+    <ion-button (click)="triggerPrompt()">
+      <ion-icon name="arrow-back"></ion-icon>
+    </ion-button>
   </ion-buttons>
   <ion-title class="textcenter">{{ 'Recording' | translate }}</ion-title>
 </ion-toolbar>
