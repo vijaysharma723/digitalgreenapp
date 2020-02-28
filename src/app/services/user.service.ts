@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Storage } from "@ionic/storage";
+import { of, BehaviorSubject } from 'rxjs';
 
 export interface IUser {
   username: string;
@@ -1479,6 +1480,7 @@ export class UserService {
 
   users: any;
   loggedInUser = null;
+  public userDetailsObs = new BehaviorSubject<object|null>(null);
 
   constructor(private storage: Storage) {}
 
@@ -1535,6 +1537,8 @@ export class UserService {
       const loggedinuser = await this.storage.get("loggedinuser");
       this.loggedInUser = JSON.parse(loggedinuser);
     }
+    // emit the userdetails as observable as well
+    this.userDetailsObs.next(this.loggedInUser);
     return this.loggedInUser;
   }
 

@@ -8,14 +8,16 @@ import { Router } from "@angular/router";
 import { UserService } from "./services/user.service";
 import { Storage } from "@ionic/storage";
 import { TranslateService } from "@ngx-translate/core";
+import { pipe, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: "app-root",
   templateUrl: "app.component.html",
   styleUrls: ["app.component.scss"]
 })
-export class AppComponent implements OnInit {
-  username: string;
+export class AppComponent {
+  username: any;
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -31,13 +33,15 @@ export class AppComponent implements OnInit {
     translate.setDefaultLang("en");
     // the lang to use, if the lang isn't available, it will use the current loader to get them
     translate.use("hi");
+    this.setUsername();
   }
   displayName(event) {
     console.log("calling", event);
   }
   initializeApp() {
     this.platform.ready().then(async () => {
-      console.log("platform ready");
+      console.log('platform ready');
+
       const timeStamp = await this.storage.get("statusTimeStamp");
       if (!timeStamp) {
         await this.storage.set("statusTimeStamp", new Date().toISOString());
@@ -46,18 +50,20 @@ export class AppComponent implements OnInit {
       this.splashScreen.hide();
     });
     this.platform.resume.subscribe(async () => {
-      const userdetails = await this.userService.getLoggedInUser();
-      if (!!userdetails) {
-        this.username = userdetails.username;
-      }
+      // this.setUsername();
     });
   }
 
-  async ngOnInit() {
-    const userdetails = await this.userService.getLoggedInUser();
-    if (!!userdetails) {
-      this.username = userdetails.username;
-    }
+  setUsername() {
+    console.log('setting username in sidebar');
+    this.username = this.userService.userDetailsObs.pipe(map(userdetails => {
+      console.log('called username ', userdetails);
+      if (userdetails) {
+        return userdetails['username'];
+      } else {
+        return '';
+      }
+    }));
   }
 
   removeSessionToken() {
