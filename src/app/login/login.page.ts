@@ -6,6 +6,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { TranslateConfigService } from '../translate-config.service';
 import { Platform } from '@ionic/angular';
 
+
+
 @Component({
   selector: "app-login",
   templateUrl: "./login.page.html",

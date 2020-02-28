@@ -64,7 +64,7 @@
           >
             <ion-icon size="small" slot="icon-only" name="square"></ion-icon>
           </ion-button>
-          <ion-button *ngIf="!sessionData.isUploaded && topic.isUploaded && topic.topic_status === '3'" disabled size="small">
+          <ion-button *ngIf="topic.isUploaded && topic.topic_status === '3'" disabled size="small">
             <ion-icon slot="icon-only" name="checkmark-circle"></ion-icon>
           </ion-button>
         </div>
@@ -108,7 +108,7 @@
           >
             <ion-icon size="small" slot="icon-only" name="square"></ion-icon>
           </ion-button>
-          <ion-button *ngIf="!sessionData.isUploaded && topic.isUploaded && topic.topic_status === '3'" disabled size="small">
+          <ion-button *ngIf=" topic.isUploaded && topic.topic_status === '3'" disabled size="small">
             <ion-icon slot="icon-only" name="checkmark-circle"></ion-icon>
           </ion-button>
         </div>
@@ -134,7 +134,7 @@
               ></ion-icon>
             </ion-button>
             <ion-button
-              *ngIf="(!sessionData.isUploaded && !topic.isUploaded) && topic.file_url && ((stop == undefined) || (topic.topic_id != stop))"
+              *ngIf="( !topic.isUploaded) && topic.file_url && ((stop == undefined) || (topic.topic_id != stop))"
               size="small"
               color="primary"
               (click)="mediaPlayAudio(topic, topic.topic_id)"
@@ -142,7 +142,7 @@
               <ion-icon size="small" slot="icon-only" name="play"></ion-icon>
             </ion-button>
             <ion-button
-              *ngIf="(!sessionData.isUploaded && !topic.isUploaded) && topic.file_url && (topic.topic_id==stop)"
+              *ngIf="( !topic.isUploaded) && topic.file_url && (topic.topic_id==stop)"
               size="small"
               color="danger"
               class="stop"
@@ -150,7 +150,7 @@
             >
               <ion-icon size="small" slot="icon-only" name="square"></ion-icon>
             </ion-button>
-            <ion-button *ngIf="!sessionData.isUploaded && topic.isUploaded && topic.topic_status === '3'" disabled size="small">
+            <ion-button *ngIf=" topic.isUploaded && topic.topic_status === '3'" disabled size="small">
               <ion-icon slot="icon-only" name="checkmark-circle"></ion-icon>
             </ion-button>
           </div>
