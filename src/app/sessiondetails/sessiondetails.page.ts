@@ -5,10 +5,10 @@ import { SessionService } from "./../services/session/session.service";
 import { File, FileEntry } from "@ionic-native/file/ngx";
 import { Media, MediaObject } from "@ionic-native/media/ngx";
 import { Platform } from "@ionic/angular";
-import {
-  TranslateService,
-  FakeMissingTranslationHandler
-} from "@ngx-translate/core";
+import {TranslateService,FakeMissingTranslationHandler} from "@ngx-translate/core";
+import {Storage } from '@ionic/storage';
+import {LanguageTranslatorService} from '../shared/sharedservices/languagetranslator/language-translator.service';
+
 
 @Component({
   selector: "app-sessiondetails",
@@ -39,13 +39,31 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
     private plt: Platform,
     private router: Router,
     private cdr: ChangeDetectorRef,
-    translate: TranslateService
+    translate: TranslateService,
+    private readonly storage : Storage,
+    private languageTranslator: LanguageTranslatorService
   ) {
     // this language will be used as a fallback when a translation isn't found in the current language
-    translate.setDefaultLang("en");
-    console.log(translate);
+    translate.setDefaultLang("hi");
+    // console.log(translate);
     // the lang to use, if the lang isn't available, it will use the current loader to get them
-    translate.use("hi");
+    languageTranslator.userDetailsObs.subscribe((language) => {
+      console.log('language recieved in sessions page ', language);
+      if (!language) {
+        this.storage.get('app_language')
+        .then(Storelanguage => {
+          console.log('store lang in sessions page is', Storelanguage);
+          translate.use(Storelanguage);
+          this.cdr.detectChanges();
+        })
+        .catch(storeErr => {
+          console.log('error while getting lang from store, at sssions page', storeErr);
+        });
+      } else {
+        translate.use(language);
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   async ngOnInit() {

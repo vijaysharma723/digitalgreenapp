@@ -1,5 +1,5 @@
 import { SessionService } from "./services/session/session.service";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 
 import { Platform } from "@ionic/angular";
 import { SplashScreen } from "@ionic-native/splash-screen/ngx";
@@ -10,6 +10,7 @@ import { Storage } from "@ionic/storage";
 import { TranslateService } from "@ngx-translate/core";
 import { pipe, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import {LanguageTranslatorService} from './shared/sharedservices/languagetranslator/language-translator.service';
 
 @Component({
   selector: "app-root",
@@ -18,6 +19,9 @@ import { map } from 'rxjs/operators';
 })
 export class AppComponent {
   username: any;
+
+selectedLanguage : any = 'en';
+languageList = ['en','hi'];
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -26,17 +30,55 @@ export class AppComponent {
     private sessionService: SessionService,
     public router: Router,
     private storage: Storage,
-    translate: TranslateService
+    translate: TranslateService,
+    private languagetranslator : LanguageTranslatorService
   ) {
     this.initializeApp();
     // this language will be used as a fallback when a translation isn't found in the current language
-    translate.setDefaultLang("en");
+    translate.setDefaultLang("hi");
     // the lang to use, if the lang isn't available, it will use the current loader to get them
-    translate.use("hi");
+    // translate.use("hi");
     this.setUsername();
+    languagetranslator.userDetailsObs.subscribe((language) => {
+      if (language) {
+        this.storage.get('app_language')
+        .then(storeLang => {
+          console.log('i have recieved in app component', storeLang);
+        translate.use(storeLang);
+        })
+        .catch(error => {
+          console.log('error while getting language from storage app component', error);
+        });
+      }
+      else {
+        console.log('did not recieve string in app component', language);
+      }
+      
+    });
+
+    this.storage.get('app_language').then(storageLang => {
+      if (!storageLang) {
+        console.log('did not detect language ' ,storageLang);
+        storageLang = 'hi';
+      }
+      console.log('setting default language as at app component as ', storageLang);
+      this.languagetranslator.updateLanguage(storageLang);
+      translate.use(storageLang);
+    })
+    .catch(error => {
+      console.log('error while reading initial language ', error);
+      translate.use('hi');
+      this.languagetranslator.updateLanguage('hi');
+    });
+
   }
   displayName(event) {
     console.log("calling", event);
+  }
+  optionsFn(){
+
+    console.log('user selected on login ', this.selectedLanguage)
+        this.languagetranslator.updateLanguage(this.selectedLanguage);
   }
   initializeApp() {
     this.platform.ready().then(async () => {

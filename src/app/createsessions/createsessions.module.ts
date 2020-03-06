@@ -33,6 +33,6 @@ export function createTranslateLoader(http: HttpClient) {
     HttpClientModule,
     SharedModule
   ],
-  declarations: [CreatesessionsPage]
+  declarations: [CreatesessionsPage],
 })
 export class CreatesessionsPageModule {}

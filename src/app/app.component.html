@@ -1,8 +1,10 @@
 <ion-app>
   <ion-menu class="sidemenu" side="start" menuId="first" contentId="content">
+    
     <ion-header>
       <ion-toolbar class="textcenter">
-        <ion-title >नमस्कार {{ username | async }}</ion-title>
+        <ion-title></ion-title>
+        <ion-title >{{ 'Hello'  | translate }} {{ username | async }}</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content>
@@ -16,11 +18,25 @@
             <ion-icon name="add-circle" slot="start" color="primary"></ion-icon>
             <ion-label>{{ 'New Session' | translate }}</ion-label>
           </ion-item>
+          <ion-list >
+            <ion-item>
+              <ion-label>{{'Select Language' | translate}}</ion-label>
+              <ion-select interface="popover" [(ngModel)]="selectedLanguage" (ionChange)="optionsFn()">
+                <ion-select-option *ngFor="let lang of languageList" value="{{lang}}">
+                  {{lang }}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
+          <!-- <ion-item >
+            <ion-icon name="add-circle" slot="start" color="primary"></ion-icon>
+            <ion-label>{{'Select Language' | translate}}</ion-label>
+             </ion-item> -->
           <ion-item (click)="removeSessionToken()" routerLink="/login" routerLinkActive="menuactive">
             <ion-icon name="log-out" slot="start" color="primary"></ion-icon>
             <ion-label>{{ 'Logout' | translate }}</ion-label>
           </ion-item>
-        </ion-menu-toggle>
+           </ion-menu-toggle>
       </ion-list>
     </ion-content>
   </ion-menu>
