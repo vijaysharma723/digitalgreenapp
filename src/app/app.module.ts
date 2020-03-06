@@ -21,6 +21,9 @@ import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { HttpClientModule, HttpClient } from "@angular/common/http";
 import { TranslateConfigService } from "./translate-config.service";
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+
+import {  } from '@ionic-native/android-permissions/ngx';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -54,6 +57,7 @@ export function createTranslateLoader(http: HttpClient) {
     File,
     // tslint:disable-next-line: deprecation
     FileTransfer,
+    AndroidPermissions,
     SyncService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     Media,
