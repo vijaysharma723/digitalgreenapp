@@ -97,18 +97,22 @@ export class SessionService {
   /**
    * Gets un synced sessions
    */
-  getUnSyncedSessions() {
-    return new Promise(async (resolve, reject) => {
-      const userSessions = await this.getSessionList();
-      if (Array.isArray(userSessions) && userSessions.length > 0) {
-        // get all the unsynced sessions
-        const unsyncedSessions = userSessions.filter(session => {
-          return session.isUploaded === false;
-        });
-        resolve({ok: true, sessions: unsyncedSessions});
-      } else {
-        resolve({ok: true, sessions: []});
-      }
+  async getUnSyncedSessions() {
+    const userSessions = await this.getSessionList();
+    let unsyncedSessions;
+    console.log('data in session service ', userSessions);
+    if (Array.isArray(userSessions) && userSessions.length > 0) {
+      // get all the unsynced sessions
+      unsyncedSessions = userSessions.filter(session => {
+        return session.isUploaded === false;
+      });
+    } else {
+      console.log('sending empty sessions');
+      unsyncedSessions = [];
+    }
+    return new Promise((resolve, reject) => {
+      console.log('sending sessions as ', unsyncedSessions);
+      resolve({ok: true, sessions: unsyncedSessions});
     });
   }
 

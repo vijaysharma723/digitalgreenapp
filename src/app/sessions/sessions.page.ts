@@ -38,7 +38,7 @@ export class SessionsPage implements OnInit {
     private toaster: ToasterService,
     private platform: Platform,
     private storage: Storage,
-    translate: TranslateService
+    translate: TranslateService,
   ) {
     // this language will be used as a fallback when a translation isn't found in the current language
     translate.setDefaultLang('en');
@@ -53,7 +53,14 @@ export class SessionsPage implements OnInit {
     this.checknetwork.isOnline.subscribe(val => {
       if (val === 'Connected') {
         // when online is detected on the sessions page, trigger sync api
-       this.syncService.syncUserSessions (true);
+        // no need to sync sessions if user is not logged in
+        const loggedInUserDetails = this.userService.loggedInUser;
+        if (loggedInUserDetails) {
+          console.log('user is logged in, sync its sessions');
+          this.syncService.syncUserSessions (true);
+        } else {
+          console.log('user is not logged in, no need to sync its sessions');
+        }
       } else if (val === 'Disconnected') {
         console.log('not ok');
       }
