@@ -18,7 +18,9 @@ export class ToasterService {
     exit: "बाहर निकलने के लिए फिर से दबाएं",
     recordingSuccessful: "सत्र सफलतापूर्वक दर्ज किया गया",
     abruptErrorOnPermissions: "एक त्रुटि हुई। बाद में पुन: प्रयास करें",
-    permissionFailedMsg: "आप ऑडियो रिकॉर्ड नहीं कर सकते"
+    permissionFailedMsg: "आप ऑडियो रिकॉर्ड नहीं कर सकते",
+    userSyncSuccess: "उपयोगकर्ताओं को सफलतापूर्वक सिंक्रनाइज़ किया गया है",
+    userSyncFailed: "उपयोगकर्ता सिंक्रनाइज़ करना विफल रहा। बाद में कोशिश करेंगे"
   };
 
   private ifToasterPresent;

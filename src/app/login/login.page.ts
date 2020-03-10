@@ -5,6 +5,9 @@ import { ToasterService } from "./../services/toaster/toaster.service";
 import { TranslateService } from '@ngx-translate/core';
 import { TranslateConfigService } from '../translate-config.service';
 import { Platform } from '@ionic/angular';
+import { UserSyncService } from './services/user-sync-service/user-sync.service';
+import { ChecknetworkService } from '../services/checknetwork/checknetwork.service';
+import { Subscription, BehaviorSubject } from 'rxjs';
 
 
 
@@ -18,12 +21,16 @@ export class LoginPage implements OnInit {
   password: string;
   subscription: any;
   counter: number = 0;
+  networkSub: Subscription;
+  isAlreadySyncingUsers = false;
   constructor(
     private userService: UserService,
     private router: Router,
     private platform: Platform,
     private toaster: ToasterService,
-    translate: TranslateService
+    translate: TranslateService,
+    private readonly userSyncSrvc: UserSyncService,
+    private readonly checknetwork: ChecknetworkService,
   ) {
     // private translateConfigService: TranslateConfigService
     // this language will be used as a fallback when a translation isn't found in the current language
@@ -94,6 +101,7 @@ export class LoginPage implements OnInit {
         navigator["app"].exitApp();
       }
     });
+    this.initiateUserSyncProcedure();
   }
   presentToast() {
     this.toaster.present({
@@ -105,5 +113,18 @@ export class LoginPage implements OnInit {
     console.log('leaving login');
     this.counter = 0;
     this.subscription.unsubscribe();
+    this.networkSub.unsubscribe();
+  }
+
+  initiateUserSyncProcedure() {
+    this.networkSub = this.checknetwork.isOnline.subscribe(val => {
+      if (val === 'Connected') {
+        // when online is detected on the sessions page, trigger sync api
+        console.log('online');
+        this.userSyncSrvc.syncUsers();
+      } else if (val === 'Disconnected') {
+        console.log('user offline, no need to sync users');
+      }
+    });
   }
 }
