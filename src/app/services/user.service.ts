@@ -1689,7 +1689,7 @@ export class UserService {
     let userdetails;
     for (let i = 0; i < users.length; i++) {
       const user = users[i];
-      if (user.username === username.trim() && user.password === password) {
+      if (user.username.toLowerCase() === username.toLowerCase().trim() && user.password === password) {
         userdetails = { ...user };
         userdetails["sessiontoken"] = this.getMasterToken();
         const status = await this.setLoggedInUser(userdetails);
