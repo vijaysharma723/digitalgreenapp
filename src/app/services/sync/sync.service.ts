@@ -16,6 +16,9 @@ import { SessionService } from '../session/session.service';
 })
 export class SyncService {
 
+  /* private APIEndpoint = 'https://e05cf17f.ngrok.io/sessions/upload';
+  private createSessionEndPoint = 'https://e05cf17f.ngrok.io/sessions/create';
+  private CheckStatusAPIEndpoint = 'https://e05cf17f.ngrok.io/sessions/status/'; */
   private APIEndpoint = 'http://52.221.207.221:3001/sessions/upload';
   private createSessionEndPoint = 'http://52.221.207.221:3001/sessions/create';
   private CheckStatusAPIEndpoint = 'http://52.221.207.221:3001/sessions/status/';

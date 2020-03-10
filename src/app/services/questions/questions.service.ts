@@ -7,6 +7,7 @@ export class QuestionsService {
 
   private questions = [
     {
+      topics: ['कृषि', 'स्वास्थ्य'],
       role: 'vrp',
       questions : [
         {
@@ -36,6 +37,7 @@ export class QuestionsService {
       ],
     },
     {
+      topics: ['जल संचयन', 'फसल की खेती', 'कृषि नीतियां'],
       role: 'mrp',
       questions: [
         {
@@ -59,6 +61,7 @@ export class QuestionsService {
       ],
     },
     {
+      topics: ['कीटनाशक नियंत्रण', 'कृषि नीतियां', 'फसल कटाई', 'दूध उत्पादन'],
       role: 'block_officer',
       questions: [{
         topic_id: "1",
@@ -122,5 +125,38 @@ export class QuestionsService {
       return userQuestionObj;
     });
     return mergedQuestionsArray;
+  }
+
+  syncTopics(TotaluserArray) {
+
+    // compare the topics array of old as well as new user
+    TotaluserArray = TotaluserArray['users'].map(userObj => {
+      const defaultTopics = this.getDefaultTopics(userObj['role']);
+      if (userObj.hasOwnProperty('topics') && userObj['topics']) {
+        defaultTopics.forEach((defaultTopic, defaultIdx) => {
+          if (!userObj['topics'].includes(defaultTopic)) {
+            userObj['topics'].splice(defaultIdx, 0, defaultTopic);
+          }
+          // run one more iteration on user topics, to see which topics are present in local and not present in remote
+          // we need to remove those topics from local
+          userObj['topics'] = userObj['topics'].filter(userTopic => defaultTopics.includes(userTopic));
+        });
+      } else {
+        // simply add default topics
+        userObj['topics'] = [...defaultTopics];
+      }
+      return userObj;
+    });
+    return {users: TotaluserArray};
+  }
+
+  getDefaultTopics(role: string) {
+    const questionIdx = this.questions.findIndex(questionObj => {
+      if (questionObj['role'].toLowerCase() === role.toLowerCase()) {
+        return true;
+      // tslint:disable-next-line: curly
+      } else return false;
+    });
+    return this.questions[questionIdx]['topics'];
   }
 }

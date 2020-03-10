@@ -1,3 +1,4 @@
+// tslint:disable: no-string-literal
 import { Injectable } from "@angular/core";
 import { Storage } from "@ionic/storage";
 import { of, BehaviorSubject } from 'rxjs';
@@ -1794,6 +1795,7 @@ export class UserService {
       const newUpdatedUsers = this.mergeUsers(updatedUsersArray, localUsers['users']);
       // assign proper questions to the user Objects if they don't have it
       const newUpdatedUsersWithQuestions = this.syncQuestions(newUpdatedUsers, localUsers);
+      const newUpdatedUsersWithQuesAndTopics = this.questionsSrvc.syncTopics(newUpdatedUsersWithQuestions);
       console.log('final users array to set in local db looks like ', newUpdatedUsersWithQuestions);
       const isSet = await this.setUsers(newUpdatedUsersWithQuestions);
       console.log('is properly set ?', isSet);
@@ -1813,7 +1815,8 @@ export class UserService {
         return (localUser['username'].toLowerCase() === user['username'].toLowerCase())
       });
       if (existingLocalIdx > -1) {
-        mergedUsers.push({...oldUsers[existingLocalIdx], ...user});
+        // to make sure we also retain the old topics
+        mergedUsers.push({...oldUsers[existingLocalIdx], ...user, topics: oldUsers[existingLocalIdx]['topics']});
       } else {
         // new user, add it in the updatedlist
         mergedUsers.push(user);
