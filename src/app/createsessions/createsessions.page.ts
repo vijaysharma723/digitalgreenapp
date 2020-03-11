@@ -29,51 +29,24 @@ export class CreatesessionsPage implements OnInit {
     private languageTranslator: LanguageTranslatorService,
     private readonly storage: Storage,
     private cdr: ChangeDetectorRef,
-    
 
-  ) {
-    translate.setDefaultLang("hi");
-    // console.log(translate);
-    // the lang to use, if the lang isn't available, it will use the current loader to get them
-    this.languageTranslator.userDetailsObs.subscribe((language) => {
-      console.log('language recieved in create sessions page ', language);
-      if (!language) {
-        this.storage.get('app_language')
-        .then(Storelanguage => {
-          console.log('store lang in create sessions page is', Storelanguage);
-          
-          translate.use(Storelanguage);
-          this.cdr.detectChanges();
-        })
-        .catch(storeErr => {
-          console.log('error while getting lang from store, at create sssions page', storeErr);
-        });
-      } else {
-        translate.use(language);
-        this.cdr.detectChanges();
-      }
-    });
-  }
+  ) {}
 
   async ngOnInit() {
-    // setTimeout(() => {
-    //   this.sessionInput.setFocus();
-    // }, 0);
-    
     this.userRole = await this.userService.getUserRole();
     this.userSessions = await this.userService.getUserTopics();
   }
 
   getRandomString() {
     const currentDate = new Date();
-    return `${currentDate.getHours()}${currentDate.getMinutes()}${currentDate.getMilliseconds()}`
+    return `${currentDate.getHours()}${currentDate.getMinutes()}${currentDate.getMilliseconds()}`;
   }
 
   get getTopic() {
     if (this.userRole === 'vrp') {
       return this.topic;
     } else {
-      return 'सामान्य';
+      return this.translate.instant('Common');
     }
   }
 

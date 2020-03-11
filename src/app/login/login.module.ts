@@ -23,7 +23,7 @@ export function createTranslateLoader(http: HttpClient) {
     IonicModule,
     LoginPageRoutingModule,LoginPageRoutingModule,
     SharedModule,
-    TranslateModule.forRoot({
+    TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,
         useFactory: (createTranslateLoader),

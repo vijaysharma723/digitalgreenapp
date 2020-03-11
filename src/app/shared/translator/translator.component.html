@@ -12,7 +12,10 @@
 <ion-list >
   <ion-item>
     <ion-label>{{'Select Language' | translate}}</ion-label>
-    <ion-select interface="popover" [(ngModel)]="selectedLanguage" (ionChange)="optionsFn()">
+    <!--<ion-select interface="popover" [(ngModel)]="selectedLanguage" (ionChange)="optionsFn()"> -->
+      <ion-select interface="popover" 
+      [ngModel]="selectedLanguage" 
+      (ionChange)="optionsFn($event)">
       <ion-select-option *ngFor="let lang of languageList" value="{{lang}}">
         {{lang }}
       </ion-select-option>

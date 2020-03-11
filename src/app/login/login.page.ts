@@ -24,29 +24,11 @@ export class LoginPage implements OnInit{
     private platform: Platform,
     private toaster: ToasterService,
     private translate: TranslateService,
-    private storage: Storage,
-    private languageTranslator: LanguageTranslatorService,
-    private readonly cdr: ChangeDetectorRef,
-    
-  ) {
-    translate.setDefaultLang("hi");
-    // the lang to use, if the lang isn't available, it will use the current loader to get them
-    // translate.use("hi");
-    // this.setUsername();
-    this.storage.get('app_language').then(storageLang => {
-      if (storageLang)
-      console.log('setting default language as login', storageLang);
-      translate.use(storageLang);
-      this.cdr.detectChanges();
-    })
-    .catch(error => {
-      console.log('error while reading initial language ', error);
-      translate.use('en');
-      this.cdr.detectChanges();
-    });
-  }
+  ) {}
 
-  ngOnInit() {console.log('at login page');}
+  ngOnInit() {
+    console.log('at login page');
+  }
 
   async userLogin() {
     if (!this.username) {
@@ -119,6 +101,4 @@ export class LoginPage implements OnInit{
     this.counter = 0;
     this.subscription.unsubscribe();
   }
- 
-    
 }

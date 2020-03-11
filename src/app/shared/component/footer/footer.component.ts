@@ -15,11 +15,11 @@ export class FooterComponent implements OnInit {
     private router: Router,
     translate: TranslateService,
     languageTranslator : LanguageTranslatorService
-  ) { 
-
-    languageTranslator.userDetailsObs.subscribe((language) => {
-      translate.use(language);
-      console.log(language);
+  ) {
+    languageTranslator.recentPickedLanguage.subscribe((language) => {
+      if (language) {
+        translate.use(language);
+      }
     });
   }
 

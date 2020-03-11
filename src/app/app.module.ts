@@ -20,7 +20,6 @@ import { Media } from "@ionic-native/media/ngx";
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { HttpClientModule, HttpClient } from "@angular/common/http";
-import { TranslateConfigService } from "./translate-config.service";
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 
 export function createTranslateLoader(http: HttpClient) {
@@ -31,7 +30,6 @@ export function createTranslateLoader(http: HttpClient) {
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
-    
     IonicModule.forRoot(),
     HttpClientModule,
     BrowserModule,
@@ -45,9 +43,9 @@ export function createTranslateLoader(http: HttpClient) {
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: createTranslateLoader,
+        useFactory: (createTranslateLoader),
         deps: [HttpClient]
-      }
+      },
     })
   ],
   providers: [

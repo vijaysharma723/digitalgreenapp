@@ -13,6 +13,7 @@ import { SyncService } from "../services/sync/sync.service";
 import { TranslateService } from "@ngx-translate/core";
 import {LanguageTranslatorService} from '../shared/sharedservices/languagetranslator/language-translator.service';
 import { Storage } from '@ionic/storage';
+import { Subscription } from 'rxjs';
 
 const MEDIA_FOLDER_NAME = "digitalgreenmediafiles";
 const parentDirFolder = "session";
@@ -49,6 +50,7 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
   sessionname: any;
   topicid: any;
   mediaParentFolder = "session";
+  subs: Subscription;
   constructor(
     public router: Router,
     private route: ActivatedRoute,
@@ -65,30 +67,12 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     private readonly storage : Storage,
     private readonly cdr: ChangeDetectorRef,
   ) {
-    // this language will be used as a fallback when a translation isn't found in the current language
-    translate.setDefaultLang("hi");
-    // console.log(translate);
-    // the lang to use, if the lang isn't available, it will use the current loader to get them
-    this.languagetranslator.userDetailsObs.subscribe((language) => {
-      console.log('language recieved in sessions recording page ', language);
-      if (!language) {
-        this.storage.get('app_language')
-        .then(Storelanguage => {
-          console.log('store lang in sessions recording page is', Storelanguage);
-          translate.use(Storelanguage);
-          this.cdr.detectChanges();
-        })
-        .catch(storeErr => {
-          console.log('error while getting lang from store, at sssions recording page', storeErr);
-        });
-      } else {
-        translate.use(language);
-        this.cdr.detectChanges();
-      }
-    });
   }
 
   ngOnInit() {
+    this.subs = this.languagetranslator.recentPickedLanguage.subscribe((language) => {
+      console.log('language recieved in sessions recording page ', language);
+    });
     const path = this.file.dataDirectory;
     this.plt.ready().then(() => {
       this.file.checkDir(path, MEDIA_FOLDER_NAME).then(
@@ -284,6 +268,7 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     });
   }
   ngOnDestroy() {
+    this.subs.unsubscribe();
     if (!!this.audio) {
       window.clearInterval(this.recordingTimeout);
       this.flag = false;
