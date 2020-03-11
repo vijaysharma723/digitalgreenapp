@@ -16,7 +16,9 @@ export class ToasterService {
     sessionCreationFailed: "सत्र बनाने में असमर्थ।",
     selectTopic: "कृपया विषय चुनें।",
     exit: "बाहर निकलने के लिए फिर से दबाएं",
-    recordingSuccessful: "सत्र सफलतापूर्वक दर्ज किया गया"
+    recordingSuccessful: "सत्र सफलतापूर्वक दर्ज किया गया",
+    abruptErrorOnPermissions: "एक त्रुटि हुई। बाद में पुन: प्रयास करें",
+    permissionFailedMsg: "आप ऑडियो रिकॉर्ड नहीं कर सकते"
   };
 
   private ifToasterPresent;

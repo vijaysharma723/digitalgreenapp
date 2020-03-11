@@ -8,7 +8,8 @@ import { Platform } from "@ionic/angular";
 import {TranslateService,FakeMissingTranslationHandler} from "@ngx-translate/core";
 import {Storage } from '@ionic/storage';
 import {LanguageTranslatorService} from '../shared/sharedservices/languagetranslator/language-translator.service';
-
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { ToasterService } from '../services/toaster/toaster.service';
 
 @Component({
   selector: "app-sessiondetails",
@@ -41,7 +42,9 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef,
     translate: TranslateService,
     private readonly storage : Storage,
-    private languageTranslator: LanguageTranslatorService
+    private languageTranslator: LanguageTranslatorService,
+    private readonly androidPermissions: AndroidPermissions,
+    private readonly toaster: ToasterService,
   ) {
     // this language will be used as a fallback when a translation isn't found in the current language
     translate.setDefaultLang("hi");
@@ -89,14 +92,46 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
       }
     });
   }
-  mediaRecording(topic, idx) {
-    this.rec = idx;
 
-    this.router.navigate([
-      "/sessionrecordingpage",
-      this.sessionData.sessionid,
-      topic.topic_id
-    ]);
+  promptPermissions() {
+    return new Promise((res, rej) => {
+      this.androidPermissions.requestPermissions([this.androidPermissions.PERMISSION.RECORD_AUDIO, this.androidPermissions.PERMISSION.WRITE_EXTERNAL_STORAGE])
+        .then(recievedPermissions => {
+          console.log('total permission accept ', recievedPermissions);
+          res(recievedPermissions.hasPermission);
+        })
+        .catch(ignoredPermissoins => {
+          console.log('total permissions reject ', ignoredPermissoins);
+          rej(ignoredPermissoins);
+        })
+
+
+    })
+  }
+  mediaRecording(topic, idx) {
+
+    this.promptPermissions().then(granted => {
+      if (granted) {
+        this.rec = idx;
+
+        this.router.navigate([
+          "/sessionrecordingpage",
+          this.sessionData.sessionid,
+          topic.topic_id
+        ]);
+      } else {
+        this.toaster.present({
+          text: this.toaster.toasterMessage.permissionFailedMsg,
+          colour: "danger"
+        });
+      }
+    }).catch(failed => {
+      console.log('recieved error while granting permissions', failed);
+      this.toaster.present({
+        text: this.toaster.toasterMessage.abruptErrorOnPermissions,
+        colour: "danger"
+      });
+    })
   }
   mediaPauseAudio(topic, i) {
     this.audio.pause();

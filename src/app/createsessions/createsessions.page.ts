@@ -62,11 +62,6 @@ export class CreatesessionsPage implements OnInit {
     
     this.userRole = await this.userService.getUserRole();
     this.userSessions = await this.userService.getUserTopics();
-    if (this.userRole !== 'vrp') {
-      const commonText = this.translate.instant('Common');
-      this.topic = "commonText" + '_' + this.getRandomString();
-      
-    }
   }
 
   getRandomString() {
@@ -74,8 +69,19 @@ export class CreatesessionsPage implements OnInit {
     return `${currentDate.getHours()}${currentDate.getMinutes()}${currentDate.getMilliseconds()}`
   }
 
+  get getTopic() {
+    if (this.userRole === 'vrp') {
+      return this.topic;
+    } else {
+      return 'सामान्य';
+    }
+  }
+
   async logForm() {
+    this.topic = this.getTopic;
     if (this.topic) {
+      // add a random string to the session name if the role is vrp
+      this.topic += `_${this.getRandomString()}`;
       const newSession = await this.createNewSession(this.topic);
       const result = await this.sessionService.addNewSession(newSession);
       if (result) {
