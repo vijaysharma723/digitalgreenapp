@@ -1,27 +1,39 @@
 import { Pipe, PipeTransform } from "@angular/core";
+import { TranslateService } from '@ngx-translate/core';
 
 @Pipe({
   name: "dateTime"
 })
 export class DateTimePipe implements PipeTransform {
-  month = {
-    1: "जनवरी",
-    2: "फ़रवरी",
-    3: "मार्च",
-    4: "अप्रैल",
-    5: "मई",
-    6: "जून",
-    7: "जुलाई",
-    8: "अगस्त",
-    9: "सितम्बर",
-    10: "अक्टूबर",
-    11: "नवंबर",
-    12: "दिसम्बर"
-  };
-  timeZone = ["सुबह", "दोपहर", "शाम", "रात"];
+  month = {};
+  timeZone = [];
+
+  constructor(private readonly translate: TranslateService) {
+    this.month = {
+      1: this.translate.instant('January'),
+      2: this.translate.instant('February'),
+      3: this.translate.instant('March'),
+      4: this.translate.instant('April'),
+      5: this.translate.instant('May'),
+      6: this.translate.instant('June'),
+      7: this.translate.instant('July'),
+      8: this.translate.instant('August'),
+      9: this.translate.instant('September'),
+      10: this.translate.instant('October'),
+      11: this.translate.instant('November'),
+      12: this.translate.instant('December'),
+    };
+    this.timeZone = [
+      this.translate.instant('Morning'),
+      this.translate.instant('Afternoon'),
+      this.translate.instant('Evening'),
+      this.translate.instant('Night'),
+    ];
+  }
 
   transform(value: string, args?: any[]): string {
     // "2020-02-12T06:04:24.807Z"
+    debugger;
     const dateObj = new Date(value);
     // converting to dd/mm/yyyy format
     let convertedDate = dateObj.getDate().toString();
@@ -48,7 +60,7 @@ export class DateTimePipe implements PipeTransform {
       hour -= 12;
     }
     convertedTime += hour.toString();
-    convertedTime += " " + "बजे";
+    // convertedTime += " " + "बजे";
 
     const convertedDateTime = convertedDate + "  " + convertedTime;
     return convertedDateTime;

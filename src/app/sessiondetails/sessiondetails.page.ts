@@ -2,15 +2,13 @@ import { UserService } from './../services/user.service';
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { SessionService } from "./../services/session/session.service";
-import { File, FileEntry } from "@ionic-native/file/ngx";
-import { Media, MediaObject } from "@ionic-native/media/ngx";
+import { File} from "@ionic-native/file/ngx";
+import { Media} from "@ionic-native/media/ngx";
 import { Platform } from "@ionic/angular";
-import {
-  TranslateService,
-  FakeMissingTranslationHandler
-} from "@ngx-translate/core";
+import {LanguageTranslatorService} from '../shared/sharedservices/languagetranslator/language-translator.service';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { ToasterService } from '../services/toaster/toaster.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: "app-sessiondetails",
@@ -32,6 +30,7 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
   topics2 = [];
   topci1Name = '';
   topic2Name = '';
+  languageSub: Subscription;
   constructor(
     private route: ActivatedRoute,
     private sessionService: SessionService,
@@ -41,18 +40,17 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
     private plt: Platform,
     private router: Router,
     private cdr: ChangeDetectorRef,
-    translate: TranslateService,
+    private languageTranslator: LanguageTranslatorService,
     private readonly androidPermissions: AndroidPermissions,
     private readonly toaster: ToasterService,
-  ) {
-    // this language will be used as a fallback when a translation isn't found in the current language
-    translate.setDefaultLang("en");
-    console.log(translate);
-    // the lang to use, if the lang isn't available, it will use the current loader to get them
-    translate.use("hi");
-  }
+  ) {}
 
   async ngOnInit() {
+    this.languageSub = this.languageTranslator.recentPickedLanguage.subscribe(lang => {
+      if (lang) {
+        console.log('recieved language in sessionDetails page as well ', lang);
+      }
+    });
     this.userDetails = await this.userService.getLoggedInUser();
     this.userRole = this.userDetails["role"];
     this.route.params.subscribe(async params => {
@@ -121,13 +119,7 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
     this.stop = undefined;
     this.cdr.detectChanges();
   }
-  // updateTopic(topic, status) {
-  //   topic["isPlayed"] = status;
-  //   const filterd = this.topics.filter(
-  //     elem => elem["isPlayed"] !== topic["isPlayed"]
-  //   );
-  //   this.topics = [...filterd, topic];
-  // }
+
   mediaPlayAudio(topic, idx) {
     if (this.plt.is("ios")) {
       this.filepath =
@@ -157,6 +149,7 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.languageSub.unsubscribe();
     if (!!this.audio) {
       this.audio.stop();
     }

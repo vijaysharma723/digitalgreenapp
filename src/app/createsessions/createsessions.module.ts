@@ -23,7 +23,7 @@ export function createTranslateLoader(http: HttpClient) {
     FormsModule,
     IonicModule,
     CreatesessionsPageRoutingModule,
-    TranslateModule.forRoot({
+    TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,
         useFactory: createTranslateLoader,
@@ -33,6 +33,6 @@ export function createTranslateLoader(http: HttpClient) {
     HttpClientModule,
     SharedModule
   ],
-  declarations: [CreatesessionsPage]
+  declarations: [CreatesessionsPage],
 })
 export class CreatesessionsPageModule {}

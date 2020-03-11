@@ -1,10 +1,12 @@
 // tslint:disable: no-string-literal
 import { UserService } from "./../services/user.service";
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from "@angular/core";
 import { Router } from "@angular/router";
 import { SessionService } from "./../services/session/session.service";
 import { ToasterService } from "./../services/toaster/toaster.service";
 import { TranslateService } from '@ngx-translate/core';
+import {LanguageTranslatorService} from '../shared/sharedservices/languagetranslator/language-translator.service';
+import {Storage} from '@ionic/storage';
 @Component({
   selector: "app-createsessions",
   templateUrl: "./createsessions.page.html",
@@ -23,32 +25,28 @@ export class CreatesessionsPage implements OnInit {
     private sessionService: SessionService,
     private userService: UserService,
     private toaster: ToasterService,
-    public translate: TranslateService
-  ) {
-    // this language will be used as a fallback when a translation isn't found in the current language
-    translate.setDefaultLang('en');
-    // the lang to use, if the lang isn't available, it will use the current loader to get them
-    translate.use('hi');
-  }
+    public translate: TranslateService,
+    private languageTranslator: LanguageTranslatorService,
+    private readonly storage: Storage,
+    private cdr: ChangeDetectorRef,
+
+  ) {}
 
   async ngOnInit() {
-    // setTimeout(() => {
-    //   this.sessionInput.setFocus();
-    // }, 0);
     this.userRole = await this.userService.getUserRole();
     this.userSessions = await this.userService.getUserTopics();
   }
 
   getRandomString() {
     const currentDate = new Date();
-    return `${currentDate.getHours()}${currentDate.getMinutes()}${currentDate.getMilliseconds()}`
+    return `${currentDate.getHours()}${currentDate.getMinutes()}${currentDate.getMilliseconds()}`;
   }
 
   get getTopic() {
     if (this.userRole === 'vrp') {
       return this.topic;
     } else {
-      return 'सामान्य';
+      return this.translate.instant('Common');
     }
   }
 

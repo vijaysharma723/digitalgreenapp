@@ -1,5 +1,5 @@
 import { SessionService } from "./services/session/session.service";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ChangeDetectorRef} from "@angular/core";
 
 import { Platform } from "@ionic/angular";
 import { SplashScreen } from "@ionic-native/splash-screen/ngx";
@@ -7,17 +7,21 @@ import { StatusBar } from "@ionic-native/status-bar/ngx";
 import { Router } from "@angular/router";
 import { UserService } from "./services/user.service";
 import { Storage } from "@ionic/storage";
-import { TranslateService } from "@ngx-translate/core";
-import { pipe, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import {LanguageTranslatorService} from './shared/sharedservices/languagetranslator/language-translator.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: "app-root",
   templateUrl: "app.component.html",
   styleUrls: ["app.component.scss"]
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   username: any;
+
+selectedLanguage : any = 'en';
+sidebarLangSub: Subscription;
+languageList = ['en', 'hi'];
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -26,17 +30,28 @@ export class AppComponent {
     private sessionService: SessionService,
     public router: Router,
     private storage: Storage,
-    translate: TranslateService
+    private languagetranslator : LanguageTranslatorService,
+    private readonly cdr: ChangeDetectorRef,
   ) {
     this.initializeApp();
-    // this language will be used as a fallback when a translation isn't found in the current language
-    translate.setDefaultLang("en");
-    // the lang to use, if the lang isn't available, it will use the current loader to get them
-    translate.use("hi");
     this.setUsername();
+    console.log('calling initialize app');
+    this.languagetranslator.setInitialAppLanguage();
   }
-  displayName(event) {
-    console.log("calling", event);
+
+  ngOnInit() {
+    this.sidebarLangSub = this.languagetranslator.recentPickedLanguage.subscribe(lang => {
+      if (lang) {
+        console.log('language change detectd for the sidebar', lang);
+        this.selectedLanguage = lang;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  optionsFn(event) {
+    console.log('user selected from sidebar', event['detail']['value']);
+    this.languagetranslator.setLanguage(event['detail']['value']);
   }
   initializeApp() {
     this.platform.ready().then(async () => {
@@ -48,9 +63,6 @@ export class AppComponent {
       }
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-    });
-    this.platform.resume.subscribe(async () => {
-      // this.setUsername();
     });
   }
 
@@ -71,5 +83,6 @@ export class AppComponent {
     this.userService.endSession();
     this.userService.clearUserData();
     this.sessionService.clearSessionData();
+    this.sidebarLangSub.unsubscribe();
   }
 }

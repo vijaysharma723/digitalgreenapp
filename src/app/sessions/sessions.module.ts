@@ -24,7 +24,7 @@ export function createTranslateLoader(http: HttpClient) {
     FormsModule,
     IonicModule,
     SessionsPageRoutingModule,
-    TranslateModule.forRoot({
+    TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,
         useFactory: createTranslateLoader,

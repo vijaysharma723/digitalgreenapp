@@ -25,10 +25,12 @@ export class SessionsPage implements OnInit {
   userName: any;
   parentFolderDir = 'session';
   isOnline: boolean;
+  subscription: any;
+  counter = 0;
+  sessionlist = [];
   constructor(
     public checknetwork: ChecknetworkService,
     public network: Network,
-    private readonly FilePlugin: File,
     private readonly syncService: SyncService,
     private sessionService: SessionService,
     private route: ActivatedRoute,
@@ -38,16 +40,8 @@ export class SessionsPage implements OnInit {
     private toaster: ToasterService,
     private platform: Platform,
     private storage: Storage,
-    translate: TranslateService,
-  ) {
-    // this language will be used as a fallback when a translation isn't found in the current language
-    translate.setDefaultLang('en');
-    // the lang to use, if the lang isn't available, it will use the current loader to get them
-    translate.use('hi');
-  }
-  subscription: any;
-  counter = 0;
-  sessionlist = [];
+    public translate: TranslateService,
+  ) {}
 
   async ngOnInit() {
     this.checknetwork.isOnline.subscribe(val => {
@@ -73,6 +67,7 @@ export class SessionsPage implements OnInit {
     });
   }
   ionViewDidEnter() {
+    console.log('session page view ok');
     this.userName = this.userService.loggedInUser['username'];
     if (this.sessionlist && this.sessionlist.length > 0 && this.checknetwork.isOnlineStatic) {
       this.checkSessionToUpload();

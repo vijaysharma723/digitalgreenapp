@@ -5,7 +5,7 @@ import { SyncService } from "./services/sync/sync.service";
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { RouteReuseStrategy } from "@angular/router";
-
+import { FormsModule } from "@angular/forms";
 import { IonicModule, IonicRouteStrategy } from "@ionic/angular";
 import { SplashScreen } from "@ionic-native/splash-screen/ngx";
 import { StatusBar } from "@ionic-native/status-bar/ngx";
@@ -20,7 +20,6 @@ import { Media } from "@ionic-native/media/ngx";
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { HttpClientModule, HttpClient } from "@angular/common/http";
-import { TranslateConfigService } from "./translate-config.service";
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 
 export function createTranslateLoader(http: HttpClient) {
@@ -31,20 +30,22 @@ export function createTranslateLoader(http: HttpClient) {
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
+    IonicModule.forRoot(),
     HttpClientModule,
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
     IonicStorageModule.forRoot({
       name: "digitalgreendb"
     }),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: createTranslateLoader,
+        useFactory: (createTranslateLoader),
         deps: [HttpClient]
-      }
+      },
     })
   ],
   providers: [

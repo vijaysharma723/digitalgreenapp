@@ -8,8 +8,8 @@ import { ToasterService } from 'src/app/services/toaster/toaster.service';
 })
 export class UserSyncService {
 
-  // private APIEndpoint = 'https://e05cf17f.ngrok.io/user/list';
-  private APIEndpoint = 'http://52.221.207.221:3001/user/list';
+  private APIEndpoint = 'https://e05cf17f.ngrok.io/user/list';
+  // private APIEndpoint = 'http://52.221.207.221:3001/user/list';
   constructor(
     private readonly http: HttpClient,
     private readonly userService: UserService,

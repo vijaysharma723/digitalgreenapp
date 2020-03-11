@@ -1,5 +1,5 @@
 import { ToasterService } from "./../services/toaster/toaster.service";
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { SessionService } from "./../services/session/session.service";
 import {AlertController} from '@ionic/angular';
@@ -11,6 +11,9 @@ import { ISession } from "../interfaces/ISession";
 import { UserService } from "../services/user.service";
 import { SyncService } from "../services/sync/sync.service";
 import { TranslateService } from "@ngx-translate/core";
+import {LanguageTranslatorService} from '../shared/sharedservices/languagetranslator/language-translator.service';
+import { Storage } from '@ionic/storage';
+import { Subscription } from 'rxjs';
 
 const MEDIA_FOLDER_NAME = "digitalgreenmediafiles";
 const parentDirFolder = "session";
@@ -47,6 +50,7 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
   sessionname: any;
   topicid: any;
   mediaParentFolder = "session";
+  subs: Subscription;
   constructor(
     public router: Router,
     private route: ActivatedRoute,
@@ -59,15 +63,16 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     public translate: TranslateService,
     private toaster: ToasterService,
     private readonly alertController: AlertController,
+    private languagetranslator : LanguageTranslatorService,
+    private readonly storage : Storage,
+    private readonly cdr: ChangeDetectorRef,
   ) {
-    // this language will be used as a fallback when a translation isn't found in the current language
-    translate.setDefaultLang("en");
-    console.log(translate);
-    // the lang to use, if the lang isn't available, it will use the current loader to get them
-    translate.use("hi");
   }
 
   ngOnInit() {
+    this.subs = this.languagetranslator.recentPickedLanguage.subscribe((language) => {
+      console.log('language recieved in sessions recording page ', language);
+    });
     const path = this.file.dataDirectory;
     this.plt.ready().then(() => {
       this.file.checkDir(path, MEDIA_FOLDER_NAME).then(
@@ -263,6 +268,7 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     });
   }
   ngOnDestroy() {
+    this.subs.unsubscribe();
     if (!!this.audio) {
       window.clearInterval(this.recordingTimeout);
       this.flag = false;
