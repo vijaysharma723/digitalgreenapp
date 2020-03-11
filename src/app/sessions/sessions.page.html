@@ -15,7 +15,7 @@
     <div *ngFor="let session of sessionlist" class="session ion-padding"
       [routerLink]='["/sessiondetails",session.sessionid]'>
       <div class="sessionname">
-        <p>{{ session.name }}</p>
+        <p>{{ 'Common' | translate}}</p>
         <div class="date">
           {{ session.created | dateTime }}
         </div>

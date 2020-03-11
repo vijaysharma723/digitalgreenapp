@@ -31,7 +31,7 @@
           <ion-select placeholder="{{ 'Select Topic' | translate }}" interface="popover" [(ngModel)]="topic"
             name="topic">
             <ion-select-option *ngFor="let session of userSessions" value="{{session}}">
-              {{session}}
+              {{session | translate}}
             </ion-select-option>
           </ion-select>
         </ion-item>

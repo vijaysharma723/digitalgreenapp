@@ -1,5 +1,5 @@
 import { ToasterService } from "./../services/toaster/toaster.service";
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { SessionService } from "./../services/session/session.service";
 import {AlertController} from '@ionic/angular';
@@ -11,6 +11,8 @@ import { ISession } from "../interfaces/ISession";
 import { UserService } from "../services/user.service";
 import { SyncService } from "../services/sync/sync.service";
 import { TranslateService } from "@ngx-translate/core";
+import {LanguageTranslatorService} from '../shared/sharedservices/languagetranslator/language-translator.service';
+import { Storage } from '@ionic/storage';
 
 const MEDIA_FOLDER_NAME = "digitalgreenmediafiles";
 const parentDirFolder = "session";
@@ -59,12 +61,31 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     public translate: TranslateService,
     private toaster: ToasterService,
     private readonly alertController: AlertController,
+    private languagetranslator : LanguageTranslatorService,
+    private readonly storage : Storage,
+    private readonly cdr: ChangeDetectorRef,
   ) {
     // this language will be used as a fallback when a translation isn't found in the current language
-    translate.setDefaultLang("en");
-    console.log(translate);
+    translate.setDefaultLang("hi");
+    // console.log(translate);
     // the lang to use, if the lang isn't available, it will use the current loader to get them
-    translate.use("hi");
+    this.languagetranslator.userDetailsObs.subscribe((language) => {
+      console.log('language recieved in sessions recording page ', language);
+      if (!language) {
+        this.storage.get('app_language')
+        .then(Storelanguage => {
+          console.log('store lang in sessions recording page is', Storelanguage);
+          translate.use(Storelanguage);
+          this.cdr.detectChanges();
+        })
+        .catch(storeErr => {
+          console.log('error while getting lang from store, at sssions recording page', storeErr);
+        });
+      } else {
+        translate.use(language);
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   ngOnInit() {

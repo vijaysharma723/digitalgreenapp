@@ -1,19 +1,19 @@
-import { Component, OnInit, Output, EventEmitter } from "@angular/core";
+import { Component, OnInit, Output, EventEmitter, ChangeDetectorRef, ViewChild, ComponentRef, ElementRef, AfterViewInit } from "@angular/core";
 import { UserService } from "./../services/user.service";
 import { Router } from "@angular/router";
 import { ToasterService } from "./../services/toaster/toaster.service";
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, USE_DEFAULT_LANG } from '@ngx-translate/core';
 import { TranslateConfigService } from '../translate-config.service';
 import { Platform } from '@ionic/angular';
-
-
-
+import { Storage } from "@ionic/storage";
+import {LanguageTranslatorService} from '../shared/sharedservices/languagetranslator/language-translator.service';
+import {TranslatorComponent} from './../shared/translator/translator.component';
 @Component({
   selector: "app-login",
   templateUrl: "./login.page.html",
   styleUrls: ["./login.page.scss"]
 })
-export class LoginPage implements OnInit {
+export class LoginPage implements OnInit{
   username: string;
   password: string;
   subscription: any;
@@ -23,14 +23,27 @@ export class LoginPage implements OnInit {
     private router: Router,
     private platform: Platform,
     private toaster: ToasterService,
-    translate: TranslateService
+    private translate: TranslateService,
+    private storage: Storage,
+    private languageTranslator: LanguageTranslatorService,
+    private readonly cdr: ChangeDetectorRef,
+    
   ) {
-    // private translateConfigService: TranslateConfigService
-    // this language will be used as a fallback when a translation isn't found in the current language
-    translate.setDefaultLang('en');
+    translate.setDefaultLang("hi");
     // the lang to use, if the lang isn't available, it will use the current loader to get them
-    translate.use('hi');
-    // this.selectedLanguage = this.translateConfigService.getDefaultLanguage();
+    // translate.use("hi");
+    // this.setUsername();
+    this.storage.get('app_language').then(storageLang => {
+      if (storageLang)
+      console.log('setting default language as login', storageLang);
+      translate.use(storageLang);
+      this.cdr.detectChanges();
+    })
+    .catch(error => {
+      console.log('error while reading initial language ', error);
+      translate.use('en');
+      this.cdr.detectChanges();
+    });
   }
 
   ngOnInit() {console.log('at login page');}
@@ -106,4 +119,6 @@ export class LoginPage implements OnInit {
     this.counter = 0;
     this.subscription.unsubscribe();
   }
+ 
+    
 }

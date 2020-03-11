@@ -1,5 +1,5 @@
 // tslint:disable: no-string-literal
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ChecknetworkService } from '../services/checknetwork/checknetwork.service';
 import { File } from '@ionic-native/file/ngx';
 import { Network } from '@ionic-native/network/ngx';
@@ -15,6 +15,7 @@ import { Platform } from '@ionic/angular';
 import { ToasterService } from '../services/toaster/toaster.service';
 import { Storage } from '@ionic/storage';
 import { TranslateService } from '@ngx-translate/core';
+import {LanguageTranslatorService} from '../shared/sharedservices/languagetranslator/language-translator.service';
 
 @Component({
   selector: 'app-sessions',
@@ -38,12 +39,34 @@ export class SessionsPage implements OnInit {
     private toaster: ToasterService,
     private platform: Platform,
     private storage: Storage,
-    translate: TranslateService
+    translate: TranslateService,
+    private languageTranslator: LanguageTranslatorService,
+    private readonly cdr: ChangeDetectorRef,
   ) {
     // this language will be used as a fallback when a translation isn't found in the current language
-    translate.setDefaultLang('en');
+    translate.setDefaultLang('hi');
     // the lang to use, if the lang isn't available, it will use the current loader to get them
-    translate.use('hi');
+
+    languageTranslator.userDetailsObs.subscribe((language) => {
+      console.log('language recieved in sessions page ', language);
+      if (!language) {
+        this.storage.get('app_language')
+        .then(Storelanguage => {
+          console.log('store lang in sessions page is', Storelanguage);
+          debugger
+          translate.use(Storelanguage);
+          this.cdr.detectChanges();
+        })
+        .catch(storeErr => {
+          console.log('error while getting lang from store, at sssions page', storeErr);
+        });
+      } else {
+        console.log('using provided language');
+        debugger
+        translate.use(language);
+        this.cdr.detectChanges();
+      }
+    });
   }
   subscription: any;
   counter = 0;
