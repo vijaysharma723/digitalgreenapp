@@ -19,8 +19,9 @@ languageList = ['en','hi']
     private readonly storage: Storage,
     private readonly cdr: ChangeDetectorRef,
   ) { 
-    this.translate.setDefaultLang('en');
-    this.storage.get('app_language').then(storageLang => {
+    this.translate.setDefaultLang('hi');
+    this.storage.get('app_language')
+    .then(storageLang => {
       console.log('setting default language in login translator page  as ', storageLang);
       this.translate.use(storageLang);
       this.selectedLanguage = storageLang;

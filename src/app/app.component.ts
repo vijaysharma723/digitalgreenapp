@@ -1,5 +1,5 @@
 import { SessionService } from "./services/session/session.service";
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from "@angular/core";
 
 import { Platform } from "@ionic/angular";
 import { SplashScreen } from "@ionic-native/splash-screen/ngx";
@@ -8,7 +8,6 @@ import { Router } from "@angular/router";
 import { UserService } from "./services/user.service";
 import { Storage } from "@ionic/storage";
 import { TranslateService } from "@ngx-translate/core";
-import { pipe, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {LanguageTranslatorService} from './shared/sharedservices/languagetranslator/language-translator.service';
 
@@ -30,8 +29,9 @@ languageList = ['en','hi'];
     private sessionService: SessionService,
     public router: Router,
     private storage: Storage,
-    translate: TranslateService,
-    private languagetranslator : LanguageTranslatorService
+    private translate: TranslateService,
+    private languagetranslator : LanguageTranslatorService,
+    private readonly cdr: ChangeDetectorRef,
   ) {
     this.initializeApp();
     // this language will be used as a fallback when a translation isn't found in the current language
@@ -39,6 +39,22 @@ languageList = ['en','hi'];
     // the lang to use, if the lang isn't available, it will use the current loader to get them
     // translate.use("hi");
     this.setUsername();
+    this.storage.get('app_language')
+    .then(storageLang => {
+      console.log("setting default language as ",storageLang);
+      this.translate.use(storageLang);
+      this.selectedLanguage = storageLang;
+      this.cdr.detectChanges();
+
+    })
+
+    .catch(error => {
+      console.log('error while reading initial language at login', error);
+      this.translate.use('en');
+      this.cdr.detectChanges();
+    });
+
+    
     languagetranslator.userDetailsObs.subscribe((language) => {
       if (language) {
         this.storage.get('app_language')
@@ -56,20 +72,20 @@ languageList = ['en','hi'];
       
     });
 
-    this.storage.get('app_language').then(storageLang => {
-      if (!storageLang) {
-        console.log('did not detect language ' ,storageLang);
-        storageLang = 'hi';
-      }
-      console.log('setting default language as at app component as ', storageLang);
-      this.languagetranslator.updateLanguage(storageLang);
-      translate.use(storageLang);
-    })
-    .catch(error => {
-      console.log('error while reading initial language ', error);
-      translate.use('hi');
-      this.languagetranslator.updateLanguage('hi');
-    });
+    // this.storage.get('app_language').then(storageLang => {
+    //   if (!storageLang) {
+    //     console.log('did not detect language ' ,storageLang);
+    //     storageLang = 'hi';
+    //   }
+    //   console.log('setting default language as at app component as ', storageLang);
+    //   this.languagetranslator.updateLanguage(storageLang);
+    //   translate.use(storageLang);
+    // })
+    // .catch(error => {
+    //   console.log('error while reading initial language ', error);
+    //   translate.use('hi');
+    //   this.languagetranslator.updateLanguage('hi');
+    // });
 
   }
   displayName(event) {
@@ -79,6 +95,7 @@ languageList = ['en','hi'];
 
     console.log('user selected on login ', this.selectedLanguage)
         this.languagetranslator.updateLanguage(this.selectedLanguage);
+        this.cdr.detectChanges();
   }
   initializeApp() {
     this.platform.ready().then(async () => {
