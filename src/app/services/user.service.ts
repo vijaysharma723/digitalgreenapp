@@ -1796,9 +1796,9 @@ export class UserService {
       // assign proper questions to the user Objects if they don't have it
       const newUpdatedUsersWithQuestions = this.syncQuestions(newUpdatedUsers, localUsers);
       const newUpdatedUsersWithQuesAndTopics = this.questionsSrvc.syncTopics(newUpdatedUsersWithQuestions);
-      console.log('final users array to set in local db looks like ', newUpdatedUsersWithQuestions);
+      // console.log('final users array to set in local db looks like ', newUpdatedUsersWithQuestions);
       const isSet = await this.setUsers(newUpdatedUsersWithQuestions);
-      console.log('is properly set ?', isSet);
+      // console.log('is properly set ?', isSet);
       return Promise.resolve({ok: true});
     } else {
       console.log('users not available in local db to update');

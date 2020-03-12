@@ -49,6 +49,11 @@ languageList = ['en', 'hi'];
     });
   }
 
+  ngOnDetroy() {
+    console.log('onDestroy called for app component');
+    this.sidebarLangSub.unsubscribe();
+  }
+
   optionsFn(event) {
     console.log('user selected from sidebar', event['detail']['value']);
     this.languagetranslator.setLanguage(event['detail']['value']);
@@ -83,6 +88,5 @@ languageList = ['en', 'hi'];
     this.userService.endSession();
     this.userService.clearUserData();
     this.sessionService.clearSessionData();
-    this.sidebarLangSub.unsubscribe();
   }
 }

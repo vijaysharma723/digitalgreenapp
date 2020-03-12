@@ -73,7 +73,7 @@ export class UserSyncService {
 
   parseUsers(usersArray) {
     return usersArray.map((userObject, index) => {
-      console.log('mapping ', userObject);
+      // console.log('mapping ', userObject);
       return {username: userObject.username, password: userObject.password, email: userObject.email, role: userObject.role};
     });
   }
