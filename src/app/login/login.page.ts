@@ -26,6 +26,7 @@ export class LoginPage implements OnInit{
     private toaster: ToasterService,
     private readonly userSyncSrvc: UserSyncService,
     private readonly checknetwork: ChecknetworkService,
+    private readonly translate: TranslateService,
   ) {}
 
   ngOnInit() {
@@ -35,12 +36,12 @@ export class LoginPage implements OnInit{
   async userLogin() {
     if (!this.username) {
       this.toaster.present({
-        text: this.toaster.toasterMessage.noUsername,
+        text: this.translate.instant('noUsername'),
         colour: "danger"
       });
     } else if (!this.password) {
       this.toaster.present({
-        text: this.toaster.toasterMessage.noPassword,
+        text: this.translate.instant('noPassword'),
         colour: "danger"
       });
     } else {
@@ -50,7 +51,7 @@ export class LoginPage implements OnInit{
       );
       if (status === 1) {
         this.toaster.present({
-          text: this.toaster.toasterMessage.loggedInSuccessfully,
+          text: this.translate.instant('loggedInSuccessfully'),
           colour: "light"
         });
         this.username = "";
@@ -58,19 +59,19 @@ export class LoginPage implements OnInit{
         this.router.navigate(["/sessions"]);
       } else if (status === 0) {
         this.toaster.present({
-          text: this.toaster.toasterMessage.incorrectPassword,
+          text: this.translate.instant('incorrectPassword'),
           colour: "danger"
         });
         this.password = "";
       } else if (status === -10) {
         this.toaster.present({
-          text: this.toaster.toasterMessage.loginFailed,
+          text: this.translate.instant('loginFailed'),
           colour: "danger"
         });
         this.password = "";
       } else {
         this.toaster.present({
-          text: this.toaster.toasterMessage.incorrectUsernamePassword,
+          text: this.translate.instant('incorrectUsernamePassword'),
           colour: "danger"
         });
         this.username = "";
@@ -95,7 +96,7 @@ export class LoginPage implements OnInit{
   }
   presentToast() {
     this.toaster.present({
-      text: this.toaster.toasterMessage['exit'],
+      text: this.translate.instant('exit'),
       colour: "light"
     });
   }

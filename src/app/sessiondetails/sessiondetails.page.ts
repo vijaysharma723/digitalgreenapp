@@ -9,6 +9,7 @@ import {LanguageTranslatorService} from '../shared/sharedservices/languagetransl
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { ToasterService } from '../services/toaster/toaster.service';
 import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: "app-sessiondetails",
@@ -40,6 +41,7 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
     private plt: Platform,
     private router: Router,
     private cdr: ChangeDetectorRef,
+    private readonly translate: TranslateService,
     private languageTranslator: LanguageTranslatorService,
     private readonly androidPermissions: AndroidPermissions,
     private readonly toaster: ToasterService,
@@ -102,14 +104,14 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
         ]);
       } else {
         this.toaster.present({
-          text: this.toaster.toasterMessage.permissionFailedMsg,
+          text: this.translate.instant('permissionFailedMsg'),
           colour: "danger"
         });
       }
     }).catch(failed => {
       console.log('recieved error while granting permissions', failed);
       this.toaster.present({
-        text: this.toaster.toasterMessage.abruptErrorOnPermissions,
+        text: this.translate.instant('abruptErrorOnPermissions'),
         colour: "danger"
       });
     })

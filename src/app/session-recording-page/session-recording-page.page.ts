@@ -155,7 +155,7 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
             // send the file for upload
             this.syncSrvc.sendSessionFileUploadRequest(filePathFromRoot);
             this.toaster.present({
-              text: this.toaster.toasterMessage['recordingSuccessful'],
+              text: this.translate.instant('recordingSuccessful'),
               colour: "light"
             });
             this.router.navigate(["/sessiondetails", this.sessionid]);

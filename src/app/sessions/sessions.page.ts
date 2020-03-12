@@ -202,7 +202,7 @@ export class SessionsPage implements OnInit {
   }
   presentToast() {
     this.toaster.present({
-      text: this.toaster.toasterMessage['exit'],
+      text: this.translate.instant('exit'),
       colour: 'light'
     });
   }

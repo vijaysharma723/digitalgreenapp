@@ -5,8 +5,7 @@ import { Router } from "@angular/router";
 import { SessionService } from "./../services/session/session.service";
 import { ToasterService } from "./../services/toaster/toaster.service";
 import { TranslateService } from '@ngx-translate/core';
-import {LanguageTranslatorService} from '../shared/sharedservices/languagetranslator/language-translator.service';
-import {Storage} from '@ionic/storage';
+
 @Component({
   selector: "app-createsessions",
   templateUrl: "./createsessions.page.html",
@@ -26,9 +25,6 @@ export class CreatesessionsPage implements OnInit {
     private userService: UserService,
     private toaster: ToasterService,
     public translate: TranslateService,
-    private languageTranslator: LanguageTranslatorService,
-    private readonly storage: Storage,
-    private cdr: ChangeDetectorRef,
 
   ) {}
 
@@ -59,19 +55,19 @@ export class CreatesessionsPage implements OnInit {
       const result = await this.sessionService.addNewSession(newSession);
       if (result) {
         this.toaster.present({
-          text: this.toaster.toasterMessage.sessionCreated,
+          text: this.translate.instant('sessionCreated'),
           colour: "light"
         });
         this.router.navigate(["/sessiondetails", newSession["sessionid"]]);
       } else {
         this.toaster.present({
-          text: this.toaster.toasterMessage.sessionCreationFailed,
+          text: this.translate.instant('sessionCreationFailed'),
           colour: "danger"
         });
       }
     } else {
       this.toaster.present({
-        text: this.toaster.toasterMessage.selectTopic,
+        text: this.translate.instant('selectTopic'),
         colour: "danger"
       });
     }

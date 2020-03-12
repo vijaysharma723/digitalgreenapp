@@ -50,5 +50,20 @@
     "Morning": "सुबह",
     "Afternoon": "दोपहर",
     "Evening": "शाम",
-    "Night": "रात"
+    "Night": "रात",
+    "noUsername": "कृपया उपयोगकर्ता नाम दर्ज करें।",
+    "noPassword": "कृप्या पास्वर्ड भरें।",
+    "loggedInSuccessfully": "सफलतापूर्वक लॉग इन हो चुका है।",
+    "incorrectUsernamePassword": "कृपया सही उपयोगकर्ता नाम और पासवर्ड दर्ज करें।",
+    "incorrectPassword": "कृपया सही पासवर्ड दर्ज करें।",
+    "loginFailed": "लॉग इन करने में असमर्थ।",
+    "sessionCreated": "सत्र सफलतापूर्वक बनाया गया।",
+    "sessionCreationFailed": "सत्र बनाने में असमर्थ।",
+    "selectTopic": "कृपया विषय चुनें।",
+    "exit": "बाहर निकलने के लिए फिर से दबाएं",
+    "recordingSuccessful": "सत्र सफलतापूर्वक दर्ज किया गया",
+    "abruptErrorOnPermissions": "एक त्रुटि हुई। बाद में पुन: प्रयास करें",
+    "permissionFailedMsg": "आप ऑडियो रिकॉर्ड नहीं कर सकते",
+    "userSyncSuccess": "उपयोगकर्ताओं को सफलतापूर्वक सिंक्रनाइज़ किया गया है",
+    "userSyncFailed": "उपयोगकर्ता सिंक्रनाइज़ करना विफल रहा। बाद में कोशिश करेंगे"
   }

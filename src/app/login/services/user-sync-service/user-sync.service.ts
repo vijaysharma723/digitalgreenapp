@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { UserService } from 'src/app/services/user.service';
 import { ToasterService } from 'src/app/services/toaster/toaster.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class UserSyncService {
   constructor(
     private readonly http: HttpClient,
     private readonly userService: UserService,
-    private readonly toaster: ToasterService) { }
+    private readonly toaster: ToasterService,
+    private readonly translate: TranslateService) { }
 
   /**
    * Syncs users This function is responsoble to detect whether to add new users from server db to local db.
@@ -54,7 +56,7 @@ export class UserSyncService {
       // trigger a toaster to show users have been synced
       if (isUpdated['ok']) {
         this.toaster.present({
-          text: this.toaster.toasterMessage.userSyncSuccess,
+          text: this.translate.instant('userSyncSuccess'),
           colour: "light"
         });
       }
@@ -63,7 +65,7 @@ export class UserSyncService {
       console.log('recieved error while updating users in the local db', updateFailed);
       console.log('will try aother time');
       this.toaster.present({
-        text: this.toaster.toasterMessage.userSyncFailed,
+        text: this.translate.instant('userSyncFailed'),
         colour: "danger"
       });
     });

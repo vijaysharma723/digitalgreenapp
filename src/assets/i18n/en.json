@@ -47,5 +47,20 @@
   "Morning": "Morning",
   "Afternoon": "Afternoon",
   "Evening": "Evening",
-  "Night": "Night"
+  "Night": "Night",
+  "noUsername": "Please enter a username.",
+  "noPassword": "Please fill in the password.",
+  "loggedInSuccessfully": "has been successfully logged in.",
+  "incorrectUsernamePassword": "Please enter the correct username and password.",
+  "incorrectPassword": "Please enter the correct password.",
+  "loginFailed": "unable to login.",
+  "sessionCreated": "The session was successfully created.",
+  "sessionCreationFailed": "Unable to create session.",
+  "selectTopic": "Please select a subject.",
+  "exit": "press again to exit",
+  "recordingSuccessful": "Session successfully recorded",
+  "abruptErrorOnPermissions": "An error occurred. Try again later",
+  "permissionFailedMsg": "You cannot record audio",
+  "userSyncSuccess": "Users have been successfully synchronized",
+  "userSyncFailed": "User synchronization failed. Will try later"
 }
