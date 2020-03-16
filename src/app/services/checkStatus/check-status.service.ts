@@ -14,6 +14,6 @@ export class CheckStatusService {
     };
     // http://52.221.207.221:3001/sessions/status/
     // return this.http.get('http://52.221.207.221:3001/sessions/status/' + username, httpOptions);
-    return this.http.get('https://e05cf17f.ngrok.io/sessions/status/' + username, httpOptions);
+    return this.http.get('https://4baf2a65.ngrok.io/sessions/status/' + username, httpOptions);
   }
 }

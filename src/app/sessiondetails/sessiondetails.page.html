@@ -22,7 +22,7 @@
     </ion-button>
   </div>
 
-  <h5>{{ sessionData.created | dateTime | translate}}</h5>
+  <h5>{{ sessionData.created | dateTime }}</h5>
   <br />
   <!-- <p>
     Watering harvesting means capturing rain water, where it falls and capture
@@ -33,7 +33,7 @@
     <div class="sessiondetails">
       <div class="sections" *ngFor="let topic of topics">
         <div class="sectionname">
-          <!-- <p>{{'topic.topic_name' | translate}}</p> -->
+          <p>{{topic.topic_name}}</p>
         </div>
         <div class="actions">
           <ion-button
@@ -73,7 +73,7 @@
   </div>
   <div class="sessionlist"  *ngIf="userRole ==='vrp' || userRole ==='block_officer'">
     <div class="sessiondetails">
-      <p *ngIf="topci1Name">{{topci1Name | translate}}</p>
+      <p *ngIf="topci1Name">{{topci1Name}}</p>
       <div class="sessiondetails-part1">
       <div class="sections" *ngFor="let topic of topics1">
         <div class="sectionname">

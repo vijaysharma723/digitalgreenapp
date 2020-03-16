@@ -1,11 +1,10 @@
 // tslint:disable: no-string-literal
 import { UserService } from "./../services/user.service";
-import { Component, OnInit, ViewChild, ChangeDetectorRef } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
 import { SessionService } from "./../services/session/session.service";
 import { ToasterService } from "./../services/toaster/toaster.service";
 import { TranslateService } from '@ngx-translate/core';
-
 @Component({
   selector: "app-createsessions",
   templateUrl: "./createsessions.page.html",
@@ -24,8 +23,7 @@ export class CreatesessionsPage implements OnInit {
     private sessionService: SessionService,
     private userService: UserService,
     private toaster: ToasterService,
-    public translate: TranslateService,
-
+    public translate: TranslateService
   ) {}
 
   async ngOnInit() {

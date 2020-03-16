@@ -1,5 +1,6 @@
+
 import { ToasterService } from "./../services/toaster/toaster.service";
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { SessionService } from "./../services/session/session.service";
 import {AlertController} from '@ionic/angular';
@@ -11,9 +12,6 @@ import { ISession } from "../interfaces/ISession";
 import { UserService } from "../services/user.service";
 import { SyncService } from "../services/sync/sync.service";
 import { TranslateService } from "@ngx-translate/core";
-import {LanguageTranslatorService} from '../shared/sharedservices/languagetranslator/language-translator.service';
-import { Storage } from '@ionic/storage';
-import { Subscription } from 'rxjs';
 
 const MEDIA_FOLDER_NAME = "digitalgreenmediafiles";
 const parentDirFolder = "session";
@@ -50,7 +48,6 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
   sessionname: any;
   topicid: any;
   mediaParentFolder = "session";
-  subs: Subscription;
   constructor(
     public router: Router,
     private route: ActivatedRoute,
@@ -63,16 +60,9 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     public translate: TranslateService,
     private toaster: ToasterService,
     private readonly alertController: AlertController,
-    private languagetranslator : LanguageTranslatorService,
-    private readonly storage : Storage,
-    private readonly cdr: ChangeDetectorRef,
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
-    this.subs = this.languagetranslator.recentPickedLanguage.subscribe((language) => {
-      console.log('language recieved in sessions recording page ', language);
-    });
     const path = this.file.dataDirectory;
     this.plt.ready().then(() => {
       this.file.checkDir(path, MEDIA_FOLDER_NAME).then(
@@ -106,9 +96,6 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     });
   }
   copyFilesToLocal(fullpath) {
-    // alert("this full path:");
-    // alert(fullpath);
-
     console.log("full path: ", fullpath);
     let mediapath: string = fullpath;
     if (mediapath.indexOf("file://") < 0) {
@@ -151,7 +138,6 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
           this.userSrvc.getLoggedInUser().then(user => {
             const filePathFromRoot = `${this.mediaParentFolder}/${user.username}_${this.sessionid}_${this.topicid}.wav`;
             // set the status to initiate in local db
-            // this.sessionService.setSessionStatus({topic_status: 0, its: new Date().toISOString()}, this.sessionid, this.topicid);
             // send the file for upload
             this.syncSrvc.sendSessionFileUploadRequest(filePathFromRoot);
             this.toaster.present({
@@ -174,11 +160,7 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
         this.file.documentsDirectory.replace(/file:\/\//g, "") + file;
       this.audio = this.media.create(this.filepath);
     } else if (this.plt.is("android")) {
-      this.filepath =
-        this.file.externalDataDirectory.replace(/file:\/\//g, "") + file;
-      // alert("media file path:  - ");
-      // alert(this.filepath);
-
+      this.filepath = this.file.externalDataDirectory.replace(/file:\/\//g, "") + file;
       this.audio = this.media.create(this.filepath);
     }
     this.audio.play();
@@ -235,7 +217,6 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     const diff = this.target - this.current;
     this.min = Math.floor(diff / 1000 / 60);
     this.sec = (diff / 1000) % 60;
-    // console.log(this.min, this.sec);
     if (diff > 0) {
       setTimeout(() => {
         this.countDown();
@@ -268,7 +249,6 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     });
   }
   ngOnDestroy() {
-    this.subs.unsubscribe();
     if (!!this.audio) {
       window.clearInterval(this.recordingTimeout);
       this.flag = false;
