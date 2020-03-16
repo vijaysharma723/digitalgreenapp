@@ -1,22 +1,24 @@
 // tslint:disable: no-string-literal
 import { UserService } from "./../services/user.service";
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild, OnDestroy } from "@angular/core";
 import { Router } from "@angular/router";
 import { SessionService } from "./../services/session/session.service";
 import { ToasterService } from "./../services/toaster/toaster.service";
 import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 @Component({
   selector: "app-createsessions",
   templateUrl: "./createsessions.page.html",
   styleUrls: ["./createsessions.page.scss"]
 })
-export class CreatesessionsPage implements OnInit {
+export class CreatesessionsPage implements OnInit, OnDestroy {
   @ViewChild("sessionInput", { static: false }) sessionInput;
 
   sessionDate = new Date();
   topic: string;
-  userSessions = [];
+  userTopicsDropdown = [];
   userRole: string;
+  translateChangeSub: Subscription;
 
   constructor(
     public router: Router,
@@ -28,7 +30,17 @@ export class CreatesessionsPage implements OnInit {
 
   async ngOnInit() {
     this.userRole = await this.userService.getUserRole();
-    this.userSessions = await this.userService.getUserTopics();
+    this.userTopicsDropdown = await this.userService.getUserTopics(this.translate.currentLang);
+
+    this.translateChangeSub = this.translate.onLangChange.subscribe(async changEvent => {
+      console.log('detected language change on create session page ', changEvent);
+      this.userTopicsDropdown = await this.userService.getUserTopics(changEvent.lang);
+      this.topic = '';
+    });
+  }
+
+  async ngOnDestroy() {
+    this.translateChangeSub.unsubscribe();
   }
 
   getRandomString() {

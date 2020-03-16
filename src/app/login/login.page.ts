@@ -7,6 +7,7 @@ import { Platform } from '@ionic/angular';
 import { UserSyncService } from './services/user-sync-service/user-sync.service';
 import { ChecknetworkService } from '../services/checknetwork/checknetwork.service';
 import { Subscription} from 'rxjs';
+import { QuestionsService } from '../services/questions/questions.service';
 @Component({
   selector: "app-login",
   templateUrl: "./login.page.html",
@@ -27,6 +28,7 @@ export class LoginPage implements OnInit{
     private readonly userSyncSrvc: UserSyncService,
     private readonly checknetwork: ChecknetworkService,
     private readonly translate: TranslateService,
+    private readonly questionSrvc: QuestionsService,
   ) {}
 
   ngOnInit() {
@@ -113,6 +115,7 @@ export class LoginPage implements OnInit{
         // when online is detected on the sessions page, trigger sync api
         console.log('online');
         this.userSyncSrvc.syncUsers();
+        this.questionSrvc.syncRoleInfo();
       } else if (val === 'Disconnected') {
         console.log('user offline, no need to sync users');
       }

@@ -12,6 +12,7 @@ import { ISession } from "../interfaces/ISession";
 import { UserService } from "../services/user.service";
 import { SyncService } from "../services/sync/sync.service";
 import { TranslateService } from "@ngx-translate/core";
+import { Subscription } from 'rxjs';
 
 const MEDIA_FOLDER_NAME = "digitalgreenmediafiles";
 const parentDirFolder = "session";
@@ -46,8 +47,10 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
   recordingTimeout: any;
   audioList = [];
   sessionname: any;
+  topicObject: object;
   topicid: any;
   mediaParentFolder = "session";
+  translateChangeSub: Subscription;
   constructor(
     public router: Router,
     private route: ActivatedRoute,
@@ -82,11 +85,12 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
       this.sessionData = await this.sessionService.getSessionById(
         this.sessionid
       );
-      this.sessionData["topics"].forEach(element => {
-        if (this.topicid === element["topic_id"]) {
-          this.topicName = element["topic_name"];
-        }
-      });
+      this.topicObject = this.sessionData['topics'].find(element => this.topicid === element['topic_id']);
+      this.topicName = this.topicObject["topic_name"][this.translate.currentLang];
+    });
+    // subscribe to detect language change
+    this.translateChangeSub = this.translate.onLangChange.subscribe(changeEvent => {
+      this.topicName = this.topicObject['topic_name'][changeEvent.lang];
     });
   }
   loadFiles() {
@@ -249,6 +253,7 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     });
   }
   ngOnDestroy() {
+    this.translateChangeSub.unsubscribe();
     if (!!this.audio) {
       window.clearInterval(this.recordingTimeout);
       this.flag = false;
@@ -259,6 +264,7 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
   }
 
   ionViewWillLeave() {
+    this.translateChangeSub.unsubscribe();
     if (!!this.audio) {
       window.clearInterval(this.recordingTimeout);
       this.flag = false;

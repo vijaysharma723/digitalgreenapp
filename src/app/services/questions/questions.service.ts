@@ -1,10 +1,15 @@
+// tslint:disable: max-line-length
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { ApiConfigService } from 'src/app/shared/api-config/api-config.service';
+import {Storage} from '@ionic/storage';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuestionsService {
+
+  private apiEndpoints = {};
 
   private questions = [
     {
@@ -228,25 +233,43 @@ export class QuestionsService {
     }
   ];
 
-  constructor(private readonly translate: TranslateService) { }
+  constructor(
+    private readonly apiConfig: ApiConfigService,
+    private readonly storage: Storage) {
+      // setup the api endpoints object
+      this.apiConfig.getConfig.then(endpoints => {
+        this.apiEndpoints = endpoints;
+        console.log('recieved api endpoints as ', this.apiEndpoints);
+      })
+      .catch( e => {
+        console.log('catched error while getting api endpoints', e);
+        this.apiEndpoints = null;
+        });
+      }
 
   getDefaultQuestions(role) {
-    const questionIdx = this.questions.findIndex(questionObj => questionObj['role'].toLowerCase() === role.toLowerCase());
-    return this.questions[questionIdx]['questions'];
+    const questionIdx = this.procedure.findIndex(questionObj => questionObj['role'].toLowerCase() === role.toLowerCase());
+    return this.procedure[questionIdx]['questions'];
   }
 
   updateQuestions(userQuestionsArray, role) {
     const defaultQuestions = this.getDefaultQuestions(role);
 
     const mergedQuestionsArray = userQuestionsArray.map(userQuestionObj => {
-      // tslint:disable-next-line: max-line-length
       const selectedDefaultQObjIdx = defaultQuestions.findIndex(defaultQuestionObj => defaultQuestionObj['topic_id'].toLowerCase() === userQuestionObj['topic_id'].toLowerCase());
       if (selectedDefaultQObjIdx > -1) {
-        // updating an old topic
-        if (defaultQuestions[selectedDefaultQObjIdx]['topic_name'] !== userQuestionObj['topic_name']) {
-          // update the topic name
-          userQuestionObj['topic_name'] = defaultQuestions[selectedDefaultQObjIdx]['topic_name'];
+        userQuestionObj['topic_name'] = defaultQuestions[selectedDefaultQObjIdx]['topic_name'];
+        // update topic_name as well
+        if (!defaultQuestions[selectedDefaultQObjIdx].hasOwnProperty('topic_title')) {
+          // existing user may topic_title but remote user does not
+          // delete the topic_title key from local user as well
+          delete userQuestionObj['topic_title'];
+        } else if (defaultQuestions[selectedDefaultQObjIdx].hasOwnProperty('topic_title')) {
+          // existing user does may has topic_title but remote user has it
+          // copy it in local user as well
+          userQuestionObj['topic_title'] = defaultQuestions[selectedDefaultQObjIdx]['topic_title'];
         }
+        // logic below will work if there is any new key added in remote user which also needs to be updated in local user
         if (Object.keys(userQuestionObj).length < Object.keys(defaultQuestions[selectedDefaultQObjIdx]).length) {
           // if there are new keys added to the question object, simply add them to the user Questions as well
           Object.keys(defaultQuestions[selectedDefaultQObjIdx]).forEach(key => {
@@ -266,33 +289,70 @@ export class QuestionsService {
     // compare the topics array of old as well as new user
     TotaluserArray = TotaluserArray['users'].map(userObj => {
       const defaultTopics = this.getDefaultTopics(userObj['role']);
-      if (userObj.hasOwnProperty('topics') && userObj['topics']) {
-        defaultTopics.forEach((defaultTopic, defaultIdx) => {
-          if (!userObj['topics'].includes(defaultTopic)) {
-            userObj['topics'].splice(defaultIdx, 0, defaultTopic);
-          }
-          // run one more iteration on user topics, to see which topics are present in local and not present in remote
-          // we need to remove those topics from local
-          userObj['topics'] = userObj['topics'].filter(userTopic => defaultTopics.includes(userTopic));
-        });
-      } else {
-        // simply add default topics
-        userObj['topics'] = [...defaultTopics];
-      }
+      userObj['topics'] = {...defaultTopics};
       return userObj;
     });
     return { users: TotaluserArray };
   }
 
   getDefaultTopics(role: string) {
-    const questionIdx = this.questions.findIndex(questionObj => {
+    const questionIdx = this.procedure.findIndex(questionObj => {
       if (questionObj['role'].toLowerCase() === role.toLowerCase()) {
         return true;
         // tslint:disable-next-line: curly
       } else return false;
     });
-    return this.questions[questionIdx]['topics'];
+    return this.procedure[questionIdx]['topics'];
   }
 
   getLanSpecificQuestions() { }
+
+  /**
+   * Syncs role info. This function essentially updates the information regarding roles in the local database.
+   * Role info such as roles, their topics, their questions etc will be updated everytime user is on the login page and is online.
+   */
+  async syncRoleInfo() {
+    console.log('syncing role specific details from remote, printing config');
+    // assuming we have the role object from server
+    if (await this.saveRolesInLocalDB(this.procedure)) {
+      console.log('roles saved successfully');
+      const roles = await this.getRolesInfoFromLocalDB();
+      console.log('roles from local db are ', roles);
+    } else {
+      console.log('could not save roles, will try again later');
+    }
+  }
+
+  saveRolesInLocalDB(dataToSave) {
+    return this.storage.set('roles_info', JSON.stringify(dataToSave))
+    .then(ok => {
+      return Promise.resolve(true);
+    })
+    .catch(notOK => {
+      console.log('An error while saving the roles info in local storage', notOK);
+      return Promise.resolve(false);
+    });
+  }
+
+  /**
+   * @description Gets roles info from local db. If roleType is provided, it returns only that role else complete details
+   * @param [roleType]
+   * @returns Object
+   */
+  getRolesInfoFromLocalDB(roleType?: string) {
+    return new Promise((resolve, reject) => {
+      this.storage.get('roles_info').then(rolesInfo => {
+        if (rolesInfo) {
+          const parsedRoles = JSON.parse(rolesInfo);
+          if (roleType) {
+            resolve(parsedRoles.find(roleObj => roleObj['role'].toLowerCase() === roleType.toLowerCase()));
+          } else {
+            resolve(parsedRoles);
+          }
+        } else {
+          resolve(null);
+        }
+      });
+    });
+  }
 }
