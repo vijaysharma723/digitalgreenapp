@@ -1,3 +1,4 @@
 {
-    "QUESTION_ENDPOINT": "hello"
+    "BASE": "http://localhost:3000/",
+    "GET_ROLES": "roles/users"
 }

@@ -1,8 +1,8 @@
 // tslint:disable: max-line-length
 import { Injectable } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { ApiConfigService } from 'src/app/shared/api-config/api-config.service';
 import {Storage} from '@ionic/storage';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +10,7 @@ import {Storage} from '@ionic/storage';
 export class QuestionsService {
 
   private apiEndpoints = {};
+  private roleSyncEndpoint = 'https://4baf2a65.ngrok.io/roles/users';
 
   private questions = [
     {
@@ -235,7 +236,8 @@ export class QuestionsService {
 
   constructor(
     private readonly apiConfig: ApiConfigService,
-    private readonly storage: Storage) {
+    private readonly storage: Storage,
+    private readonly http: HttpClient) {
       // setup the api endpoints object
       this.apiConfig.getConfig.then(endpoints => {
         this.apiEndpoints = endpoints;
@@ -247,80 +249,103 @@ export class QuestionsService {
         });
       }
 
-  getDefaultQuestions(role) {
-    const questionIdx = this.procedure.findIndex(questionObj => questionObj['role'].toLowerCase() === role.toLowerCase());
-    return this.procedure[questionIdx]['questions'];
+  getDefaultQuestions(role): Promise<any> {
+    return new Promise((resolve, rej) => {
+      this.getRolesInfoFromLocalDB().then((questions: Array<object>) => {
+        if (questions) {
+          const questionIdx = questions.findIndex(questionObj => questionObj['role'].toLowerCase() === role.toLowerCase());
+          resolve(questions[questionIdx]['questions']);
+        } else {
+          console.log('did not recieve question from local db');
+          resolve(null);
+        }
+      });
+    });
   }
 
-  updateQuestions(userQuestionsArray, role) {
-    const defaultQuestions = this.getDefaultQuestions(role);
-
-    const mergedQuestionsArray = userQuestionsArray.map(userQuestionObj => {
-      const selectedDefaultQObjIdx = defaultQuestions.findIndex(defaultQuestionObj => defaultQuestionObj['topic_id'].toLowerCase() === userQuestionObj['topic_id'].toLowerCase());
-      if (selectedDefaultQObjIdx > -1) {
-        userQuestionObj['topic_name'] = defaultQuestions[selectedDefaultQObjIdx]['topic_name'];
-        // update topic_name as well
-        if (!defaultQuestions[selectedDefaultQObjIdx].hasOwnProperty('topic_title')) {
-          // existing user may topic_title but remote user does not
-          // delete the topic_title key from local user as well
-          delete userQuestionObj['topic_title'];
-        } else if (defaultQuestions[selectedDefaultQObjIdx].hasOwnProperty('topic_title')) {
-          // existing user does may has topic_title but remote user has it
-          // copy it in local user as well
-          userQuestionObj['topic_title'] = defaultQuestions[selectedDefaultQObjIdx]['topic_title'];
+  async updateQuestions(userQuestionsArray, role) {
+    const defaultQuestions = await this.getDefaultQuestions(role);
+    if (defaultQuestions) {
+      const mergedQuestionsArray = userQuestionsArray.map(userQuestionObj => {
+        const selectedDefaultQObjIdx = defaultQuestions.findIndex(defaultQuestionObj => defaultQuestionObj['topic_id'].toLowerCase() === userQuestionObj['topic_id'].toLowerCase());
+        if (selectedDefaultQObjIdx > -1) {
+          userQuestionObj['topic_name'] = defaultQuestions[selectedDefaultQObjIdx]['topic_name'];
+          // update topic_name as well
+          if (!defaultQuestions[selectedDefaultQObjIdx].hasOwnProperty('topic_title')) {
+            // existing user may topic_title but remote user does not
+            // delete the topic_title key from local user as well
+            delete userQuestionObj['topic_title'];
+          } else if (defaultQuestions[selectedDefaultQObjIdx].hasOwnProperty('topic_title')) {
+            // existing user does may has topic_title but remote user has it
+            // copy it in local user as well
+            userQuestionObj['topic_title'] = defaultQuestions[selectedDefaultQObjIdx]['topic_title'];
+          }
+          // logic below will work if there is any new key added in remote user which also needs to be updated in local user
+          if (Object.keys(userQuestionObj).length < Object.keys(defaultQuestions[selectedDefaultQObjIdx]).length) {
+            // if there are new keys added to the question object, simply add them to the user Questions as well
+            Object.keys(defaultQuestions[selectedDefaultQObjIdx]).forEach(key => {
+              if (!Object.keys(userQuestionObj).includes(key)) {
+                userQuestionObj[key] = defaultQuestions[selectedDefaultQObjIdx][key];
+              }
+            });
+          }
         }
-        // logic below will work if there is any new key added in remote user which also needs to be updated in local user
-        if (Object.keys(userQuestionObj).length < Object.keys(defaultQuestions[selectedDefaultQObjIdx]).length) {
-          // if there are new keys added to the question object, simply add them to the user Questions as well
-          Object.keys(defaultQuestions[selectedDefaultQObjIdx]).forEach(key => {
-            if (!Object.keys(userQuestionObj).includes(key)) {
-              userQuestionObj[key] = defaultQuestions[selectedDefaultQObjIdx][key];
-            }
-          });
-        }
-      }
-      return userQuestionObj;
-    });
-    return mergedQuestionsArray;
+        return userQuestionObj;
+      });
+      return mergedQuestionsArray;
+    }
   }
 
   syncTopics(TotaluserArray) {
-
     // compare the topics array of old as well as new user
-    TotaluserArray = TotaluserArray['users'].map(userObj => {
-      const defaultTopics = this.getDefaultTopics(userObj['role']);
+    TotaluserArray = Promise.all(TotaluserArray.map(async userObj => {
+      const defaultTopics = await this.getDefaultTopics(userObj['role']);
       userObj['topics'] = {...defaultTopics};
       return userObj;
-    });
-    return { users: TotaluserArray };
+    }));
+    return TotaluserArray;
   }
 
   getDefaultTopics(role: string) {
-    const questionIdx = this.procedure.findIndex(questionObj => {
+    return this.getRolesInfoFromLocalDB(role).then(roleInfo => Promise.resolve(roleInfo['topics']))
+    /* const questionIdx = this.procedure.findIndex(questionObj => {
       if (questionObj['role'].toLowerCase() === role.toLowerCase()) {
         return true;
         // tslint:disable-next-line: curly
       } else return false;
     });
-    return this.procedure[questionIdx]['topics'];
+    return this.procedure[questionIdx]['topics']; */
   }
-
-  getLanSpecificQuestions() { }
 
   /**
    * Syncs role info. This function essentially updates the information regarding roles in the local database.
    * Role info such as roles, their topics, their questions etc will be updated everytime user is on the login page and is online.
    */
-  async syncRoleInfo() {
+  syncRoleInfo() {
     console.log('syncing role specific details from remote, printing config');
     // assuming we have the role object from server
-    if (await this.saveRolesInLocalDB(this.procedure)) {
-      console.log('roles saved successfully');
-      const roles = await this.getRolesInfoFromLocalDB();
-      console.log('roles from local db are ', roles);
-    } else {
-      console.log('could not save roles, will try again later');
-    }
+    return this.http.post(this.roleSyncEndpoint, {roles: []}).toPromise()
+    .then(async response => {
+      console.log('recieved response from roles api as ', response);
+      // remove the _id key
+      const newData = response['data'].map(dataObj => {
+        const newObj = {...dataObj};
+        delete newObj['_id'];
+        return newObj;
+      });
+      if (await this.saveRolesInLocalDB(newData)) {
+        console.log('roles saved successfully');
+        const roles = await this.getRolesInfoFromLocalDB();
+        console.log('roles from local db are ', roles);
+        return Promise.resolve(true);
+      } else {
+        console.log('could not save roles, will try again later');
+        return Promise.resolve(false);
+      }
+    }).catch(err => {
+      console.log('recieved error from roles api as ', err);
+      return Promise.reject(false);
+    });
   }
 
   saveRolesInLocalDB(dataToSave) {
@@ -354,5 +379,12 @@ export class QuestionsService {
         }
       });
     });
+  }
+
+  /**
+   * Loads app local roles. This will store the default roles information in the local store
+   */
+  loadAppLocalRoles() {
+    return this.saveRolesInLocalDB(this.procedure);
   }
 }

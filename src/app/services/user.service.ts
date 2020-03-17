@@ -221,13 +221,14 @@ export class UserService {
     this.loggedInUser = null;
   }
 
-   async getUserListFromLocalDB() {
-    const localDBUsers = await this.storage.get('users');
-    if (localDBUsers) {
-      return Promise.resolve(JSON.parse(localDBUsers));
-    } else {
-      return Promise.resolve({users: []});
-    }
+   getUserListFromLocalDB() {
+     return this.storage.get('users').then(localDBUsers => {
+      if (localDBUsers) {
+        return Promise.resolve(JSON.parse(localDBUsers));
+      } else {
+        return Promise.resolve({users: []});
+      }
+     });
   }
 
   async setUsers(usersArray) {
@@ -241,12 +242,15 @@ export class UserService {
       // merge the users
       const newUpdatedUsers = this.mergeUsers(updatedUsersArray, localUsers['users']);
       // assign proper questions to the user Objects if they don't have it
-      const newUpdatedUsersWithQuestions = this.syncQuestions(newUpdatedUsers, localUsers);
-      const newUpdatedUsersWithQuesAndTopics = this.questionsSrvc.syncTopics(newUpdatedUsersWithQuestions);
-      // console.log('final users array to set in local db looks like ', newUpdatedUsersWithQuestions);
-      const isSet = await this.setUsers(newUpdatedUsersWithQuesAndTopics);
-      // console.log('is properly set ?', isSet);
-      return Promise.resolve({ok: true});
+      const newUpdatedUsersWithQuestions = await this.syncQuestions(newUpdatedUsers, localUsers);
+      if (newUpdatedUsersWithQuestions) {
+        const newUpdatedUsersWithQuesAndTopics = await this.questionsSrvc.syncTopics(newUpdatedUsersWithQuestions);
+        if (newUpdatedUsersWithQuesAndTopics) {
+          const isSet = await this.setUsers({users: newUpdatedUsersWithQuesAndTopics});
+          // console.log('is properly set ?', isSet);
+          return Promise.resolve({ok: true});
+        }
+      }
     } else {
       console.log('users not available in local db to update');
       return Promise.reject({ok: false, error: 'users not available in local db to update'});
@@ -289,17 +293,19 @@ export class UserService {
 
   syncQuestions(totalUsers, oldUsers) {
   // to make sure that users who have attempted there questions, they are not lost
-  totalUsers.users.forEach((newUser) => {
+  debugger;
+  const usersMergedWithQuestions = Promise.all(totalUsers.users.map(async (newUser) => {
     if (!newUser.hasOwnProperty('questions')) {
       // it is a first time user, assign default questions object to it
-      newUser['questions'] = this.questionsSrvc.getDefaultQuestions(newUser['role']);
+      newUser['questions'] = await this.questionsSrvc.getDefaultQuestions(newUser['role']);
     } else {
       const matchedOldIdx = oldUsers['users'].findIndex(oldUser => oldUser['username'].toLowerCase() === newUser['username'].toLowerCase());
       // tslint:disable-next-line: max-line-length
-      const mergedQuestions = this.questionsSrvc.updateQuestions(oldUsers['users'][matchedOldIdx]['questions'], oldUsers['users'][matchedOldIdx]['role'])
+      const mergedQuestions = await this.questionsSrvc.updateQuestions(oldUsers['users'][matchedOldIdx]['questions'], oldUsers['users'][matchedOldIdx]['role'])
       newUser['questions'] = mergedQuestions;
     }
-});
-  return totalUsers;
+    return newUser;
+}));
+  return usersMergedWithQuestions;
   }
 }
