@@ -136,19 +136,14 @@ export class LoginPage implements OnInit{
   }
 
   async startOfflineSync() {
-    debugger;
-    console.log('inititating offline sync');
-    const localRoles = await this.questionSrvc.getRolesInfoFromLocalDB();
-    if (localRoles) {
-      console.log('roles are there');
-    } else {
-      console.log('roles are not present');
-      const loaded = await this.questionSrvc.loadAppLocalRoles();
-      if (loaded) {
-        console.log('local roles added');
-      } else {
-        console.log('Error while adding local roles');
-      }
-    }
+    this.questionSrvc.syncRoleInfo()
+    .then(synced => {
+      // then sync the user information
+      console.log('roles synced properly ', synced);
+      this.userSyncSrvc.syncOfflineUsers();
+    })
+    .catch(roleSyncErr => {
+      console.error(roleSyncErr);
+    });
   }
 }

@@ -321,31 +321,18 @@ export class QuestionsService {
    * Syncs role info. This function essentially updates the information regarding roles in the local database.
    * Role info such as roles, their topics, their questions etc will be updated everytime user is on the login page and is online.
    */
-  syncRoleInfo() {
+  async syncRoleInfo() {
     console.log('syncing role specific details from remote, printing config');
     // assuming we have the role object from server
-    return this.http.post(this.roleSyncEndpoint, {roles: []}).toPromise()
-    .then(async response => {
-      console.log('recieved response from roles api as ', response);
-      // remove the _id key
-      const newData = response['data'].map(dataObj => {
-        const newObj = {...dataObj};
-        delete newObj['_id'];
-        return newObj;
-      });
-      if (await this.saveRolesInLocalDB(newData)) {
-        console.log('roles saved successfully');
-        const roles = await this.getRolesInfoFromLocalDB();
-        console.log('roles from local db are ', roles);
-        return Promise.resolve(true);
-      } else {
-        console.log('could not save roles, will try again later');
-        return Promise.resolve(false);
-      }
-    }).catch(err => {
-      console.log('recieved error from roles api as ', err);
-      return Promise.reject(false);
-    });
+    if (await this.saveRolesInLocalDB(this.procedure)) {
+      console.log('roles saved successfully');
+      const roles = await this.getRolesInfoFromLocalDB();
+      console.log('roles from local db are ', roles);
+      return Promise.resolve(true);
+    } else {
+      console.log('could not save roles, will try again later');
+      return Promise.resolve(false);
+    }
   }
 
   saveRolesInLocalDB(dataToSave) {
