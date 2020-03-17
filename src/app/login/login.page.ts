@@ -94,6 +94,7 @@ export class LoginPage implements OnInit{
         navigator["app"].exitApp();
       }
     });
+    // to track the online and offline status on login page, for syncing users and roles
     this.initiateUserSyncProcedure();
   }
   presentToast() {
@@ -109,13 +110,18 @@ export class LoginPage implements OnInit{
     this.networkSub.unsubscribe();
   }
 
+  ngOnDestroy() {
+     this.networkSub.unsubscribe();
+  }
+
   initiateUserSyncProcedure() {
     this.networkSub = this.checknetwork.isOnline.subscribe(val => {
+      console.log('ion view did enter subscription', val)
       if (val === 'Connected') {
         // when online is detected on the sessions page, trigger sync api
         console.log('online');
         this.startSyncing();
-      } else if (val === 'Disconnected') {
+      } else if (val === 'Disonnected') {
         console.log('user offline, no need to sync users');
         this.startOfflineSync();
       }
