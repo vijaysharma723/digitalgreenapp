@@ -10,7 +10,8 @@ import {HttpClient} from '@angular/common/http';
 export class QuestionsService {
 
   private apiEndpoints = {};
-  private roleSyncEndpoint = 'https://4baf2a65.ngrok.io/roles/users';
+  // private roleSyncEndpoint = 'https://4baf2a65.ngrok.io/roles/users';
+  private roleSyncEndpoint = 'http://52.221.207.221:3001/roles/users';
 
   private questions = [
     {
