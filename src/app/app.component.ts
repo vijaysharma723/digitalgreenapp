@@ -72,11 +72,8 @@ languageList = ['en', 'hi'];
   }
 
   setUsername() {
-    console.log('setting username in sidebar');
     this.username = this.userService.userDetailsObs.pipe(map(userdetails => {
-      console.log('called username ', userdetails);
       if (!!userdetails) {
-        console.log('extracting username');
         return userdetails['username'];
       } else {
         return '';

@@ -10,6 +10,13 @@ import { UserService } from "./../user.service";
 })
 export class SessionService {
   sessionList = [];
+  STATUS = {
+    REQUEST_INITIATED: 0,
+    REQUEST_FAILED_PERMANENTLY: 2,
+    TOPIC_UPLOADED: 1,
+    REQUEST_SYNCED: 3,
+    RETIRES_LIMIT: 2,
+  };
   constructor(private storage: Storage, private userService: UserService) {}
 
   getParsedData(data) {

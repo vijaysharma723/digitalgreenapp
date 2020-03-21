@@ -139,17 +139,12 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
             this.fileName
           );
           // trigger the sync api to send the files to the server
-          this.userSrvc.getLoggedInUser().then(user => {
-            const filePathFromRoot = `${this.mediaParentFolder}/${user.username}_${this.sessionid}_${this.topicid}.wav`;
-            // set the status to initiate in local db
-            // send the file for upload
-            this.syncSrvc.sendSessionFileUploadRequest(filePathFromRoot);
-            this.toaster.present({
-              text: this.translate.instant('recordingSuccessful'),
-              colour: "light"
-            });
-            this.router.navigate(["/sessiondetails", this.sessionid]);
+          this.toaster.present({
+            text: this.translate.instant('recordingSuccessful'),
+            colour: "light"
           });
+          this.router.navigate(["/sessiondetails", this.sessionid]);
+          this.triggerOnlineUploadAndRedirect();
         }, 1000);
       }
       )();
@@ -157,6 +152,26 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
       console.log('recording not yet started, cannot stop before starting');
     }
   }
+
+  triggerOnlineUploadAndRedirect() {
+    this.userSrvc.getLoggedInUser().then(async user => {
+      const filePathFromRoot = `${this.mediaParentFolder}/${user.username}_${this.sessionid}_${this.topicid}.wav`;
+      // set the status to initiate in local db
+      // send the file for upload
+      if (window.navigator.onLine) {
+        const localSessionObj = await this.sessionService.getSessionById(this.sessionid);
+        const isVerified = await this.syncSrvc.verifyorCreateSession(localSessionObj, {username: user.username});
+        if (isVerified['ok']) {
+          this.syncSrvc.sendSessionFileUploadRequest(filePathFromRoot);
+        } else {
+          console.log('could not upload the audio file directly from recording page when user was online, will try later');
+        }
+      } else {
+        console.log('user is not online, immediate audio upload not triggered');
+      }
+    });
+  }
+
   mediaPlayAudio(file, idx) {
     // alert("media playing");
     if (this.plt.is("ios")) {
