@@ -5,5 +5,6 @@
         <domain includeSubdomains="true">13.234.2.81</domain>
         <domain includeSubdomains="true">52.221.207.221</domain>
         <domain includeSubdomains="true">a1368052.ngrok.io</domain>
+        <domain includeSubdomains="true">socion-pda-dashboard.stackroute.com</domain>
     </domain-config>
 </network-security-config>
