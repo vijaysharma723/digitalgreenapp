@@ -62,21 +62,16 @@ export class LoginPage implements OnInit{
       );
       if (status === 1) {
         console.log('userName is' ,this.username);
-        if (window.navigator.onLine) {
-         this.present();
-         console.log("Hello world stop loader");
-         this.syncServerSessions(this.username)
-        
-          
-        }
         this.toaster.present({
           text: this.translate.instant('loggedInSuccessfully'),
           colour: "light"
         });
+        if (window.navigator.onLine) {
+          this.present();
+          this.syncServerSessions(this.username);
+         }
         this.username = "";
         this.password = "";
-        this.dismiss();
-        this.router.navigate(["/sessions"]);
       } else if (status === 0) {
         this.toaster.present({
           text: this.translate.instant('incorrectPassword'),
@@ -170,70 +165,48 @@ export class LoginPage implements OnInit{
     });
   }
   
-  syncServerSessions(userName)
-  {
-    this.sessionStatus.getStatus(userName).subscribe(async(response) =>
-      {
-        // debugger;
-        console.log('Hello world',response);
-        let localStorage = await this.syncService.getSessionList();
-        let defaultQuestions = await this.userService.getUserQuestions();
-        console.log('localStorage',localStorage);
-        console.log('default questions',defaultQuestions);
-        if (defaultQuestions) {
-// check if there is any object in the server array or not
-if (response && response.data.length) {
-  // let newStorageSessions = [];
- 
-    if(localStorage && !localStorage.length)
-      { // no entry to verify in local, simpley add all the remote sessions
-        response.data.forEach((element:any) => {
-           const generatedSession = this.syncService.generateSession(element, defaultQuestions);
-           console.log('Generated session and default questions',generatedSession);
-           localStorage.push(generatedSession);
-           this.dismiss();
+  syncServerSessions(userName) {
+    const statusSub = this.sessionStatus.getStatus(userName).subscribe(async (response) => {
+      const localSessionList = await this.syncService.getSessionList();
+      const defaultUserQuestions = await this.userService.getUserQuestions();
+      if (defaultUserQuestions && localSessionList) {
+        // check if there is any object in the server array or not
+        if (response && response.hasOwnProperty('status') && response.status.toString() === '200') {
+          if (localSessionList && !localSessionList.length) { // no entry to verify in local, simpley add all the remote sessions
+            response.data.forEach((element: any) => {
+              const generatedSession = this.syncService.generateSession(element, defaultUserQuestions);
+              localSessionList.push(generatedSession);
+            });
+          } else {
+            response.data.forEach((element: any) => {
+              const matchedSession = localSessionList.filter(localSesion => element.session_id === localSesion.sessionid);
+              if (!matchedSession.length) {
+                const generatedSession = this.syncService.generateSession(element, defaultUserQuestions);
+                localSessionList.push(generatedSession);
+              }
+            });
+          }
+          // sort and save the new session array
+          localSessionList.sort((a, b) => {
+            const D1 = new Date(a['created']);
+            const D2 = new Date(b['created']);
+            return D1.getTime() - D2.getTime();
+          });
+          // save
+          this.syncService.setSessionList(localSessionList).then(isSet => {
+            this.dismiss();
+            this.router.navigate(['/sessions']);
 
           });
-      } 
-      else {
-        response.data.forEach((element:any) => {
-        let matchedSession = localStorage.filter(localSesion => {
-        return element.session_id === localSesion.sessionid;
-          });
-          console.log('matched session = ',matchedSession);
-      if (!matchedSession.length) {
-        console.log('can insert the server session ', element);
-        const generatedSession = this.syncService.generateSession(element, defaultQuestions);
-           localStorage.push(generatedSession);
-      }
-    });
-      }
-
-  
-    // sort and save the new session array
-    localStorage.sort((a,b) => {
-      const D1 = new Date(a['created']);
-      const D2 = new Date(b['created']);
-      return D1.getTime() - D2.getTime();
-    });
-    // save
-    this.syncService.setSessionList(localStorage).then(isSet => {
-      
-    });
-    this.dismiss();
-} else {
-  console.log('No entry to sync from server');
-  this.dismiss();
- }
-
-     } else {
-
-          
+        } else {
+          console.log('recieved unexpected response code from the getStatus api for syncing user sessions, check manually');
+          console.log(response);
+          this.dismiss();
         }
-        
-        
-      // return response;
-      })
+      } else {
+        console.log('either of localSessionList or defaultUserQuestions was not retireved , will try on next login');
+      }
+    });
   }
 
 

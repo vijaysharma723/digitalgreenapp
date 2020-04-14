@@ -168,32 +168,45 @@ export class SessionService {
       topics: this.syncRemoteTopics(sessionData.topics, defaultQuestions),
       topics_limit: sessionData.topics.length,
     };
-   
     console.log('these are the questions');
     console.log('generated session object is ', session.topics);
     return session;
   }
 
+  /**
+   * Syncs remote topics. This function will compare which question or topic is to be updated by looping over 
+   * the topics present inside serverTopicData Array
+   * @param serverTopicsData
+   * @param defaultQuestions
+   * @returns Modified Topics Array
+   */
   syncRemoteTopics(serverTopicsData, defaultQuestions) {
     // update the question using server data
     defaultQuestions.forEach((defaultQ, index) => {
       // find and update
-      serverTopicsData.every((serverTopic) => { 
-        console.log('inside if',defaultQ['topic_id'].toString() === serverTopic['topic_id'].toString());
+
+      // tslint:disable-next-line: max-line-length
+      const matchedServerIdx = serverTopicsData.findIndex(serverTopic => defaultQ['topic_id'].toString() === serverTopic['topic_id'].toString());
+      if (matchedServerIdx > -1) {
+          defaultQuestions[index]['isUploaded'] = serverTopicsData[matchedServerIdx]['isUploaded'];
+          defaultQuestions[index]['topic_status'] = '3';
+          defaultQuestions[index]['file_url'] = 'already synced with server';
+      }
+      /* serverTopicsData.every((serverTopic) => {
+        console.log('inside if', defaultQ['topic_id'].toString() === serverTopic['topic_id'].toString());
         if(defaultQ['topic_id'].toString() === serverTopic['topic_id'].toString()) {
           defaultQuestions[index]['isUploaded'] = serverTopic['isUploaded'];
-         defaultQuestions[index]['topic_status'] = '3';
-          defaultQuestions[index]['file_url'] = 'already synced with server'; 
-          console.log('if ended',defaultQ['topic_id'].toString());
+          defaultQuestions[index]['topic_status'] = '3';
+          defaultQuestions[index]['file_url'] = 'already synced with server';
+          console.log('if ended', defaultQ['topic_id'].toString());
           return false;
         }
-
-   console.log('inside else block', defaultQ);       
-  defaultQuestions[index]['isUploaded'] = false;
+        console.log('inside else block', defaultQ);
+        defaultQuestions[index]['isUploaded'] = false;
         return true;
 
 
-})
+}) */
 
     });
     return defaultQuestions;
