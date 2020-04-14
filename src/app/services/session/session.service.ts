@@ -158,4 +158,44 @@ export class SessionService {
       return true;
     }
   }
+
+  generateSession(sessionData, defaultQuestions) {
+    const session = {
+      name: sessionData['name'],
+      sessionid: sessionData['session_id'],
+      created: sessionData['created'],
+      isUploaded: sessionData['isUploaded'],
+      topics: this.syncRemoteTopics(sessionData.topics, defaultQuestions),
+      topics_limit: sessionData.topics.length,
+    };
+   
+    console.log('these are the questions');
+    console.log('generated session object is ', session.topics);
+    return session;
+  }
+
+  syncRemoteTopics(serverTopicsData, defaultQuestions) {
+    // update the question using server data
+    defaultQuestions.forEach((defaultQ, index) => {
+      // find and update
+      serverTopicsData.every((serverTopic) => { 
+        console.log('inside if',defaultQ['topic_id'].toString() === serverTopic['topic_id'].toString());
+        if(defaultQ['topic_id'].toString() === serverTopic['topic_id'].toString()) {
+          defaultQuestions[index]['isUploaded'] = serverTopic['isUploaded'];
+         defaultQuestions[index]['topic_status'] = '3';
+          defaultQuestions[index]['file_url'] = 'already synced with server'; 
+          console.log('if ended',defaultQ['topic_id'].toString());
+          return false;
+        }
+
+   console.log('inside else block', defaultQ);       
+  defaultQuestions[index]['isUploaded'] = false;
+        return true;
+
+
+})
+
+    });
+    return defaultQuestions;
+  }
 }

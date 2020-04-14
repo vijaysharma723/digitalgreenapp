@@ -4,6 +4,7 @@
         <domain includeSubdomains="true">localhost</domain>
         <domain includeSubdomains="true">13.234.2.81</domain>
         <domain includeSubdomains="true">52.221.207.221</domain>
-        <domain includeSubdomains="true">a1368052.ngrok.io</domain>
+        <domain includeSubdomains="true">d7bf3cb9.ngrok.io</domain>
+        <domain includeSubdomains="true">socion-pda-dashboard.stackroute.com:3015</domain>
     </domain-config>
 </network-security-config>

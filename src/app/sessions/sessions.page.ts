@@ -1,5 +1,5 @@
 // tslint:disable: no-string-literal
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ChecknetworkService } from '../services/checknetwork/checknetwork.service';
 import { File } from '@ionic-native/file/ngx';
 import { Network } from '@ionic-native/network/ngx';
@@ -15,19 +15,21 @@ import { Platform } from '@ionic/angular';
 import { ToasterService } from '../services/toaster/toaster.service';
 import { Storage } from '@ionic/storage';
 import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-sessions',
   templateUrl: './sessions.page.html',
   styleUrls: ['./sessions.page.scss']
 })
-export class SessionsPage implements OnInit {
+export class SessionsPage implements OnInit, OnDestroy {
   userName: any;
   parentFolderDir = 'session';
   isOnline: boolean;
   subscription: any;
   counter = 0;
   sessionlist = [];
+  networkSubscription: Subscription;
   constructor(
     public checknetwork: ChecknetworkService,
     public network: Network,
@@ -44,7 +46,7 @@ export class SessionsPage implements OnInit {
   ) {}
 
   async ngOnInit() {
-    this.checknetwork.isOnline.subscribe(val => {
+    this.networkSubscription = this.checknetwork.isOnline.subscribe(val => {
       if (val === 'Connected') {
         // when online is detected on the sessions page, trigger sync api
         // no need to sync sessions if user is not logged in
@@ -67,6 +69,21 @@ export class SessionsPage implements OnInit {
     });
   }
   ionViewDidEnter() {
+    this.networkSubscription = this.checknetwork.isOnline.subscribe(val => {
+      if (val === 'Connected') {
+        // when online is detected on the sessions page, trigger sync api
+        // no need to sync sessions if user is not logged in
+        const loggedInUserDetails = this.userService.loggedInUser;
+        if (loggedInUserDetails) {
+          console.log('user is logged in, sync its sessions');
+          this.syncService.syncUserSessions (true);
+        } else {
+          console.log('user is not logged in, no need to sync its sessions');
+        }
+      } else if (val === 'Disconnected') {
+        console.log('not ok');
+      }
+    });
     console.log('session page view ok');
     this.userName = this.userService.loggedInUser['username'];
     if (this.sessionlist && this.sessionlist.length > 0 && this.checknetwork.isOnlineStatic) {
@@ -209,5 +226,12 @@ export class SessionsPage implements OnInit {
 
   ionViewWillLeave() {
     this.subscription.unsubscribe();
+    this.networkSubscription.unsubscribe();
+  }
+
+  ngOnDestroy() {
+    if (this.networkSubscription) {
+      this.networkSubscription.unsubscribe();
+    }
   }
 }

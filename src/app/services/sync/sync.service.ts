@@ -18,12 +18,12 @@ import { UserService } from '../user.service';
 export class SyncService {
 
   DEFAULT_TIME_DIFF_FOR_ELIGIBILITY = 5;
-  /* private APIEndpoint = 'https://db0ce24a.ngrok.io/sessions/upload';
-  private createSessionEndPoint = 'https://db0ce24a.ngrok.io/sessions/create';
-  private CheckStatusAPIEndpoint = 'https://db0ce24a.ngrok.io/sessions/status/'; */
-  private APIEndpoint = 'http://52.221.207.221:3001/sessions/upload';
-  private createSessionEndPoint = 'http://52.221.207.221:3001/sessions/create';
-  private CheckStatusAPIEndpoint = 'http://52.221.207.221:3001/sessions/status/';
+  private APIEndpoint = 'https://d7bf3cb9.ngrok.io/sessions/upload';
+  private createSessionEndPoint = 'https://d7bf3cb9.ngrok.io/sessions/create';
+  private CheckStatusAPIEndpoint = 'https://d7bf3cb9.ngrok.io/sessions/status/'; 
+  // private APIEndpoint = 'http://socion-pda-dashboard.stackroute.com:3015/sessions/upload';
+  // private createSessionEndPoint = 'http://socion-pda-dashboard.stackroute.com:3015/sessions/create';
+  // private CheckStatusAPIEndpoint = 'http://socion-pda-dashboard.stackroute.com:3015/sessions/status/';
   private defaultBearer = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJpc2hhYmhrYWxyYTk2IiwiZW1haWwiOiJyaXNoYWJoa2FscmE5NkBnbWFpbC5jb20iLCJpYXQiOjE1ODA4ODI1Nzl9.dxrWrjX3jaUe4t33Y9H0oLdSxenSaJA-EYaCNHIk8Ys';
   parentFolderDir = 'session';
 
@@ -47,7 +47,7 @@ export class SyncService {
    */
 
   async sendSessionFileUploadRequest(filePath, APIEndPoint?: string, requestType?: string) {
-    console.log('file to upload is', filePath);
+    console.log('file to upload s', filePath);
     // check if the user is online or not
     if (typeof this.networkSrvc.isOnlineStatic === 'boolean' && this.networkSrvc.isOnlineStatic) {
       console.log('device is online');
