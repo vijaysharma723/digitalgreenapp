@@ -1,0 +1,33 @@
+
+.textcenter{
+    text-align: center;
+    margin:auto;
+}
+.backbutton{
+    left:36px;
+    position: absolute;
+    // z-index: 999
+}
+
+.heading{
+    margin-top: 3vh;
+    padding-left: 5vh;
+}
+
+.questions{
+margin-top: 1vh;  
+padding-top: 1vh;
+padding-right: 5vh;
+padding-left: 5vh;
+text-align: left
+
+}
+
+.scrollablecontainer {
+   
+   
+    padding: 15px;
+    overflow: scroll;
+    border: 1px solid #ccc;
+  }
+  
