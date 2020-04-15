@@ -20,6 +20,7 @@
           </ion-item>
           <ion-list >
             <ion-item>
+              <ion-icon name="language-outline" slot="start" color="primary"></ion-icon>
               <ion-label>{{'Select Language' | translate}}</ion-label>
               <ion-select interface="popover" [(ngModel)]="selectedLanguage" (ionChange)="optionsFn($event)">
                 <ion-select-option *ngFor="let lang of languageList" value="{{lang}}">
