@@ -19,10 +19,8 @@ sidebarLangSub: Subscription;
   ) {}
 
   ngOnInit() {
-    console.log('login view for translator active');
     this.sidebarLangSub = this.languagetranslator.recentPickedLanguage.subscribe(lang => {
       if (lang) {
-        console.log('language change detectd for the login', lang);
         this.selectedLanguage = lang;
         this.cdr.detectChanges();
       }
@@ -30,8 +28,11 @@ sidebarLangSub: Subscription;
   }
 
   ngOnDestroy() {
-    console.log('unsubscribing on translator component');
     this.sidebarLangSub.unsubscribe();
+  }
+
+  langSelected(lang) {
+    this.languagetranslator.setLanguage(lang);
   }
 
   optionsFn(event) {

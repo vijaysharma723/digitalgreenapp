@@ -1,18 +1,6 @@
-
-<p>You can easily control dropdowns programmatically using the exported dropdown instance.</p>
-
-<!-- <div class="d-inline-block" ngbDropdown #myDrop="ngbDropdown">
-  <button class="btn btn-outline-primary mr-2" id="dropdownManual" ngbDropdownAnchor (focus)="myDrop.open()">Toggle dropdown</button>
-  <div ngbDropdownMenu aria-labelledby="dropdownManual">
-    <button ngbDropdownItem>Action - 1</button>
-    <button ngbDropdownItem>Another Action</button>
-    <button ngbDropdownItem>Something else is here</button>
-  </div>
-</div> -->
-<ion-list >
+<!-- <ion-list >
   <ion-item>
     <ion-label>{{'Select Language' | translate}}</ion-label>
-    <!--<ion-select interface="popover" [(ngModel)]="selectedLanguage" (ionChange)="optionsFn()"> -->
       <ion-select interface="popover" 
       [ngModel]="selectedLanguage" 
       (ionChange)="optionsFn($event)">
@@ -21,5 +9,12 @@
       </ion-select-option>
     </ion-select>
   </ion-item>
-</ion-list>
+</ion-list> -->
 
+<div class="languageList">
+  <span class="languageWrapper">
+    <a (click)="langSelected('en')">English</a>
+    &nbsp;
+    <a (click)="langSelected('hi')">Hindi</a>
+  </span>
+</div>
