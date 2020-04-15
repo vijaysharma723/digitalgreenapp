@@ -102,7 +102,7 @@ export class LoginPage implements OnInit, OnDestroy {
   async present() {
     this.isLoading = true;
     return await this.loadingController.create({
-      message: 'Loading sessions...'
+      message: this.translate.instant('sessionsLoadingText')
     }).then(a => {
       a.present().then(() => {
         console.log('presented');
