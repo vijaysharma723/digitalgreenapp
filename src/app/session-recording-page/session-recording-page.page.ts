@@ -36,6 +36,7 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     topics: []
   };
   sessionid: string;
+  backBtnSubscription: Subscription;
   flag: boolean = false;
   topicName: string;
   recordStarted = false;
@@ -63,6 +64,7 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     public translate: TranslateService,
     private toaster: ToasterService,
     private readonly alertController: AlertController,
+    private readonly platform: Platform,
   ) {}
 
   ngOnInit() {
@@ -91,6 +93,11 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
     // subscribe to detect language change
     this.translateChangeSub = this.translate.onLangChange.subscribe(changeEvent => {
       this.topicName = this.topicObject['topic_name'][changeEvent.lang];
+    });
+
+    // subscribe to notify user for aborting recording
+    this.backBtnSubscription = this.platform.backButton.subscribeWithPriority(9999, () => {
+      this.triggerPrompt();
     });
   }
   loadFiles() {
@@ -276,6 +283,7 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
       this.audio.release();
       this.countFlag = 0;
     }
+    this.backBtnSubscription.unsubscribe();
   }
 
   ionViewWillLeave() {
