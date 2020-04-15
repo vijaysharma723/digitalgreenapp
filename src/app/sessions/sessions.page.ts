@@ -46,21 +46,6 @@ export class SessionsPage implements OnInit, OnDestroy {
   ) {}
 
   async ngOnInit() {
-    this.networkSubscription = this.checknetwork.isOnline.subscribe(val => {
-      if (val === 'Connected') {
-        // when online is detected on the sessions page, trigger sync api
-        // no need to sync sessions if user is not logged in
-        const loggedInUserDetails = this.userService.loggedInUser;
-        if (loggedInUserDetails) {
-          console.log('user is logged in, sync its sessions');
-          this.syncService.syncUserSessions (true);
-        } else {
-          console.log('user is not logged in, no need to sync its sessions');
-        }
-      } else if (val === 'Disconnected') {
-        console.log('not ok');
-      }
-    });
     this.route.url.subscribe(async () => {
       const sessions = await this.sessionService.getSessionList();
       if (!!sessions) {
@@ -76,7 +61,7 @@ export class SessionsPage implements OnInit, OnDestroy {
         const loggedInUserDetails = this.userService.loggedInUser;
         if (loggedInUserDetails) {
           console.log('user is logged in, sync its sessions');
-          this.syncService.syncUserSessions (true);
+          this.syncService.syncUserSessions ();
         } else {
           console.log('user is not logged in, no need to sync its sessions');
         }
@@ -141,8 +126,9 @@ export class SessionsPage implements OnInit, OnDestroy {
       ) {
         const fileurl = this.sessionlist[sessionIndex]['topics'][localTopicIndex]['file_url'];
         if (fileurl) {
+          try {
             this.file.removeFile(this.file.externalDataDirectory + 'session', fileurl).then(fileResp => {
-              if (fileResp['status']) {
+              if (fileResp['success']) {
                 console.log('File deleted', fileResp);
               } else {
                 console.log('Maybe file not found, marking it as synced');
@@ -156,6 +142,10 @@ export class SessionsPage implements OnInit, OnDestroy {
                 this.sessionlist[sessionIndex]['topics'][localTopicIndex]['file_url'] = '';
               }
           });
+          } catch (fileRemoveErr) {
+            console.log('catched file remove error from the status sync service ', fileRemoveErr);
+            console.log('since the topic is in remote but the file is not is local, marking it as sync');
+          }
           } else {
             console.log('did not detect file url to delete it, ignoring this');
           }

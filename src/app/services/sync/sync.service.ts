@@ -18,9 +18,9 @@ import { UserService } from '../user.service';
 export class SyncService {
 
   DEFAULT_TIME_DIFF_FOR_ELIGIBILITY = 5;
-  private APIEndpoint = 'https://d7bf3cb9.ngrok.io/sessions/upload';
-  private createSessionEndPoint = 'https://d7bf3cb9.ngrok.io/sessions/create';
-  private CheckStatusAPIEndpoint = 'https://d7bf3cb9.ngrok.io/sessions/status/'; 
+  private APIEndpoint = 'https://b6d31f52.ngrok.io/sessions/upload';
+  private createSessionEndPoint = 'https://b6d31f52.ngrok.io/sessions/create';
+  private CheckStatusAPIEndpoint = 'https://b6d31f52.ngrok.io/sessions/status/';
   // private APIEndpoint = 'http://socion-pda-dashboard.stackroute.com:3015/sessions/upload';
   // private createSessionEndPoint = 'http://socion-pda-dashboard.stackroute.com:3015/sessions/create';
   // private CheckStatusAPIEndpoint = 'http://socion-pda-dashboard.stackroute.com:3015/sessions/status/';
@@ -115,7 +115,7 @@ export class SyncService {
           // else increment the retires so that it can be reuploaded later on
           // NOTE : by this time the file status should be 0 (only initiated but not uploaded)
           // this.dialog.alert(`Error uploading ${fileName}`);
-          this.updateRetries(sessionID, topicID);
+          // this.updateRetries(sessionID, topicID);
           console.log('Error while uploading', uploadErr);
           uploadRej({ ok: false, error: `Error uploading ${fileName}` });
         });
@@ -180,7 +180,7 @@ export class SyncService {
     }
   }
 
-  async syncUserSessions(ifOnline) {
+  async syncUserSessions(ifOnline = window.navigator.onLine) {
     if (ifOnline) {
       console.log('initiating sync event');
       // get the file, and send its path to the upload/session api
@@ -188,6 +188,7 @@ export class SyncService {
       const unsyncedSessions = await this.sessionSrvc.getUnSyncedSessions();
       console.log('unsynced sessions found as ', unsyncedSessions);
       if (unsyncedSessions['ok'] && unsyncedSessions['sessions'].length > 0) {
+        // get the session status for logged in user
         for (const unsyncedSessionObj of unsyncedSessions['sessions']) {
           // for Each of the unsynced sessions, verify if these sessions are already created or not
           // if they are not created, then first create an empty session, then proceed with uploading
@@ -195,11 +196,11 @@ export class SyncService {
           const isSessionPresent = await this.verifyorCreateSession(unsyncedSessionObj, userDetails);
           if (isSessionPresent['ok']) {
             // generate complete path for the file, send it to upload api
-            const sessionTopics = unsyncedSessionObj['topics'];
+            const sessionTopics = [...unsyncedSessionObj['topics']];
             if (sessionTopics && Array.isArray(sessionTopics) && sessionTopics.length > 0) {
               for (const topic of sessionTopics) {
                 // check if the last time this topic was updated X mins ago (default 20)
-                if (topic.hasOwnProperty('file_url') && parseInt(topic.topic_status, 10) < this.sessionSrvc.STATUS.TOPIC_UPLOADED) {
+                if (topic.hasOwnProperty('file_url') && topic.file_url && parseInt(topic.topic_status, 10) < this.sessionSrvc.STATUS.TOPIC_UPLOADED) {
 
                   if (this.checkTopicTSEligibility(topic)) {
                     // file has been recorded, time to upload it

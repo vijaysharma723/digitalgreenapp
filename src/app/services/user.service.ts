@@ -71,6 +71,10 @@ export class UserService {
     }
   }
 
+  get UserQuestionsStatic() {
+    return this.questionsSrvc.procedure;
+  }
+
   async setLoggedInUser(userdetails) {
     const loggedinuser = await this.storage.set(
       "loggedinuser",

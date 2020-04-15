@@ -109,6 +109,7 @@ export class QuestionsService {
       questions: [
         {
           topic_id: '1',
+          topic_status: '-1',
           topic_name:
           {
             en: 'What needs to be improved in the video and broadcast process?',
@@ -118,6 +119,7 @@ export class QuestionsService {
           status: false
         }, {
           topic_id: '2',
+          topic_status: '-1',
           topic_name: {
             en: 'What else do you want to learn?',
             hi: 'आप और क्या सीखना चाहते हैं?'
@@ -127,6 +129,7 @@ export class QuestionsService {
         },
         {
           topic_id: '3',
+          topic_status: '-1',
           topic_name: {
             en: 'What challenges do you face in today\'s era?',
             hi: 'आज के दौर में आपको किन चुनौतियों का सामना करना पड़ता है?'
@@ -136,6 +139,7 @@ export class QuestionsService {
         },
         {
           topic_id: '4',
+          topic_status: '-1',
           topic_name: {
             en: 'What are the remedies that can help you?',
             hi: 'ऐसे कौन से उपाय हैं जो आपकी मदद कर सकते हैं?'
@@ -158,6 +162,7 @@ export class QuestionsService {
       questions: [
         {
           topic_id: '1',
+          topic_status: '-1',
           topic_name: {
             en: 'What improvements need to be done in the process?',
             hi: 'प्रक्रिया में क्या सुधार करने की आवश्यकता है?'
@@ -167,6 +172,7 @@ export class QuestionsService {
         },
         {
           topic_id: '2',
+          topic_status: '-1',
           topic_name: {
             en: 'What are the top challenges faced by farmers?',
             hi: 'किसानों द्वारा सामना किए गए शीर्ष चुनौतियां क्या हैं?'
@@ -176,6 +182,7 @@ export class QuestionsService {
         },
         {
           topic_id: '3',
+          topic_status: '-1',
           topic_name: {
             en: 'What are the ground level challenges faced by VRP?',
             hi: 'वीआरपी के सामने जमीनी स्तर की चुनौतियां क्या हैं?'
@@ -194,6 +201,7 @@ export class QuestionsService {
       questions: [
         {
           topic_id: '1',
+          topic_status: '-1',
           isPlayed: false,
           topic_title: {hi: 'कृषि', en: 'Agriculture'},
           topic_name: {
@@ -203,6 +211,7 @@ export class QuestionsService {
           status: false
         }, {
           topic_id: '2',
+          topic_status: '-1',
           isPlayed: false,
           topic_title: {hi: 'कृषि', en: 'Agriculture'},
           topic_name: {
@@ -213,6 +222,7 @@ export class QuestionsService {
         },
         {
           topic_id: '3',
+          topic_status: '-1',
           isPlayed: false,
           topic_title: {hi: 'स्वास्थ्य', en: 'Health'},
           topic_name: {
@@ -223,6 +233,7 @@ export class QuestionsService {
         },
         {
           topic_id: '4',
+          topic_status: '-1',
           isPlayed: false,
           topic_title: {hi: 'स्वास्थ्य', en: 'Health'},
           topic_name: {

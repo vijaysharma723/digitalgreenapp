@@ -159,17 +159,58 @@ export class SessionService {
     }
   }
 
-  generateSession(sessionData, defaultQuestions) {
+  gs(sessionData, dq) {
+    const serverQuestions = [...sessionData['topics']];
+    const defaultQuestions = [...dq];
+    const mergedSession = {
+      ...sessionData,
+      sessionid: sessionData['session_id'],
+      topics_limit: dq.length,
+      topics: this.mergeTopics(serverQuestions, defaultQuestions),
+    };
+    // delete the session_id key from new object
+    delete mergedSession.session_id;
+    return mergedSession;
+  }
+
+  mergeTopics(serverQuestions, defaultQuestions) {
+    return defaultQuestions.map(defaultQ => {
+      // find if this question id is present in server questions
+      const matchedIdx = serverQuestions.findIndex(serverQ => serverQ['topic_id'].toString() === defaultQ['topic_id'.toString()]);
+      if (matchedIdx < 0) {
+        return {
+          ...defaultQ,
+          isUploaded: false,
+        };
+      } else {
+        return {
+          ...defaultQ,
+          ...serverQuestions[matchedIdx],
+          topic_status : '3',
+          file_url: '',
+        };
+      }
+    });
+  }
+
+  generateSession(sessionData, dq) {
+    let defaultQuestionsForReference = [];
+    const immutableDefaultQuestions = defaultQuestionsForReference.concat(dq);
+    console.log('copied immutable default questions are ', immutableDefaultQuestions);
+    console.log('copied defaultQuestionsForReference are ', defaultQuestionsForReference);
+    console.log('copied dq are ', dq);
+
     const session = {
       name: sessionData['name'],
       sessionid: sessionData['session_id'],
       created: sessionData['created'],
       isUploaded: sessionData['isUploaded'],
-      topics: this.syncRemoteTopics(sessionData.topics, defaultQuestions),
-      topics_limit: sessionData.topics.length,
+      topics_limit: immutableDefaultQuestions.length,
     };
+    // assign topics
+    session['topics'] = this.syncRemoteTopics(sessionData.topics, immutableDefaultQuestions);
     console.log('these are the questions');
-    console.log('generated session object is ', session.topics);
+    console.log('generated session object is ', session['topics']);
     return session;
   }
 
@@ -182,33 +223,20 @@ export class SessionService {
    */
   syncRemoteTopics(serverTopicsData, defaultQuestions) {
     // update the question using server data
-    defaultQuestions.forEach((defaultQ, index) => {
+    const modifiedDefaultQuestions = defaultQuestions.map((defaultQ) => {
       // find and update
 
       // tslint:disable-next-line: max-line-length
       const matchedServerIdx = serverTopicsData.findIndex(serverTopic => defaultQ['topic_id'].toString() === serverTopic['topic_id'].toString());
       if (matchedServerIdx > -1) {
-          defaultQuestions[index]['isUploaded'] = serverTopicsData[matchedServerIdx]['isUploaded'];
-          defaultQuestions[index]['topic_status'] = '3';
-          defaultQuestions[index]['file_url'] = 'already synced with server';
+          defaultQ['isUploaded'] = serverTopicsData[matchedServerIdx]['isUploaded'];
+          defaultQ['topic_status'] = '3';
+          defaultQ['file_url'] = '';
+      } else {
+        defaultQ['isUploaded'] = false;
       }
-      /* serverTopicsData.every((serverTopic) => {
-        console.log('inside if', defaultQ['topic_id'].toString() === serverTopic['topic_id'].toString());
-        if(defaultQ['topic_id'].toString() === serverTopic['topic_id'].toString()) {
-          defaultQuestions[index]['isUploaded'] = serverTopic['isUploaded'];
-          defaultQuestions[index]['topic_status'] = '3';
-          defaultQuestions[index]['file_url'] = 'already synced with server';
-          console.log('if ended', defaultQ['topic_id'].toString());
-          return false;
-        }
-        console.log('inside else block', defaultQ);
-        defaultQuestions[index]['isUploaded'] = false;
-        return true;
-
-
-}) */
-
+      return defaultQ;
     });
-    return defaultQuestions;
+    return modifiedDefaultQuestions;
   }
 }
