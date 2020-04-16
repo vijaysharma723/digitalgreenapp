@@ -28,6 +28,25 @@
    <li>{{'Interviewee_3' | translate}}</li>
    <br/>
 </ul>
+<h5 class="audioheading"><b>{{'sampleaudio1' | translate}}</b></h5>
+<div class="playAudio">
+ 
+  <ion-button
+*ngIf="((stop == undefined))"
+size="small"
+color="primary"
+(click)="mediaPlayAudio(1)"
+>
+<ion-icon size="small" slot="icon-only" name="play"></ion-icon>
+</ion-button>
+<ion-button
+  *ngIf="(file_url)"
+  size="small"
+  color="danger"
+  class="stop"
+  (click)="mediaPauseAudio(topic, topic.topic_id)"
+></ion-button>
+</div>
 </div>
 <app-footer></app-footer>
 

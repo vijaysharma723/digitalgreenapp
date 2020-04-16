@@ -18,9 +18,9 @@ import { UserService } from '../user.service';
 export class SyncService {
 
   DEFAULT_TIME_DIFF_FOR_ELIGIBILITY = 5;
-   private APIEndpoint = 'https://49868fa6.ngrok.io/sessions/upload';
-  private createSessionEndPoint = 'https://49868fa6.ngrok.io/sessions/create';
-  private CheckStatusAPIEndpoint = 'https://49868fa6.ngrok.io/sessions/status/'; 
+   private APIEndpoint = 'https://8b1a4e23.ngrok.io/sessions/upload';
+  private createSessionEndPoint = 'https://8b1a4e23.ngrok.io/sessions/create';
+  private CheckStatusAPIEndpoint = 'https://8b1a4e23.ngrok.io/sessions/status/'; 
   // private APIEndpoint = 'http://52.221.207.221:3001/sessions/upload';
   // private createSessionEndPoint = 'http://52.221.207.221:3001/sessions/create';
   // private CheckStatusAPIEndpoint = 'http://52.221.207.221:3001/sessions/status/';

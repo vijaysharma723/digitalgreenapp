@@ -4,6 +4,6 @@
         <domain includeSubdomains="true">localhost</domain>
         <domain includeSubdomains="true">13.234.2.81</domain>
         <domain includeSubdomains="true">52.221.207.221</domain>
-        <domain includeSubdomains="true">49868fa6.ngrok.io</domain>
+        <domain includeSubdomains="true">8b1a4e23.ngrok.io</domain>
     </domain-config>
 </network-security-config>
