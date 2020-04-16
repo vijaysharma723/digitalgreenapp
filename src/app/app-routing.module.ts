@@ -33,6 +33,13 @@ const routes: Routes = [
       import("./session-recording-page/session-recording-page.module").then(
         m => m.SessionRecordingPagePageModule
       )
+  },
+  {
+    path: "bestpractices",
+    loadChildren: () =>
+    import("./bestpractices/bestpractices.module").then(
+      m => m.BestpracticesModule
+    )
   }
 ];
 
