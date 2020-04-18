@@ -30,9 +30,13 @@
    <li>{{'Interviewee_3' | translate}}</li>
    <br/>
 </ul>
-<h5 class="audioheading"><b>{{'sampleaudio1' | translate}}</b></h5>
 
-<div class="playAudio" onended="mediaPauseAudio()">
+
+<div class="aligning">
+  <div  class="audioheading">
+  <h5><b>{{'sampleaudio1' | translate}}</b></h5>
+</div>
+  <div class="playAudio">
   <ion-button
   id = "audio1" 
   *ngIf="((stop == undefined) || (stop == 2))"
@@ -56,22 +60,27 @@ color="primary"
 <ion-icon size="small" slot="icon-only" name="square"></ion-icon>
 </ion-button>
 </div>
+</div>
+<br/>
 
-<h5 class="audioheading"><b>{{'sampleaudio2' | translate}}</b></h5>
-<div class="playAudio">
-<ion-button 
-controls 
+<div >
+
+  <div class="audioheading">
+  <h5 ><b>{{'sampleaudio2' | translate}}</b></h5>
+</div>
+
+  <div class = "playAudio">
+  <ion-button  
 *ngIf="((stop == undefined) || (stop == 1))"
-
 size="small"
 color="primary"
 (click)="mediaPlayAudio(2)"
 >
 <ion-icon size="small" slot="icon-only" name="play"></ion-icon>
 </ion-button>
+
 <ion-button
 *ngIf="((stop == 2) )"
-
 size="small"
 color="danger"
 class="stop"
@@ -79,6 +88,9 @@ class="stop"
 >
 <ion-icon size="small" slot="icon-only" name="square"></ion-icon>
 </ion-button>
+
+</div>
+
 </div>
 
 </div>
