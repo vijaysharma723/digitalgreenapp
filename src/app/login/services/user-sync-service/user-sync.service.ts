@@ -10,7 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class UserSyncService {
 
   // private APIEndpoint = 'https://db0ce24a.ngrok.io/user/list';
-  private APIEndpoint = 'https://8b1a4e23.ngrok.io/user/list';
+  private APIEndpoint = 'https://81be1c4f.ngrok.io/user/list';
   constructor(
     private readonly http: HttpClient,
     private readonly userService: UserService,
