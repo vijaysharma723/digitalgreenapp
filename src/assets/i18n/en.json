@@ -63,6 +63,7 @@
   "permissionFailedMsg": "You cannot record audio",
   "userSyncSuccess": "Users have been successfully synchronized",
   "userSyncFailed": "User synchronization failed. Will try later",
+  "BestPractices":"BestPractices",
   "Best Practices":"Best Practices",
   "Interviewer":"For Interviewer",
   "Interviewer_0": "Make sure there is no background noise such as third person talking, unnecessary sounds, rain etc. Try to use earphones to reduce noise.",
@@ -75,5 +76,5 @@
   "Interviewee_2":  "Prefer to speak with moderate to little fast speed. if you are speaking fast, try to speak clearly with more emphasis on difficult words.",
   "Interviewee_3": "Try to speak in as proper way as possible, thereby avoiding mixing words unnecessarily.",
   "sampleaudio1": "Sample Audio 1",
-  "sampleaudio2": "Sample Audio 1"
+  "sampleaudio2": "Sample Audio 2"
 }

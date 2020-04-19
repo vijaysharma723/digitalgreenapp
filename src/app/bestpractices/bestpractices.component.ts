@@ -1,11 +1,9 @@
-import { Component, Injectable,  ChangeDetectorRef } from '@angular/core';
+import { Component, Injectable,  ChangeDetectorRef, Input } from '@angular/core';
 import { TranslateService} from '@ngx-translate/core';
 import { Platform } from '@ionic/angular';
 import { File} from "@ionic-native/file/ngx";
-import { Media } from "@ionic-native/media/ngx";
+import { Media, MediaObject } from "@ionic-native/media/ngx";
 import { Subscription } from 'rxjs';
-
-const SAMPLE_1 = "/Users/vijaysharma/Documents/digitalgreen/digitalgreenapp/digitalgreenapp/src/assets/sampleaudios/sample1.mp3";
 
 @Component({
   selector: 'app-bestpractices',
@@ -19,7 +17,7 @@ providedIn:'root'
 
 export class BestpracticesComponent {
   filepath: any;
-  audio: any;
+   audio: any;
   stop: any;
   audio1Path = './../../assets/sampleaudios'
   translateChangeSub: Subscription;
@@ -29,46 +27,56 @@ export class BestpracticesComponent {
     private plt: Platform,
     private file: File,
     private media: Media,
-    
     ){}
+    
 
-
-
-    mediaPauseAudio(topic, i) {
+    mediaPauseAudio(idx) {
       this.audio.pause();
       this.stop = undefined;
       this.cdr.detectChanges();
     }
-    mediaPlayAudio(idx) {
+    
+    mediaPlayAudio(idx ) {
+      if(this.plt.is("android"))
+  { 
+
+      if(this.stop == 1 || this.stop ==2)
+      {
+        this.audio.pause();
+      }
       if (this.plt.is("android")) {
         this.filepath = this.getSampleAudioPath(idx);
-        this.audio = this.media.create(this.filepath);
-      }
-      this.audio.play();
+        this.audio = new Audio(this.filepath);
+        }
       this.stop = idx;
-      this.cdr.detectChanges();
-      console.log('audio',this.audio.play());
-      this.audio.setVolume(1.0);
-      this.audio.onStatusUpdate.subscribe(status => {
-        console.log('status',status);
-        if (status.toString() === "4") {
-          // player end running
-          this.stop = undefined;
-          this.cdr.detectChanges();
-           }
-      });
-    }
+     
+      this.audio.play();
+     this.audio.setVolume = 1.0; 
+      this.audio.addEventListener("ended",()=>{
+        this.mediaPauseAudio(idx);
+      })
+    
+    
+         
+  }    
+     }
 
     getSampleAudioPath(audioID) {
       //return the file path corresponding to the audio sample  ID provideded 
-      return this.audio1Path + `/sample${audioID}.mp3`;
+      return this.audio1Path + `/sample${audioID}.wav`;
      }
   
-    ngOnDestroy() {
-      if (!!this.audio) {
-        this.audio.stop();
+      ngOnDestroy() {
+      if(this.audio) {
+        this.audio.pause();
+        this.stop =undefined;
+        this.audio = null;
       }
-      this.translateChangeSub.unsubscribe();
     }
- 
+
+
+    hello()
+    {
+      console.log("hello world");
+    }
 }
