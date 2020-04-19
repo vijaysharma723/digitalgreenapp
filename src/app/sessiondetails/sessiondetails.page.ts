@@ -142,7 +142,7 @@ export class SessiondetailsPage implements OnInit, OnDestroy {
         this.parentDirFolder +
         "/" +
         topic.file_url;
-
+        console.log(this.filepath);
       this.audio = this.media.create(this.filepath);
     }
     this.audio.play();

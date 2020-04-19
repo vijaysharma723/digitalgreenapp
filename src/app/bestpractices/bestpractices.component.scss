@@ -1,0 +1,45 @@
+
+.textcenter{
+    text-align: center;
+    margin:auto;
+}
+.backbutton{
+    left:36px;
+    position: absolute;
+    // z-index: 999
+}
+
+.heading{
+    padding-top: 3vh;
+    margin-top: 3vh;
+    padding-left: 5vh;
+}
+
+.questions{
+margin-top: 1vh;  
+padding-top: 1vh;
+padding-right: 5vh;
+padding-left: 5vh;
+text-align: left
+
+}
+
+.scrollablecontainer {
+   padding: 15px;
+    overflow: scroll;
+    border: 1px solid #ccc;
+  }
+
+  .playAudio{
+     padding-top: 1vh;
+    padding-right: 5vh;
+   text-align: right;
+   }
+  .audioheading{
+  
+    padding-left: 5vh;
+    float: left;
+}
+  .aligning{
+      display: inline;
+  }
