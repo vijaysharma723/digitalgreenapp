@@ -9,9 +9,6 @@ import {HttpClient} from '@angular/common/http';
 })
 export class QuestionsService {
 
-  private apiEndpoints = {};
-  private roleSyncEndpoint = 'https://4294cbc9.ngrok.io/roles/users';
-  // private roleSyncEndpoint = 'http://52.221.207.221:3001/roles/users';
 
   private questions = [
     {
@@ -248,18 +245,7 @@ export class QuestionsService {
 
   constructor(
     private readonly apiConfig: ApiConfigService,
-    private readonly storage: Storage,
-    private readonly http: HttpClient) {
-      // setup the api endpoints object
-      this.apiConfig.getConfig.then(endpoints => {
-        this.apiEndpoints = endpoints;
-        console.log('recieved api endpoints as ', this.apiEndpoints);
-      })
-      .catch( e => {
-        console.log('catched error while getting api endpoints', e);
-        this.apiEndpoints = null;
-        });
-      }
+    private readonly storage: Storage) {}
 
   getDefaultQuestions(role): Promise<any> {
     return new Promise((resolve, rej) => {
