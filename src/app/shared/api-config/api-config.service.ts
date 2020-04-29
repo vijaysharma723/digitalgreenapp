@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 export class ApiConfigService {
 
   private readonly CONFIG = {
-    HOST: 'https://d06ddeeb.ngrok.io/',
+    HOST: 'http://socion-pda-dashboard.stackroute.com:3001/',
     AUTH: {
       // tslint:disable-next-line: max-line-length
       DEFAULT: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJpc2hhYmhrYWxyYTk2IiwiZW1haWwiOiJyaXNoYWJoa2FscmE5NkBnbWFpbC5jb20iLCJpYXQiOjE1ODA4ODI1Nzl9.dxrWrjX3jaUe4t33Y9H0oLdSxenSaJA-EYaCNHIk8Ys'
