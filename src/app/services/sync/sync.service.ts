@@ -18,14 +18,20 @@ import { UserService } from '../user.service';
 export class SyncService {
 
   DEFAULT_TIME_DIFF_FOR_ELIGIBILITY = 5;
-   private APIEndpoint = 'https://4294cbc9.ngrok.io/sessions/upload';
-  private createSessionEndPoint = 'https://4294cbc9.ngrok.io/sessions/create';
-  private CheckStatusAPIEndpoint = 'https://4294cbc9.ngrok.io/sessions/status/';
+  private APIEndpoint = 'http://socion-pda-dashboard.stackroute.com:3001/sessions/upload';
+  private createSessionEndPoint = 'http://socion-pda-dashboard.stackroute.com:3001/sessions/create';
+  private CheckStatusAPIEndpoint = 'http://socion-pda-dashboard.stackroute.com:3001/sessions/status/';
   // private APIEndpoint = 'http://52.221.207.221:3001/sessions/upload';
   // private createSessionEndPoint = 'http://52.221.207.221:3001/sessions/create';
   // private CheckStatusAPIEndpoint = 'http://52.221.207.221:3001/sessions/status/';
   private defaultBearer = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJpc2hhYmhrYWxyYTk2IiwiZW1haWwiOiJyaXNoYWJoa2FscmE5NkBnbWFpbC5jb20iLCJpYXQiOjE1ODA4ODI1Nzl9.dxrWrjX3jaUe4t33Y9H0oLdSxenSaJA-EYaCNHIk8Ys';
   parentFolderDir = 'session';
+
+  private readonly headerOptions = {
+    headers: new HttpHeaders(
+      // tslint:disable-next-line: object-literal-key-quotes
+      { 'Authorization': this.defaultBearer })
+  };
 
   constructor(
     private readonly FileTransferProvider: FileTransfer,
@@ -35,7 +41,7 @@ export class SyncService {
     private readonly http: HttpClient,
     private readonly sessionSrvc: SessionService,
     private readonly userService: UserService,
-    ) { }
+  ) { }
 
   /**
    * To send a session recording file (strictly in .wav format) to the session upload api. Note that this API will first look whether the session id is existing or not
@@ -188,55 +194,61 @@ export class SyncService {
       const unsyncedSessions = await this.sessionSrvc.getUnSyncedSessions();
       console.log('unsynced sessions found as ', unsyncedSessions);
       if (unsyncedSessions['ok'] && unsyncedSessions['sessions'].length > 0) {
-        // get the session status for logged in user
-        for (const unsyncedSessionObj of unsyncedSessions['sessions']) {
-          // for Each of the unsynced sessions, verify if these sessions are already created or not
-          // if they are not created, then first create an empty session, then proceed with uploading
-          const userDetails = await this.userService.getLoggedInUser();
-          const isSessionPresent = await this.verifyorCreateSession(unsyncedSessionObj, userDetails);
-          if (isSessionPresent['ok']) {
-            // generate complete path for the file, send it to upload api
-            const sessionTopics = [...unsyncedSessionObj['topics']];
-            if (sessionTopics && Array.isArray(sessionTopics) && sessionTopics.length > 0) {
-              for (const topic of sessionTopics) {
-                // check if the last time this topic was updated X mins ago (default 20)
-                if (topic.hasOwnProperty('file_url') && topic.file_url && parseInt(topic.topic_status, 10) < this.sessionSrvc.STATUS.TOPIC_UPLOADED) {
+        // get remote sessions first
+        const userDetails = await this.userService.getLoggedInUser();
+        const remoteSessionsList = await this.getRemoteSessions(userDetails['username']);
+        if (remoteSessionsList && remoteSessionsList['ok']) {
+          // get the session status for logged in user
+          for (const unsyncedSessionObj of unsyncedSessions['sessions']) {
+            // for Each of the unsynced sessions, verify if these sessions are already created or not
+            // if they are not created, then first create an empty session, then proceed with uploading
+            const isSessionPresent = await this.verifyorCreateSession(unsyncedSessionObj, userDetails, remoteSessionsList);
+            if (isSessionPresent['ok']) {
+              // generate complete path for the file, send it to upload api
+              const sessionTopics = [...unsyncedSessionObj['topics']];
+              if (sessionTopics && Array.isArray(sessionTopics) && sessionTopics.length > 0) {
+                for (const topic of sessionTopics) {
+                  // check if the last time this topic was updated X mins ago (default 20)
+                  if (topic.hasOwnProperty('file_url') && topic.file_url && parseInt(topic.topic_status, 10) < this.sessionSrvc.STATUS.TOPIC_UPLOADED) {
 
-                  if (this.checkTopicTSEligibility(topic)) {
-                    // file has been recorded, time to upload it
-                    const filePath = {
-                      base: this.file.externalDataDirectory,
-                      filePath: 'session/' + topic.file_url,
-                    };
-                    // check if it is present
-                    this.file.checkFile(filePath.base, filePath.filePath)
-                      .then(res => {
-                        console.log(res);
-                        if (res) {
-                          // file is present, upload it
-                          console.log('starting upload to ', filePath.filePath);
-                          // this.sessionSrvc.setSessionStatus({topic_status: 0, its: new Date().toISOString()}, unsyncedSessionObj.sessionid, topic.topic_id)
-                          this.sendSessionFileUploadRequest(filePath.filePath);
-                        } else {
-                          // file is not present, leave it as is
-                        }
-                      }).catch(fileErr => {
-                        if (fileErr.message === 'NOT_FOUND_ERR') {
-                          console.log('file url is present but file is not present locally for ' + filePath.filePath);
-                        }
-                      });
+                    if (this.checkTopicTSEligibility(topic)) {
+                      // file has been recorded, time to upload it
+                      const filePath = {
+                        base: this.file.externalDataDirectory,
+                        filePath: 'session/' + topic.file_url,
+                      };
+                      // check if it is present
+                      this.file.checkFile(filePath.base, filePath.filePath)
+                        .then(res => {
+                          console.log(res);
+                          if (res) {
+                            // file is present, upload it
+                            console.log('starting upload to ', filePath.filePath);
+                            // this.sessionSrvc.setSessionStatus({topic_status: 0, its: new Date().toISOString()}, unsyncedSessionObj.sessionid, topic.topic_id)
+                            this.sendSessionFileUploadRequest(filePath.filePath);
+                          } else {
+                            // file is not present, leave it as is
+                          }
+                        }).catch(fileErr => {
+                          if (fileErr.message === 'NOT_FOUND_ERR') {
+                            console.log('file url is present but file is not present locally for ' + filePath.filePath);
+                          }
+                        });
+                    } else {
+                      console.log('topic ', topic.topic_id + ' was uploaded less than default time diff, will try it later');
+                    }
                   } else {
-                    console.log('topic ', topic.topic_id + ' was uploaded less than default time diff, will try it later');
+                    // it has not been recorded, yet
                   }
-                } else {
-                  // it has not been recorded, yet
                 }
               }
+            } else {
+              console.error('unable to detect whether the session is already present on remote or not');
+              console.log('unexpected error while detecting session, will try again later');
             }
-          } else {
-            console.error('unable to detect whether the session is already present on remote or not');
-            console.log('unexpected error while detecting session, will try again later');
           }
+        } else {
+          console.log('recieved false from the remoteSessionList API, cannot sync right now, will try again later');
         }
       } else {
         console.log('No unsynced sessions present');
@@ -244,50 +256,63 @@ export class SyncService {
     }
   }
 
-  verifyorCreateSession(sessionObj, userObject) {
-    const username = userObject['username'];
-    const headerOptions = {
-      headers: new HttpHeaders(
-        // tslint:disable-next-line: object-literal-key-quotes
-        { 'Authorization': this.defaultBearer })
-    };
-    return new Promise((res, rej) => {
-      const endpoint = this.CheckStatusAPIEndpoint + username;
-      console.log('checking if the session is already created or not');
-      this.http.get(endpoint, headerOptions).toPromise()
-      .then(response => {
+  getRemoteSessions(username) {
+    const endpoint = this.CheckStatusAPIEndpoint + username;
+
+    return new Promise((resolve, reject) => {
+      this.http.get(endpoint, this.headerOptions).toPromise().then(response => {
         console.log('recieved http details for session detect', response);
         if (response['status'] && (response['status'].toString() === '200' || response['status'].toString() === '304')) {
-          if (response['data'].findIndex(session => session.session_id === sessionObj['sessionid']) < 0) {
-            // session is not present, create it first
-            console.log('session is not already present, sending the session create request');
-            const creationObj = this.getCreateSessionObject(sessionObj, username);
-            this.http.post(this.createSessionEndPoint, creationObj, headerOptions).toPromise()
-            .then(async creationRes => {
-              console.log('create session response', creationRes);
-              console.log('session created successfully, sending ok');
-              res({ok: true});
-            }).catch(creationError => {
-              console.log('An error detected while creating a new session on the server, sending back as error');
-              console.error(creationError);
-              res({ok: false});
-            });
-          } else {
-            // session is present, return success Object
-            console.log('session is already present in the remote, sending ok');
-            res({ok: true});
-          }
-      } else {
-        console.log('unexpected response code detected from verifyorCreate function, sending back as error');
-        console.log('response looks like', response);
-        res({ok: false});
-      }
-    })
-      .catch(error => {
-        console.log('error while hitting the session detect api', error);
-        res({ok: false});
+          console.log('sending back status api data');
+          resolve({ ok: true, data: response['data'] });
+        } else {
+          console.log('unexpected response code detected from getRemoteSessions function, sending back as error');
+          console.log('response looks like', response);
+          resolve({ ok: false });
+        }
+      }).catch(statusErr => {
+        console.log('An error occured while reading remote server sessions in getRemoteSessions function, sending back as eror');
+        console.log('eror was ', statusErr);
+        resolve({ ok: false });
       });
     });
+  }
+
+  verifyorCreateSession(sessionObj, userObject, remoteSessionData) {
+    const username = userObject['username'];
+    if (remoteSessionData['data'].findIndex(session => session.session_id === sessionObj['sessionid']) < 0) {
+      // session is not present, create it first
+      console.log('session is not already present, sending the session create request');
+      const creationObj = this.getCreateSessionObject(sessionObj, username);
+      return new Promise((res, rej) => {
+        this.createSessionFromLocalToRemote(creationObj).then(response => {
+          if (response && response['ok']) {
+            console.log('notifying ok');
+            res({ ok: true });
+          } else {
+            console.log('notifying not ok');
+            res({ ok: false });
+          }
+        });
+      });
+    } else {
+      // session is present, return success Object
+      console.log('session is already present in the remote, sending ok');
+      return Promise.resolve({ ok: true });
+    }
+  }
+
+  createSessionFromLocalToRemote(creationObj) {
+    return this.http.post(this.createSessionEndPoint, { ...creationObj }, this.headerOptions).toPromise()
+      .then(creationRes => {
+        console.log('create session response', creationRes);
+        console.log('session created successfully, sending ok');
+        return ({ ok: true });
+      }).catch(creationError => {
+        console.log('An error detected while creating a new session on the server, sending back as error');
+        console.error(creationError);
+        return Promise.resolve({ ok: false });
+      });
   }
 
   getCreateSessionObject(session, username) {

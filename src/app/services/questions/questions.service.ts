@@ -2,7 +2,6 @@
 import { Injectable } from '@angular/core';
 import { ApiConfigService } from 'src/app/shared/api-config/api-config.service';
 import {Storage} from '@ionic/storage';
-import {HttpClient} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'

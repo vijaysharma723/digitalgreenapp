@@ -193,6 +193,6 @@ export class CheckStatusService {
     };
     // http://52.221.207.221:3001/sessions/status/
     // return this.http.get('http://52.221.207.221:3001/sessions/status/' + username, httpOptions);
-    return this.http.get('https://4294cbc9.ngrok.io/sessions/status/' + username, httpOptions);
+    return this.http.get('http://socion-pda-dashboard.stackroute.com:3001/sessions/status/' + username, httpOptions);
   }
 }

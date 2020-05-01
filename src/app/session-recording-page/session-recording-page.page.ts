@@ -167,11 +167,17 @@ export class SessionRecordingPagePage implements OnInit, OnDestroy {
       // send the file for upload
       if (window.navigator.onLine) {
         const localSessionObj = await this.sessionService.getSessionById(this.sessionid);
-        const isVerified = await this.syncSrvc.verifyorCreateSession(localSessionObj, {username: user.username});
-        if (isVerified['ok']) {
-          this.syncSrvc.sendSessionFileUploadRequest(filePathFromRoot);
+        const remoteSessionList = await this.syncSrvc.getRemoteSessions(user.username);
+        if (remoteSessionList && remoteSessionList['ok']) {
+          // tslint:disable-next-line: max-line-length
+          const isVerified = await this.syncSrvc.verifyorCreateSession(localSessionObj, {username: user.username}, remoteSessionList);
+          if (isVerified['ok']) {
+            this.syncSrvc.sendSessionFileUploadRequest(filePathFromRoot);
+          } else {
+            console.log('could not upload the audio file directly from recording page when user was online, will try later');
+          }
         } else {
-          console.log('could not upload the audio file directly from recording page when user was online, will try later');
+          console.log('recieved false from the remoteSessionList API, cannot sync just recorded question right now, will try again later');
         }
       } else {
         console.log('user is not online, immediate audio upload not triggered');
