@@ -3,23 +3,28 @@
   <ion-buttons class="backbutton" slot="start">
     <ion-back-button defaultHref="/bestpractices"></ion-back-button>
   </ion-buttons>
+
 <ion-title class="textcenter">{{ 'Best Practices' | translate }}</ion-title>
 </ion-toolbar>
 
-<div class="scrollablecontainer">
 
-<h5 class="heading"><b>{{'Interviewer'| translate}}</b></h5>
-<ul class= "questions">
-  <li>{{'Interviewer_0' | translate}}</li>
-    <br/>
-    <li>{{'Interviewer_1' | translate}}</li>
-    <br/>
-    <li>{{'Interviewer_2' | translate}}</li>
-    <br/>
-   <li> {{'Interviewer_3' | translate}}</li>
 
-</ul>
-<h5 class="heading"><b>{{'Interviewee'| translate}}</b></h5>
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title><h5 class="heading"><b>{{'Interviewer'| translate}}</b></h5>
+        <ul class= "questions">
+          <li>{{'Interviewer_0' | translate}}</li>
+            <br/>
+            <li>{{'Interviewer_1' | translate}}</li>
+            <br/>
+            <li>{{'Interviewer_2' | translate}}</li>
+            <br/>
+           <li> {{'Interviewer_3' | translate}}</li>
+        
+        </ul>
+      
+        <h5 class="heading"><b>{{'Interviewee'| translate}}</b></h5>
 <ul class= "questions">
   <li>{{'Interviewee_0' | translate}}</li>
   <br/>
@@ -31,69 +36,77 @@
    <br/>
 </ul>
 
-
-<div class="aligning">
-  <div  class="audioheading">
-  <h5><b>{{'sampleaudio1' | translate}}</b></h5>
-</div>
-  <div class="playAudio">
-  <ion-button
-  id = "audio1" 
-  *ngIf="((stop == undefined) || (stop == 2))"
-size="small"
-color="primary"
-(click)="mediaPlayAudio(1)"
->
-<ion-icon size="small" slot="icon-only" name="play"></ion-icon>
-</ion-button>
+<div class="scrollablecontainer">
 
 
 
-<ion-button
+  <div class="aligning">
+    <div  class="audioheading">
+    <h5><b>{{'sampleaudio1' | translate}}</b></h5>
+  </div>
+    <div class="playAudio">
+    <ion-button
+    id = "audio1" 
+    *ngIf="((stop == undefined) || (stop == 2))"
+  size="small"
+  color="primary"
+  (click)="mediaPlayAudio(1)"
+  >
+  <ion-icon size="small" slot="icon-only" name="play"></ion-icon>
+  </ion-button>
   
-  *ngIf="(( stop == 1) )"
+  
+  
+  <ion-button
+    
+    *ngIf="(( stop == 1) )"
+    size="small"
+    color="danger"
+    class="stop"
+    (click)="mediaPauseAudio(1)"  
+  >
+  <ion-icon size="small" slot="icon-only" name="square"></ion-icon>
+  </ion-button>
+  </div>
+  </div>
+  <br/>
+  
+  <div >
+  
+    <div class="audioheading">
+    <h5 ><b>{{'sampleaudio2' | translate}}</b></h5>
+  </div>
+  
+    <div class = "playAudio" style="padding-bottom: 7vh;">
+    <ion-button  
+  *ngIf="((stop == undefined) || (stop == 1))"
+  size="small"
+  color="primary"
+  (click)="mediaPlayAudio(2)"
+  >
+  <ion-icon size="small" slot="icon-only" name="play"></ion-icon>
+  </ion-button>
+  
+  <ion-button
+  *ngIf="((stop == 2) )"
   size="small"
   color="danger"
   class="stop"
-  (click)="mediaPauseAudio(1)"  
->
-<ion-icon size="small" slot="icon-only" name="square"></ion-icon>
-</ion-button>
-</div>
-</div>
-<br/>
+  (click)="mediaPauseAudio(2)"  
+  >
+  <ion-icon size="small" slot="icon-only" name="square"></ion-icon>
+  </ion-button>
+  
+  </div>
+  
+  </div>
+  
+  </div>
 
-<div >
-
-  <div class="audioheading">
-  <h5 ><b>{{'sampleaudio2' | translate}}</b></h5>
-</div>
-
-  <div class = "playAudio" style="padding-bottom: 7vh;">
-  <ion-button  
-*ngIf="((stop == undefined) || (stop == 1))"
-size="small"
-color="primary"
-(click)="mediaPlayAudio(2)"
->
-<ion-icon size="small" slot="icon-only" name="play"></ion-icon>
-</ion-button>
-
-<ion-button
-*ngIf="((stop == 2) )"
-size="small"
-color="danger"
-class="stop"
-(click)="mediaPauseAudio(2)"  
->
-<ion-icon size="small" slot="icon-only" name="square"></ion-icon>
-</ion-button>
-
-</div>
-
-</div>
-
-</div>
+      </ion-card-title>
+    </ion-card-header>
+  </ion-card>
+</ion-content>
 <app-footer></app-footer>
 
 

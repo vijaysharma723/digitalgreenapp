@@ -1,4 +1,4 @@
-import { Component, Injectable, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Component, Injectable, ChangeDetectorRef, OnDestroy, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Platform } from '@ionic/angular';
 import { Subscription } from 'rxjs';
@@ -7,10 +7,6 @@ import { Subscription } from 'rxjs';
   selector: 'app-bestpractices',
   templateUrl: './bestpractices.component.html',
   styleUrls: ['./bestpractices.component.scss'],
-})
-
-@Injectable({
-  providedIn: 'root'
 })
 
 export class BestpracticesComponent implements OnDestroy {
