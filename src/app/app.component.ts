@@ -40,8 +40,10 @@ languageList = ['en', 'hi'];
   }
 
   ngOnInit() {
-    this.sidebarLangSub = this.languagetranslator.recentPickedLanguage.subscribe(lang => {
+
+  this.sidebarLangSub = this.languagetranslator.recentPickedLanguage.subscribe(lang => {
       if (lang) {
+     
         console.log('language change detectd for the sidebar', lang);
         this.selectedLanguage = lang;
         this.cdr.detectChanges();
@@ -49,6 +51,12 @@ languageList = ['en', 'hi'];
     });
   }
 
+  fixUnderline()
+  {
+    var element = document.getElementById("ions");
+    element.classList.remove("item-interactive");
+
+  }
   ngOnDetroy() {
     console.log('onDestroy called for app component');
     this.sidebarLangSub.unsubscribe();

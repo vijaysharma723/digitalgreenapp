@@ -1,4 +1,4 @@
-<ion-app>
+<ion-app> 
   <ion-menu class="sidemenu" side="start" menuId="first" contentId="content">
     
     <ion-header>
@@ -19,7 +19,7 @@
             <ion-label>{{ 'New Session' | translate }}</ion-label>
           </ion-item>
           <ion-list >
-            <ion-item>
+            <ion-item id="ions">
               <ion-icon name="globe" slot="start" color="primary"></ion-icon>
               <ion-label>{{'Select Language' | translate}}</ion-label>
               <ion-select interface="popover" [(ngModel)]="selectedLanguage" (ionChange)="optionsFn($event)">
@@ -29,10 +29,6 @@
               </ion-select>
             </ion-item>
           </ion-list>
-          <!-- <ion-item >
-            <ion-icon name="add-circle" slot="start" color="primary"></ion-icon>
-            <ion-label>{{'Select Language' | translate}}</ion-label>
-             </ion-item> -->
              <ion-item routerLink="/bestpractices" routerLinkActive="menuactive">
               <ion-icon name="information-circle" slot="start" color="primary"></ion-icon>
               <ion-label>{{ 'BestPractices'|translate }}</ion-label>
@@ -47,8 +43,8 @@
   </ion-menu>
 
   <ion-router-outlet id="content"></ion-router-outlet>
-  <ion-buttons slot="start" *ngIf="!router.url.includes('login')">
-    <ion-menu-button class="sidemenubutton"></ion-menu-button>
+  <ion-buttons (click)='fixUnderline()' slot="start" *ngIf="!router.url.includes('login')">
+    <ion-menu-button  class="sidemenubutton"></ion-menu-button>
   </ion-buttons>
 
   <ion-router-outlet></ion-router-outlet>
